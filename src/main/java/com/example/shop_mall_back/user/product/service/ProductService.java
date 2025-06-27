@@ -1,13 +1,17 @@
 package com.example.shop_mall_back.user.product.service;
 
 import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.user.product.domain.ProductImage;
 import com.example.shop_mall_back.user.product.dto.ProductDto;
+import com.example.shop_mall_back.user.product.dto.ProductImageDto;
+import com.example.shop_mall_back.user.product.repository.ProductImageRepository;
 import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +19,7 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
 
     public Page<ProductDto> getProducts(Pageable pageable) {
         return productRepository.findAll(pageable)
@@ -71,5 +76,10 @@ public class ProductService {
     public Page<ProductDto> getProductsByBrand(Long brandId, Pageable pageable) {
         return productRepository.findByBrandId(brandId, pageable)
                 .map(ProductDto::from);
+    }
+
+    public List<ProductImageDto> getProductImages(Long productId) {
+        List<ProductImage> images = productImageRepository.findByProductIdOrderByIdAsc(productId);
+        return images.stream().map(ProductImageDto::from).toList();
     }
 }

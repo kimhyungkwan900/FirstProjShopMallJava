@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "brands")
 public class Brand {
 
     @Id
@@ -15,6 +16,4 @@ public class Brand {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    private String logoUrl;
 }
