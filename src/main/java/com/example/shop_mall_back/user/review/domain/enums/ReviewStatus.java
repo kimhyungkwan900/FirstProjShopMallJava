@@ -4,6 +4,6 @@ import jakarta.persistence.Entity;
 
 
 public enum ReviewStatus {
-    Normal,
+    normal,
     blinded
 }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Review {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "review_score", nullable = false)
     private int reviewScore; // 리뷰 점수
@@ -32,7 +32,7 @@ public class Review {
     private Long orderId; // FK 주문 ID
     @Enumerated(EnumType.STRING)
     @Column(name = "review_status", nullable = false)
-    @ColumnDefault("'Normal'")
+    @ColumnDefault("'normal'")
     private ReviewStatus reviewStatus;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
