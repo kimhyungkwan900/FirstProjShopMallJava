@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.common.domain;
 
+import com.example.shop_mall_back.admin.product.DeliveryInfo;
 import com.example.shop_mall_back.user.product.domain.Brand;
 import com.example.shop_mall_back.user.product.domain.Category;
 import jakarta.persistence.*;
