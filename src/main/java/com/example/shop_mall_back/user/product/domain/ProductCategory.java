@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "product_category")
 @NoArgsConstructor
 @IdClass(ProductCategoryId.class)
 public class ProductCategory {

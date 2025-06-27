@@ -8,6 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "search_keywords")
 @NoArgsConstructor
 public class SearchKeyword {
 

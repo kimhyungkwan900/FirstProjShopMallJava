@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.product.controller;
 
 import com.example.shop_mall_back.user.product.dto.ProductDto;
+import com.example.shop_mall_back.user.product.dto.ProductImageDto;
 import com.example.shop_mall_back.user.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,10 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable Long id) {
-        return productService.getProductById(id);
+        ProductDto dto = productService.getProductById(id);
+        List<ProductImageDto> images = productService.getProductImages(id);
+        dto.setImages(images);
+        return dto;
     }
 
     @GetMapping("/search")

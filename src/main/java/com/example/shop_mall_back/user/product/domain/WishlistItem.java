@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "wishlist_items")
 @IdClass(WishlistItemId.class)
 public class WishlistItem {
 

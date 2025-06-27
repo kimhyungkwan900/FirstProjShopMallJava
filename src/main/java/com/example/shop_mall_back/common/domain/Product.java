@@ -3,12 +3,17 @@ package com.example.shop_mall_back.common.domain;
 import com.example.shop_mall_back.admin.product.DeliveryInfo;
 import com.example.shop_mall_back.user.product.domain.Brand;
 import com.example.shop_mall_back.user.product.domain.Category;
+import com.example.shop_mall_back.user.product.domain.ProductImage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
+@Table(name = "products")
 @NoArgsConstructor
 public class Product {
 
@@ -47,8 +52,11 @@ public class Product {
     @JoinColumn(name = "category")
     private Category category;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
+
     public enum SellStatus {
-        SELLING, SOLD_OUT
+        판매중, 품절
     }
 
     public void setViewCount(int viewCount) {
