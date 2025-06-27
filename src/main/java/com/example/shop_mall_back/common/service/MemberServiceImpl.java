@@ -1,20 +1,30 @@
 package com.example.shop_mall_back.common.service;
 
+import com.example.shop_mall_back.common.constant.Age;
+import com.example.shop_mall_back.common.constant.Gender;
+import com.example.shop_mall_back.common.constant.Grade;
+import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
+import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    private final MemberRepository memberRepository;
 
-//    <editor-fold desc="회원가입">
+    private final MemberRepository memberRepository;
+    private final MemberProfileRepository memberProfileRepository;
+
+    //<editor-fold desc="회원가입">
     @Override
     public Long signUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder) {
 
@@ -22,11 +32,26 @@ public class MemberServiceImpl implements MemberService {
         validateDuplicateMember(memberFormDTO.getEmail());
 
         // 멤버 객체 생성
-        Member member = new Member();
-        member.create(memberFormDTO, passwordEncoder);
+        Member member = Member.create(memberFormDTO, passwordEncoder);
 
-        // 저장
+        // TODO: 회원가입시 로그인한 API 에서 하드코딩한 정보 받아 올것 name / nickname / profileImg / gender / age
+        // 멤버 기본 프로필 생성
+        MemberProfile memberProfile = MemberProfile.builder()
+                .member(member)
+                .name("신규회원")
+                .role(Role.MEMBER)
+                .grade(Grade.NORMAL)
+                .gender(Gender.UNKNOWN)
+                .age(Age.UNKNOWN)
+                .nickname(null)
+                .isMembership(false)
+                .profileImgUrl(null)
+                .delivAddress(null)
+                .build();
+
+        // 저장 / member 의 경우 생략가능
         memberRepository.save(member);
+        memberProfileRepository.save(memberProfile);
 
         // 저장된 member 객체 id 반환
         return member.getId();
@@ -37,11 +62,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberFormDTO getMemberForm(String email) {
         // memberEmail 로 member 검색
-        Member member = memberRepository.findByEmail(email);
+        Member member = Optional.ofNullable(memberRepository.findByEmail(email))
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
 
         // 해당 email을 가진 dto 반환 (id / pw / email / 전화번호)
-        MemberFormDTO dto = entityToDTO(member);
-        return dto;
+        return entityToDTO(member);
     }
 //</editor-fold>
 
@@ -49,7 +74,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void memberFormUpdate(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder) {
         // Update 할 member 객체 검색
-        Member member = memberRepository.findById(memberFormDTO.getId()).orElseThrow(IllegalArgumentException::new);
+        Member member = findByIdOrThrow(memberFormDTO.getId());
 
         // 새로 입력받은 password 를 newPass 에 저장
         String newPass = passwordEncoder.encode(memberFormDTO.getUser_password());
@@ -66,24 +91,29 @@ public class MemberServiceImpl implements MemberService {
 // 맴버의 가입과 탈퇴 boolean 값으로 관리
     @Override
     public void deActivateMember(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Member member = findByIdOrThrow(id);
 
-        member.deActivateMember();
+        member.deactivateMember();
     }
 
     @Override
     public void activateMember(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Member member = findByIdOrThrow(id);
 
         member.activateMember();
     }
 //</editor-fold>
 
-//    <editor-fold desc="중복 가입 검사">
+//    <editor-fold desc="기타 편의성 메서드">
+    // 중복 검사
     private void validateDuplicateMember(String email) {
         if (memberRepository.findByEmail(email) != null) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
+    }
+
+    private Member findByIdOrThrow(Long id) {
+        return memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
     }
 //    </editor-fold>
 

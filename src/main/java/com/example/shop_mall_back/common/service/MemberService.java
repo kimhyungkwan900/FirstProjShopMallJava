@@ -19,20 +19,20 @@ public interface MemberService {
     default MemberFormDTO entityToDTO(Member member) {
         return MemberFormDTO.builder()
                 .id(member.getId())
-                .user_id(member.getUser_id())
-                .user_password(member.getUser_password())
+                .user_id(member.getUserId())
+                .user_password(member.getUserPassword())
                 .email(member.getEmail())
-                .phone_number(member.getPhone_number())
+                .phone_number(member.getPhoneNumber())
                 .build();
     }
 
     default Member dtoToEntity(MemberFormDTO memberFormDTO) {
         return Member.builder()
                 .id(memberFormDTO.getId())
-                .user_id(memberFormDTO.getUser_id())
-                .user_password(memberFormDTO.getUser_password())
+                .userId(memberFormDTO.getUser_id())
+                .userPassword(memberFormDTO.getUser_password())
                 .email(memberFormDTO.getEmail())
-                .phone_number(memberFormDTO.getPhone_number())
+                .phoneNumber(memberFormDTO.getPhone_number())
                 .build();
     }
 }
