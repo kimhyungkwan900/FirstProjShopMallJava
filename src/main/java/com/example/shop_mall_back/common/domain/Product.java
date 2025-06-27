@@ -48,6 +48,10 @@ public class Product {
     private Category category;
 
     public enum SellStatus {
-        SELLING, SOLD_OUT, STOPPED
+        SELLING, SOLD_OUT
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
     }
 }
