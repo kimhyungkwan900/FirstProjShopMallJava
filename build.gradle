@@ -68,9 +68,12 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //ModelMapper
+    //서로 다른 클래스의 값을 필드의 이름과 자료형이 같으면  getter, setter를 통해 값을 복사해서 객체를 반환
     implementation 'org.modelmapper:modelmapper:3.1.1'
 
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     tasks.named('test') {
         useJUnitPlatform()
     }
