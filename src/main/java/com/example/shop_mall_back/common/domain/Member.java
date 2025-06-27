@@ -2,9 +2,8 @@ package com.example.shop_mall_back.common.domain;
 
 
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,68 +14,81 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "members")
 @Builder
 @Getter
-@ToString
-@Configuration
+@ToString(exclude = {"userPassword", "emailAuthCode", "phoneAuthCode"})
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String user_id;
+    @Column(name = "user_id", nullable = false, length = 16, unique = true)
+    private String userId;
 
-    private String user_password;
+    @Column(name = "user_password", nullable = false, length = 100)
+    private String userPassword;
 
+    @Column(nullable = false, length = 40, unique = true)
     private String email;
-    private boolean email_verified;
-    private String email_auth_code;
 
-    private String phone_number;
-    private boolean phone_number_verified;
-    private String phone_number_auth_code;
+    @Column(name = "email_verified")
+    private boolean emailVerified;
 
-    private String oauth_provider;
-    private String oauth_id;
+    @Column(name = "email_auth_code")
+    private String emailAuthCode;
 
-    private boolean is_active;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "phone_verified")
+    private boolean phoneVerified;
+
+    @Column(name = "phone_auth_code")
+    private String phoneAuthCode;
+
+    @Column(name = "oauth_provider")
+    private String oauthProvider;
+
+    @Column(name = "oauth_id")
+    private String oauthId;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @CreatedDate
-    private LocalDateTime created_at;
+    @Column(name = "created_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
-    public Member create(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder){
-        Member member = new Member();
-        this.user_id = memberFormDTO.getUser_id();
-        this.user_password = passwordEncoder.encode(memberFormDTO.getUser_password());
-        this.email = memberFormDTO.getEmail();
-        this.phone_number = memberFormDTO.getPhone_number();
-
-        this.email_verified = true;
-        this.email_auth_code = UUID.randomUUID().toString();
-
-        this.phone_number_verified = true;
-        this.phone_number_auth_code = UUID.randomUUID().toString();
-
-        this.oauth_provider = UUID.randomUUID().toString();
-        this.oauth_id = UUID.randomUUID().toString();
-
-        this.is_active = true;
-        this.created_at = LocalDateTime.now();
-
-        return member;
+    public static Member create(MemberFormDTO dto, PasswordEncoder encoder) {
+        return Member.builder()
+                .userId(dto.getUser_id())
+                .userPassword(encoder.encode(dto.getUser_password()))
+                .email(dto.getEmail())
+                .emailVerified(true)
+                .emailAuthCode(UUID.randomUUID().toString())
+                .phoneNumber(dto.getPhone_number())
+                .phoneVerified(true)
+                .phoneAuthCode(UUID.randomUUID().toString().substring(0, 6))
+                .oauthProvider("kakao")
+                .oauthId(UUID.randomUUID().toString())
+                .isActive(true)
+                .build();
     }
 
-    public void changePassword(String newPassword){
-        this.user_password = newPassword;
+    public void changePassword(String newPassword) {
+        this.userPassword = newPassword;
     }
 
-    public void deActivateMember(){
-        this.is_active = false;
+    public void deactivateMember() {
+        this.isActive = false;
     }
 
-    public void activateMember(){
-        this.is_active = true;
+    public void activateMember() {
+        this.isActive = true;
     }
 }
