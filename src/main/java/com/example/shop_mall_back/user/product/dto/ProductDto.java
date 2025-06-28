@@ -32,7 +32,7 @@ public class ProductDto {
                 .brandName(product.getBrand().getName())
                 .viewCount(product.getViewCount())
                 .sellStatus(product.getSellStatus().name())
-                .deliveryInfo(product.getDeliveryInfo().getName())
+                .deliveryInfo(product.getDeliveryInfo().getDeliveryCom().name())
                 .categoryName(product.getCategory().getName())
                 .images(
                         product.getImages().stream()
