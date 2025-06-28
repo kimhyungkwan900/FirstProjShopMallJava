@@ -18,10 +18,11 @@ public class CategoryDto {
         return CategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .children(category.getChildren() != null ?
-                        category.getChildren().stream()
-                                .map(CategoryDto::from)
-                                .collect(Collectors.toList()) : List.of())
+                .children(category.getChildren() != null ? // 자식 카테고리가 존재하면 재귀적으로 from() 호출하여 트리 구조 구성
+                        category.getChildren().stream() // 자식 카테고리를 재귀적으로 DTO로 변환
+                                .map(CategoryDto::from) // 리스트로 수집
+                                .collect(Collectors.toList())
+                        : List.of()) // 자식이 없으면 빈 리스트
                 .build();
     }
 }
