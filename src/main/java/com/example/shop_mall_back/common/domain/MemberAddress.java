@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.common.domain;
 
-import com.example.shop_mall_back.common.dto.MemberAddressDTO;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

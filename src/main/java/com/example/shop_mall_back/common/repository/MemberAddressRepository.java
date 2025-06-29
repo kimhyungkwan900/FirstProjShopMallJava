@@ -14,4 +14,7 @@ public interface MemberAddressRepository extends JpaRepository<MemberAddress, Lo
 //    @Query("UPDATE MemberAddress SET isDefault = false WHERE member.id = :memberId AND isDefault = true")         이렇게 작성하였으나 GPT 검수과정에서 ma 로 명시해주는것이 좋다하여 변경
     @Query("UPDATE MemberAddress ma SET ma.isDefault = false WHERE ma.member.id = :memberId AND ma.isDefault = true")
     void resetDefaultAddressByMemberId(@Param("memberId") Long memberId);
+
+//    기본 제공메서드 memberId 개수 반환
+    long countByMemberId(Long memberId);
 }
