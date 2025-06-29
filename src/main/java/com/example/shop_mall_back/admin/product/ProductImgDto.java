@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.admin.product;
 
+import com.example.shop_mall_back.common.domain.ProductImg;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

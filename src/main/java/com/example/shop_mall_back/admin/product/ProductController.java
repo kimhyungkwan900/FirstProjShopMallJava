@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Log4j2
-@RequestMapping("")
+@RequestMapping("/admin")
 public class ProductController {
+    private final ProductService productService;
+
     //상품 조회
     //상품 등록
     //상품 수정
