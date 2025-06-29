@@ -64,14 +64,15 @@ public class Member {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-    public static Member create(MemberFormDTO dto, PasswordEncoder encoder) {
+    //TODO: 고정값 구현 완료시 변경할 것
+    public static Member create(String userId,String userPassword,String email, String phoneNumber, PasswordEncoder encoder) {
         return Member.builder()
-                .userId(dto.getUser_id())
-                .userPassword(encoder.encode(dto.getUser_password()))
-                .email(dto.getEmail())
+                .userId(userId)
+                .userPassword(encoder.encode(userPassword))
+                .email(email)
                 .emailVerified(true)
                 .emailAuthCode(UUID.randomUUID().toString())
-                .phoneNumber(dto.getPhone_number())
+                .phoneNumber(phoneNumber)
                 .phoneVerified(true)
                 .phoneAuthCode(UUID.randomUUID().toString().substring(0, 6))
                 .oauthProvider("kakao")
