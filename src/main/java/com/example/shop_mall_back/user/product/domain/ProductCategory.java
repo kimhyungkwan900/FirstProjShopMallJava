@@ -21,5 +21,5 @@ public class ProductCategory {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    
+
 }
