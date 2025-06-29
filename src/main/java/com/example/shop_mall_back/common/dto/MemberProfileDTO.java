@@ -36,6 +36,8 @@ public class MemberProfileDTO {
     private String name;
 
     private String nickname;
+
+    @JsonProperty("deliv_address") //JSON 응답개체에서 DB 컬럼명과 같은 이름을 가지도록 미리 설정
     private String delivAddress;
 
     @JsonProperty("profile_img_url")

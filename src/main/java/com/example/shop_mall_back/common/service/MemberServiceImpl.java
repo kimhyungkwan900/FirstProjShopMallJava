@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
         validateDuplicateMember(memberFormDTO.getEmail());
 
         // 멤버 객체 생성
-        Member member = Member.create(memberFormDTO, passwordEncoder);
+        Member member = Member.create(memberFormDTO.getUser_id(), memberFormDTO.getUser_password(), memberFormDTO.getEmail(), memberFormDTO.getPhone_number(), passwordEncoder);
 
         // TODO: 회원가입시 로그인한 API 에서 하드코딩한 정보 받아 올것 name / nickname / profileImg / gender / age
         // 멤버 기본 프로필 생성

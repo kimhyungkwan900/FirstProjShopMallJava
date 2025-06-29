@@ -42,7 +42,7 @@ public class MemberProfile {
     @Column(unique = true, length = 20)
     private String nickname;
 
-    @Column(name = "profile_image_url", length = 255)
+    @Column(name = "profile_image_url")
     private String profileImgUrl;
 
     @Enumerated(EnumType.STRING)
@@ -53,7 +53,7 @@ public class MemberProfile {
     @Column(length = 10, nullable = false)
     private Age age;
 
-    @Column(name = "deliv_address", length = 255)
+    @Column(name = "deliv_address")
     private String delivAddress;
 
     public void updateProfile(String nickname, String profileImgUrl, String address) {
