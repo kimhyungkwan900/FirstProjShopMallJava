@@ -17,7 +17,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // 상품별 리뷰 목록 컨트롤
-    @GetMapping("/product/reviewlist")
+    @GetMapping("/products")
     public ReviewListDTO findAllByProductId(@RequestParam("productId") Long productId) {
         return reviewService.findAllByProductId(productId);
     }
