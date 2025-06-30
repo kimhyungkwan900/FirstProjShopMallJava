@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.admin.product;
+package com.example.shop_mall_back.admin.product.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class DeliveryInfo {
     @Column(nullable = false)
     private String delivery_yn;
 
-    @Column(nullable = false, name = "delivery_com")
+    @Enumerated(EnumType.STRING)
     private Delivery_com deliveryCom;
 
     @Column(nullable = false, name = "delivery_price")

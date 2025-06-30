@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.admin.product;
+package com.example.shop_mall_back.admin.product.dto;
 
 import com.example.shop_mall_back.common.domain.ProductImg;
 import lombok.AllArgsConstructor;
