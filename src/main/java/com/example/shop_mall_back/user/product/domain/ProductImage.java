@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "products_img")
 public class ProductImage {
 
     @Id
@@ -22,4 +23,6 @@ public class ProductImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id") // FK
     private Product product;
+
+
 }

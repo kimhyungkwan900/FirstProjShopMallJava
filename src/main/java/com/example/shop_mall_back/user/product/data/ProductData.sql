@@ -1,3 +1,4 @@
+-- 채승현
 -- 원피스
 INSERT INTO products (name, description, price, stock, brand_id, view_count, sell_status, delivery_id, category) VALUES
                                                                                                                      ('러블리 플라워 원피스', '화사한 플라워 패턴이 돋보이는 봄 원피스입니다.', 29900, 32, 5, 120, '판매중', 1, 3),
@@ -150,7 +151,7 @@ INSERT INTO products (name, description, price, stock, brand_id, view_count, sel
                                                                                                                      ('포인트 자수 캡', '로고 자수가 돋보이는 포인트 캡모자입니다.', 17900, 31, 7, 123, '판매중', 1, 15),
                                                                                                                      ('스트랩 조절 버킷햇', '스트랩 조절 기능이 있어 착용이 편리한 버킷햇입니다.', 21900, 23, 6, 110, '품절', 1, 15);
 
-
+-- 김형관
 -- 노트북/태블릿
 INSERT INTO products (name, description, price, stock, brand_id, view_count, sell_status, delivery_id, category) VALUES
                                                                                                                      ('울트라북 14인치', '휴대성과 성능을 모두 갖춘 14인치 울트라북입니다.', 899000, 12, 1, 184, '판매중', 1, 17),
@@ -317,8 +318,7 @@ INSERT INTO products (name, description, price, stock, brand_id, view_count, sel
                                                                                                                      ('훈제오리 슬라이스', '구워먹기 편한 훈제 조리된 오리 슬라이스입니다.', 11900, 18, 8, 98, '판매중', 1, 31),
                                                                                                                      ('양념 LA갈비', '간편하게 구워먹는 양념 갈비 세트입니다.', 25900, 11, 9, 144, '판매중', 1, 31),
                                                                                                                      ('한우 다짐육 200g', '국, 찌개, 볶음 등 다양하게 활용 가능합니다.', 8900, 19, 10, 122, '판매중', 1, 31);
-
-
+-- 신인호
 -- 간편식
 INSERT INTO products (name, description, price, stock, brand_id, view_count, sell_status, delivery_id, category) VALUES
                                                                                                                      ('냉동 볶음밥', '전자레인지로 간편하게 즐기는 한 끼입니다.', 3900, 40, 1, 114, '판매중', 1, 33),
