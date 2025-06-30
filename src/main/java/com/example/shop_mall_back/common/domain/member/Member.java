@@ -25,9 +25,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // user 로그인 id
     @Column(name = "user_id", nullable = false, length = 16, unique = true)
     private String userId;
 
+    // user 로그인 password
     @Column(name = "user_password", nullable = false, length = 100)
     private String userPassword;
 
