@@ -3,6 +3,8 @@ package com.example.shop_mall_back.reviewTest;
 import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import com.example.shop_mall_back.user.review.dto.ReviewDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewFormDTO;
+import com.example.shop_mall_back.user.review.dto.ReviewListDTO;
+import com.example.shop_mall_back.user.review.dto.ReviewUpdateDTO;
 import com.example.shop_mall_back.user.review.service.ReviewService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,7 @@ public class reiewServiceTests {
         ReviewFormDTO reviewFormDTO = new ReviewFormDTO();
         reviewFormDTO.setScore(4);
         reviewFormDTO.setMemberId(2L);
-        reviewFormDTO.setOrderId(8L);
+        reviewFormDTO.setOrderId(2L);
         reviewFormDTO.setProductId(1L);
         reviewFormDTO.setSummation("좋은거같아요");
         reviewFormDTO.setReviewContent("아주 좋은거 같아요");
@@ -46,19 +48,24 @@ public class reiewServiceTests {
         // DTO 객체 생성 및 값 설정
         Long id = 1L;
         String summation = "수정 되었습니다.";
-        int score = 5;
+        int score = 1;
         String content = "수정되었습니다.";
+        ReviewUpdateDTO reviewUpdateDTO = new ReviewUpdateDTO();
+        reviewUpdateDTO.setScore(score);
+        reviewUpdateDTO.setContent(content);
+        reviewUpdateDTO.setSummation(summation);
+        reviewUpdateDTO.setUpdatedAt(LocalDateTime.now());
         // 리뷰 상태 설정 (예: Normal 또는 Blinded)
         // 수정 메서드 호출
-        reviewService.updateReview(id,  score, summation, content);
+        reviewService.updateReview(id,  reviewUpdateDTO);
     }
 
     @Test
     @DisplayName("상품별 리뷰 목록")
     public void findReviewByProductIdTest(){
         Long productId = 1L;
-        List<ReviewDTO> list = reviewService.findAllByProductId(productId);
-        list.forEach(System.out::println);
+        ReviewListDTO list = reviewService.findAllByProductId(productId);
+        list.getReviewList().forEach(System.out::println);
     }
 
     @Test
