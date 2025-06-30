@@ -24,7 +24,6 @@ public class ReviewService {
 
     // 특정 리뷰
     public ReviewDTO findByReviewId(Long id) {
-
         return reviewRepository.findById(id).stream()
                 .map(review -> modelMapper.map(review, ReviewDTO.class))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("찾는 리뷰가 없습니다"));
