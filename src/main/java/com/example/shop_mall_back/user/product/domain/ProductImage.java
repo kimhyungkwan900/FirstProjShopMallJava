@@ -3,6 +3,7 @@ package com.example.shop_mall_back.user.product.domain;
 import com.example.shop_mall_back.common.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "products_img")
+@Builder
+@AllArgsConstructor
 public class ProductImage {
 
     @Id

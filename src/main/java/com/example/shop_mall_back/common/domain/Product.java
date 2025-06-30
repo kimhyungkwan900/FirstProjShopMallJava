@@ -6,6 +6,8 @@ import com.example.shop_mall_back.user.product.domain.Brand;
 import com.example.shop_mall_back.user.product.domain.Category;
 import com.example.shop_mall_back.user.product.domain.ProductImage;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @Getter
 @Table(name = "products")
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Product {
 
     @Id

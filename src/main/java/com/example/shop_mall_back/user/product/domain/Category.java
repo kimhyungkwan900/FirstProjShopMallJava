@@ -1,6 +1,8 @@
 package com.example.shop_mall_back.user.product.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "categories")
+@Builder
+@AllArgsConstructor
 public class Category {
 
     @Id
