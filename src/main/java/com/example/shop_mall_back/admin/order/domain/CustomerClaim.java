@@ -1,7 +1,6 @@
-package com.example.shop_mall_back.admin.order;
+package com.example.shop_mall_back.admin.order.domain;
 
 import com.example.shop_mall_back.common.domain.Order;
-import com.nimbusds.openid.connect.sdk.claims.ClaimType;
 import jakarta.persistence.*;
 import lombok.Getter;
 

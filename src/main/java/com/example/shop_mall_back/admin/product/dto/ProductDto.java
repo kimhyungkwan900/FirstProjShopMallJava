@@ -1,12 +1,9 @@
-package com.example.shop_mall_back.admin.product;
+package com.example.shop_mall_back.admin.product.dto;
 
 import com.example.shop_mall_back.common.domain.Product;
-import com.example.shop_mall_back.user.product.domain.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.math.BigDecimal;
 
 @Getter
 @AllArgsConstructor
@@ -27,7 +24,7 @@ public class ProductDto {
     private Product.SellStatus sellStatus;
 
     //외래키
-    private Long brand_id;
+    private BrandDto brand;
 
-    private Long category_id;
+    private CategoryDto category;
 }

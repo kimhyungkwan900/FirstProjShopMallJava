@@ -28,5 +28,15 @@ public class ProductImage {
     @JoinColumn(name = "product_id") // FK
     private Product product;
 
+    public ProductImage(Product product, Boolean isRepImg) {
+        this.product = product;
+        this.isRepImg = isRepImg;
+    }
 
+    // 원본이미지 파일명, 업데이트할 이미지 파일명, 이미지 경로
+    public void updateProductImg(String oriImgName, String imgName, String imgUrl){
+        this.oriImgName = oriImgName;
+        this.imgName = imgName;
+        this.imgUrl = imgUrl;
+    }
 }

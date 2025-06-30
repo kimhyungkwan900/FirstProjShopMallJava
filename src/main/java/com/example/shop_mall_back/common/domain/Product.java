@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.common.domain;
 
-import com.example.shop_mall_back.admin.product.DeliveryInfo;
+import com.example.shop_mall_back.admin.product.domain.DeliveryInfo;
+import com.example.shop_mall_back.admin.product.dto.ProductFormDto;
 import com.example.shop_mall_back.user.product.domain.Brand;
 import com.example.shop_mall_back.user.product.domain.Category;
 import com.example.shop_mall_back.user.product.domain.ProductImage;
@@ -65,5 +66,29 @@ public class Product {
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+
+    //상품 정보 수정 시 name, price, stock, description, sellStatus 업데이트 메소드
+    public void updateProduct(ProductFormDto productFormDto) {
+        this.name = productFormDto.getName();
+        this.price = productFormDto.getPrice();
+        this.stock = productFormDto.getStock();
+        this.description = productFormDto.getDescription();
+        this.sellStatus = productFormDto.getSellStatus();
+    }
+
+    //Brand 정보 업데이트 메소드
+    public void changeBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    //Category 정보 업데이트 메소드
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
+
+    //DeliveryInfo 정보 업데이트 메소드
+    public void changeDeliveryInfo(DeliveryInfo deliveryInfo) {
+        this.deliveryInfo = deliveryInfo;
     }
 }
