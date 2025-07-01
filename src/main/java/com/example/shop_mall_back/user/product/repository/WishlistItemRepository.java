@@ -5,6 +5,7 @@ import com.example.shop_mall_back.user.product.domain.WishlistItemId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface WishlistItemRepository extends JpaRepository<WishlistItem, WishlistItemId> {
     /**
@@ -13,4 +14,6 @@ public interface WishlistItemRepository extends JpaRepository<WishlistItem, Wish
      * - 예: SELECT * FROM wishlist_item WHERE user_id = ?
      */
     List<WishlistItem> findByUserId(Long userId);
+
+    Optional<WishlistItem> findByUserIdAndProductId(Long userId, Long productId);
 }
