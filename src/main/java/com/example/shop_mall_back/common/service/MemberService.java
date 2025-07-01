@@ -8,6 +8,8 @@ public interface MemberService {
 
     Long signUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder);
 
+    Long oAuth2SignUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder);
+
     MemberFormDTO getMemberForm(String email);
 
     void memberFormUpdate(MemberFormDTO memberFormDTO,PasswordEncoder passwordEncoder);
