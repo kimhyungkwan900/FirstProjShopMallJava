@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.product.service;
 
+import com.example.shop_mall_back.common.domain.Member;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.product.domain.WishlistItem;
 import com.example.shop_mall_back.user.product.dto.WishlistItemDto;
@@ -36,7 +37,7 @@ public class WishlistService {
             wishlistItemRepository.delete(existing.get()); // 이미 찜한 경우 제거
         } else {
             WishlistItem item = WishlistItem.builder()
-                    .user(User.builder().id(userId).build()) // 더미 user 객체로 참조만
+                    .user(Member.builder().id(userId).build()) // 더미 user 객체로 참조만
                     .product(Product.builder().id(productId).build()) // 더미 product 객체로 참조만
                     .build();
             wishlistItemRepository.save(item); // 새로운 찜 추가
