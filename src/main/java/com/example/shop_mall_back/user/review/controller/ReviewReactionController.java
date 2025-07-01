@@ -16,11 +16,11 @@ public class ReviewReactionController {
 
     @PostMapping("/review-reactions")
     public ResponseEntity<?> react(
-            @RequestParam Long memberId,
-            @RequestParam Long reviewId,
-            @RequestParam Reaction reaction){
-     ReviewReactionDTO result = reviewReactionService.toggleReaction(memberId,reviewId,reaction);
-     return ResponseEntity.ok(result);
+            @RequestParam("memberId") Long memberId,
+            @RequestParam("reviewId") Long reviewId,
+            @RequestParam("reaction") Reaction reaction){
+        ReviewReactionDTO result = reviewReactionService.toggleReaction(memberId,reviewId,reaction);
+        return ResponseEntity.ok(result);
 
     }
 }
