@@ -22,10 +22,17 @@ public class ReviewController {
         return reviewService.findAllByProductId(productId);
     }
     // 회원별 리뷰 목록 컨트롤
-    @GetMapping("/mypage/reviewlist")
+    @GetMapping("/mypage/reviews")
     public List<ReviewDTO> findAllByMemberId(@RequestParam("memberId") Long memberId) {
         return reviewService.findAllByMemberId(memberId);
     }
+
+    // 리뷰 받아오기
+    @GetMapping("/mypage/review/update")
+    public ReviewDTO findById(@RequestParam("reviewId") Long reviewId) {
+        return reviewService.findByReviewId(reviewId);
+    }
+
     // 리뷰 등록
     @PostMapping("/mypage/review/writer")
     public void insertReview(@RequestBody ReviewFormDTO reviewFormDTO) {
@@ -36,6 +43,13 @@ public class ReviewController {
     public void updateReview(@RequestParam("reviewId") Long id, @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
         reviewService.updateReview(id, reviewUpdateDTO);
     }
+
+    // 리뷰 삭제
+    @DeleteMapping("/mypage/review/delete")
+    public void deleteReview(@RequestParam("reviewId") Long id){
+        reviewService.deleteReview(id);
+    }
+
 
 
 }
