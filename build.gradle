@@ -30,22 +30,10 @@ ext {
 dependencies {
 
     // 보안 && Oauth2
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
-    // OAuth2 인증 서버 기능 제공 (Spring Authorization Server)
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    // OAuth2 클라이언트 기능 (소셜 로그인 등)
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    // OAuth2 리소스 서버 (Access Token 인증 처리)
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    // Spring Security 기본 보안 설정
-
-    // thymeleaf + 시큐리티
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-    // Thymeleaf 에서 Spring Security 표현식 사용 가능
-
-    // Thymeleaf
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'// OAuth2 인증 서버 기능 제공 (Spring Authorization Server)
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'// OAuth2 클라이언트 기능 (소셜 로그인 등)
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'// OAuth2 리소스 서버 (Access Token 인증 처리)
+    implementation 'org.springframework.boot:spring-boot-starter-security'// Spring Security 기본 보안 설정
 
     // 개발 편의성 롬복
     compileOnly 'org.projectlombok:lombok'
