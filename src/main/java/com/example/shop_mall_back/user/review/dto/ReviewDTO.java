@@ -24,4 +24,7 @@ public class ReviewDTO {
     private ReviewStatus reviewStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private int likeCount;
+    private int dislikeCount;
 }

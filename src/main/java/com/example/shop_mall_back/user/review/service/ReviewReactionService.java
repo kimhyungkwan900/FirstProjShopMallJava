@@ -17,7 +17,7 @@ public class ReviewReactionService {
     private final ReviewReactionRepository reviewReactionRepository;
     private final ReviewRepository reviewRepository;
 
-    public ReviewReactionDTO toggleReaction(Long reviewId, Long memberId, Reaction newReaction){
+    public ReviewReactionDTO toggleReaction(Long memberId, Long reviewId, Reaction newReaction){
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("리뷰 없음"));
 
@@ -25,19 +25,19 @@ public class ReviewReactionService {
                 .orElse(null);
 
         if(reaction == null) {
-                reaction = ReviewReaction.builder()
-                        .memberId(memberId)
-                        .review(review)
-                        .reaction(newReaction).build();
+            reaction = ReviewReaction.builder()
+                    .memberId(memberId)
+                    .review(review)
+                    .reaction(newReaction).build();
         }else {
-        // 같은 반응이면 삭제, 아니면 업데이트
-        if (reaction.getReaction() == newReaction) {
-            reviewReactionRepository.delete(reaction);
-            return null;
-        } else {
-            reaction.setReaction(newReaction);
+            // 같은 반응이면 삭제, 아니면 업데이트
+            if (reaction.getReaction() == newReaction) {
+                reviewReactionRepository.delete(reaction);
+                return null;
+            } else {
+                reaction.setReaction(newReaction);
+            }
         }
-    }
         ReviewReaction saved = reviewReactionRepository.save(reaction);
         return ReviewReactionDTO.builder()
                 .id(saved.getId())
@@ -46,4 +46,14 @@ public class ReviewReactionService {
                 .reaction(saved.getReaction())
                 .build();
     }
+
+    public int findLikeCountByReviewId(Long reviewId) {
+        return reviewReactionRepository.countByReview_IdAndReaction(reviewId, Reaction.like);
+    }
+
+    public int findDislikeCountByReviewId(Long reviewId) {
+        return reviewReactionRepository.countByReview_IdAndReaction(reviewId, Reaction.dislike);
+    }
+
+
 }

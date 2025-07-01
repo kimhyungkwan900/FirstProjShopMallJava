@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.common.domain;
 
 
+import com.example.shop_mall_back.common.constant.OauthProvider;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -50,8 +51,9 @@ public class Member {
     @Column(name = "phone_auth_code")
     private String phoneAuthCode;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "oauth_provider")
-    private String oauthProvider;
+    private OauthProvider oauthProvider;
 
     @Column(name = "oauth_id")
     private String oauthId;
@@ -70,13 +72,29 @@ public class Member {
                 .userId(userId)
                 .userPassword(encoder.encode(userPassword))
                 .email(email)
-                .emailVerified(true)
+                .emailVerified(false)
                 .emailAuthCode(UUID.randomUUID().toString())
                 .phoneNumber(phoneNumber)
-                .phoneVerified(true)
+                .phoneVerified(true)            //인증이 되었다 가정
                 .phoneAuthCode(UUID.randomUUID().toString().substring(0, 6))
-                .oauthProvider("kakao")
-                .oauthId(UUID.randomUUID().toString())
+                .oauthProvider(OauthProvider.LOCAL)
+                .oauthId("자체회원")
+                .isActive(true)
+                .build();
+    }
+
+    public static Member createOAuth2User(String phoneNumber, String email, OauthProvider oauthProvider, String providerId) {
+        return Member.builder()
+                .userId(email)
+                .userPassword(null)
+                .email(email)
+                .emailVerified(true)
+                .emailAuthCode(null)
+                .phoneNumber(phoneNumber)
+                .phoneVerified(false)
+                .phoneAuthCode(null)
+                .oauthProvider(oauthProvider)
+                .oauthId(providerId)
                 .isActive(true)
                 .build();
     }
