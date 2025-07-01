@@ -56,13 +56,21 @@ public class MemberServiceImpl implements MemberService {
         // 저장된 member 객체 id 반환
         return member.getId();
     }
+
+    public Long oAuth2SignUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder) {
+
+
+
+
+        return 0L;
+    }
 //</editor-fold>
 
 //    <editor-fold desc="회원 정보 검색">
     @Override
     public MemberFormDTO getMemberForm(String email) {
         // memberEmail 로 member 검색
-        Member member = Optional.ofNullable(memberRepository.findByEmail(email))
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
 
         // 해당 email을 가진 dto 반환 (id / pw / email / 전화번호)

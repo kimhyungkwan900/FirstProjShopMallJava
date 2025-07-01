@@ -1,4 +1,78 @@
 package com.example.shop_mall_back.common.service.oauthService;
 
-public class NaverOAuthService {
+import com.example.shop_mall_back.common.constant.*;
+import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.repository.MemberProfileRepository;
+import com.example.shop_mall_back.common.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+
+    private final MemberRepository memberRepository;
+    private final MemberProfileRepository memberProfileRepository;
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
+
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        String providerId  = (String) response.get("id");
+        String name = (String) response.get("name");
+        String email = (String) response.get("email");
+        String phoneNumber = (String) response.get("mobile");
+        String nickname = (String) response.get("nickname");
+        String profileImage = (String) response.get("profile_image");
+        String gender = (String) response.get("gender");
+        String ageRange = (String) response.get("age");
+
+        Gender gen = Gender.conversion(gender);
+        Age age = Age.conversion(ageRange);
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    Member newMember = Member.createOAuth2User(email, OauthProvider.NAVER,providerId);
+                    return memberRepository.save(newMember);
+                });
+
+        boolean hasProfile = memberProfileRepository.existsByMemberId(member.getId());
+
+        if(!hasProfile){
+            MemberProfile memberProfile = MemberProfile.builder()
+                    .member(member)
+                    .name(name)
+                    .profileImgUrl(profileImage)
+                    .role(Role.MEMBER)
+                    .grade(Grade.NORMAL)
+                    .gender(gen)
+                    .age(age)
+                    .nickname(nickname)
+                    .isMembership(false)
+                    .delivAddress(null)
+                    .build();
+
+            memberProfileRepository.save(memberProfile);
+        }
+
+        return new DefaultOAuth2User(
+                List.of(new SimpleGrantedAuthority("ROLE_USER")),
+                attributes,
+                "id"
+        );
+    }
 }
