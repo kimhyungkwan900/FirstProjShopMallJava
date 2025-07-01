@@ -18,8 +18,6 @@ import java.util.List;
 @Getter
 @Table(name = "products")
 @NoArgsConstructor
-@Builder
-@AllArgsConstructor
 public class Product {
 
     @Id

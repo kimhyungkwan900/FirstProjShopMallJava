@@ -13,8 +13,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "categories")
-@Builder
-@AllArgsConstructor
 public class Category {
 
     @Id
