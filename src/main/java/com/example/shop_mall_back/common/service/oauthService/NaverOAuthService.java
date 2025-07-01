@@ -22,8 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MemberRepository memberRepository;
-    private final MemberProfileRepository memberProfileRepository;
+    private final OAuthMemberService oAuthMemberService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -37,37 +36,16 @@ public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, O
         String email = (String) response.get("email");
         String phoneNumber = (String) response.get("mobile");
         String nickname = (String) response.get("nickname");
-        String profileImage = (String) response.get("profile_image");
+        String profileImg = (String) response.get("profile_image");
         String gender = (String) response.get("gender");
         String ageRange = (String) response.get("age");
 
         Gender gen = Gender.conversion(gender);
         Age age = Age.conversion(ageRange);
 
-        Member member = memberRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    Member newMember = Member.createOAuth2User(email, OauthProvider.NAVER,providerId);
-                    return memberRepository.save(newMember);
-                });
+        Member member = oAuthMemberService.findOrCreateMember(phoneNumber, email, OauthProvider.NAVER, providerId);
 
-        boolean hasProfile = memberProfileRepository.existsByMemberId(member.getId());
-
-        if(!hasProfile){
-            MemberProfile memberProfile = MemberProfile.builder()
-                    .member(member)
-                    .name(name)
-                    .profileImgUrl(profileImage)
-                    .role(Role.MEMBER)
-                    .grade(Grade.NORMAL)
-                    .gender(gen)
-                    .age(age)
-                    .nickname(nickname)
-                    .isMembership(false)
-                    .delivAddress(null)
-                    .build();
-
-            memberProfileRepository.save(memberProfile);
-        }
+        oAuthMemberService.createProfileIfNotExists(member, name, nickname, profileImg, gen, age);
 
         return new DefaultOAuth2User(
                 List.of(new SimpleGrantedAuthority("ROLE_USER")),

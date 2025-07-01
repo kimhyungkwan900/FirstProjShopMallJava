@@ -83,14 +83,14 @@ public class Member {
                 .build();
     }
 
-    public static Member createOAuth2User(String email, OauthProvider oauthProvider, String providerId) {
+    public static Member createOAuth2User(String phoneNumber, String email, OauthProvider oauthProvider, String providerId) {
         return Member.builder()
                 .userId(email)
                 .userPassword(null)
                 .email(email)
                 .emailVerified(true)
                 .emailAuthCode(null)
-                .phoneNumber(null)
+                .phoneNumber(phoneNumber)
                 .phoneVerified(false)
                 .phoneAuthCode(null)
                 .oauthProvider(oauthProvider)

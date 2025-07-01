@@ -1,6 +1,9 @@
 package com.example.shop_mall_back.common.service.oauthService;
 
+import com.example.shop_mall_back.common.constant.*;
 import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,15 +18,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class KakaoOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final OAuthMemberService oAuthMemberService;
 
 
     @Override
@@ -35,23 +35,21 @@ public class KakaoOAuthService implements OAuth2UserService<OAuth2UserRequest, O
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
+        String providerId = String.valueOf(attributes.get("id"));
         String email = (String) kakaoAccount.get("email");
-        String phone = (String) kakaoAccount.get("phone_number");
+        String name = (String) kakaoAccount.get("nickname");
+        String phoneNumber = (String) kakaoAccount.get("phone_number");
+        String gender = (String) kakaoAccount.get("gender");
+        String ageRange = (String) kakaoAccount.get("age_range");
         String nickname = (String) profile.get("nickname");
+        String profileImg = (String) profile.get("profile_image_url");
 
-        Optional<Member> member = Optional.ofNullable(memberRepository.findByEmail(email));
+        Gender gen = Gender.conversion(gender);
+        Age age = Age.conversion(ageRange);
 
-        Member newMember = member.orElseGet(() -> {
-           Member createdMember = Member.create(
-                   nickname,
-                   UUID.randomUUID().toString(),
-                   email,
-                   phone != null ? phone : "010-0000-0000",
-                   passwordEncoder
-           );
-            return memberRepository.save(createdMember);
-        });
+        Member member = oAuthMemberService.findOrCreateMember(phoneNumber, email, OauthProvider.KAKAO, providerId);
 
+        oAuthMemberService.createProfileIfNotExists(member, name, nickname, profileImg, gen, age);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),

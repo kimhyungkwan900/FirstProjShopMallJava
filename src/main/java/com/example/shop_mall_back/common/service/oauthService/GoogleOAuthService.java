@@ -23,8 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GoogleOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MemberRepository memberRepository;
-    private final MemberProfileRepository memberProfileRepository;
+    private final OAuthMemberService oAuthMemberService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -36,30 +35,9 @@ public class GoogleOAuthService implements OAuth2UserService<OAuth2UserRequest, 
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
 
-        Member member = memberRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    Member newMember = Member.createOAuth2User(email,OauthProvider.GOOGLE,providerId);
-                    return memberRepository.save(newMember);
-                });
+        Member member = oAuthMemberService.findOrCreateMember(null, email, OauthProvider.GOOGLE, providerId);
 
-        boolean hasProfile = memberProfileRepository.existsByMemberId(member.getId());
-
-        if (!hasProfile) {
-            MemberProfile memberProfile = MemberProfile.builder()
-                    .member(member)
-                    .name(name)
-                    .profileImgUrl(profileImg)
-                    .role(Role.MEMBER)
-                    .grade(Grade.NORMAL)
-                    .gender(Gender.UNKNOWN)
-                    .age(Age.UNKNOWN)
-                    .nickname(name)
-                    .isMembership(false)
-                    .delivAddress(null)
-                    .build();
-
-            memberProfileRepository.save(memberProfile);
-        }
+        oAuthMemberService.createProfileIfNotExists(member, name, name, profileImg, null, null);
 
 
         return new DefaultOAuth2User(
