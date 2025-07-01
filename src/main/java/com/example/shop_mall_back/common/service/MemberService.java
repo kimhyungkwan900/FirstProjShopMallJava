@@ -10,10 +10,6 @@ public interface MemberService {
 
     Long signUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder);
 
-    Long oAuth2SignUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder);
-
-    MemberFormDTO getMemberForm(String email);
-
     MemberDTO getMemberDTOByEmail(String email);
 
     Role getRoleByMember(Member member);
