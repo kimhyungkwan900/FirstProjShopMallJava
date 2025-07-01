@@ -1,12 +1,10 @@
 package com.example.shop_mall_back.user.product.controller;
 
 import com.example.shop_mall_back.user.product.dto.WishlistItemDto;
+import com.example.shop_mall_back.user.product.dto.WishlistToggleRequest;
 import com.example.shop_mall_back.user.product.service.WishlistService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,10 @@ public class WishlistController {
     public List<WishlistItemDto> getWishlist(@PathVariable Long userId) {
         // 경로에서 받은 사용자의 id를 기반으로 해당 사용자의 위시리스트를 서비스에서 조회하여 반환
         return wishlistService.getWishlistByUserId(userId);
+    }
+
+    @PostMapping("/toggle")
+    public void toggleWishlist(@RequestBody WishlistToggleRequest request) {
+        wishlistService.toggleWishlist(request.getUserId(), request.getProductId());
     }
 }
