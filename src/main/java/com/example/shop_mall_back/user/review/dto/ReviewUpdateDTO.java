@@ -12,7 +12,7 @@ public class ReviewUpdateDTO {
 
     private int score;
 
-    private String content;
+    private String reviewContent;
 
     private String summation;
 
