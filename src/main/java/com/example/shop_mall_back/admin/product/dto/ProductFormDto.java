@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 public class ProductFormDto {
     private Long id;
 
@@ -35,7 +34,7 @@ public class ProductFormDto {
     private Long brandId;
 
     //배송정보
-
+    private Long deliveryInfoId;
 
     private Product.SellStatus sellStatus;
 

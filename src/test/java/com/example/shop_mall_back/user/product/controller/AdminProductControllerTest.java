@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @WebMvcTest(ProductController.class)
-public class ProductControllerTest {
+public class AdminProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

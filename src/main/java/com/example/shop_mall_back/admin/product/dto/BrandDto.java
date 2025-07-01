@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 
 @Getter
 @AllArgsConstructor
-@Builder
 public class BrandDto {
     private Long id;
 

@@ -1,9 +1,8 @@
 package com.example.shop_mall_back.admin.product.service;
 
-import com.example.shop_mall_back.admin.product.dto.ProductDto;
-import com.example.shop_mall_back.admin.product.dto.ProductFormDto;
+import com.example.shop_mall_back.admin.product.dto.*;
 import com.example.shop_mall_back.admin.product.repository.ProductImgRepository;
-import com.example.shop_mall_back.admin.product.repository.ProductRepository;
+import com.example.shop_mall_back.admin.product.repository.AdminProductProductRepository;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.product.domain.Brand;
 import com.example.shop_mall_back.user.product.domain.Category;
@@ -13,20 +12,21 @@ import com.example.shop_mall_back.user.product.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ProductService {
+public class AdminProductService {
 
-    private final ProductRepository productRepository;
+    private final AdminProductProductRepository adminProductRepository;
     private final ProductImgRepository productImgRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
@@ -41,7 +41,7 @@ public class ProductService {
         //여기에 brand, category 정보는 데이터베이스에서 가져와서 저장하는거로 수정
 
         //상품 데이터 저장
-        productRepository.save(product);
+        adminProductRepository.save(product);
 
         //이미지 등록
         for(int i=0;i<productImgFileList.size();i++){
@@ -58,20 +58,37 @@ public class ProductService {
         return product.getId();
     }
 
-    //상품 전체조회
-    public List<ProductDto> getProductList(){
-        List<Product> productList = productRepository.findAll();
-
-        return productList.stream()
-                .map(product -> modelMapper.map(product, ProductDto.class))
-                .collect(Collectors.toList());
+    //조회 조건과 페이지 정보를 받아서 상품 데이터 조회
+    @Transactional(readOnly = true)
+    public Page<Product> getAdminItemPage(ProductSearchDto itemSearchDto, Pageable pageable){
+//        return adminProductRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 
+    /*
+        public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getAdminItemPage(itemSearchDto, pageable);
+    }
+     */
+
     //상품 상세조회
-//    @Transactional(readOnly = true)
-//    public Product getProductDetail(Long productId){
-//        List<>
-//    }
+    @Transactional(readOnly = true)
+    public ProductDetailDto getProductDetail(Long productId){
+        List<ProductImage> productImgList = productImgRepository.findByItemIdOrderByIdAsc(productId);
+        List<ProductImgDto> productImgDtoList = new ArrayList<>();
+
+        for(ProductImage productImage : productImgList){
+            ProductImgDto productImgDto = ProductImgDto.of(productImage);
+            productImgDtoList.add(productImgDto);
+        }
+
+        Product product = adminProductRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        ProductDetailDto productDetailDto = modelMapper.map(product, ProductDetailDto.class);
+        productDetailDto.setProductImgDtoList(productImgDtoList);
+
+        return productDetailDto;
+    }
 
     //상품 수정
     public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImgFileList) throws Exception{
@@ -83,7 +100,7 @@ public class ProductService {
                 .orElseThrow(EntityNotFoundException::new);
 
         //상품 등록 화면으로부터 받은 상품 아이디를 이용하여 상품 엔티티를 조회
-        Product product = productRepository.findById(productFormDto.getId())
+        Product product = adminProductRepository.findById(productFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
         //상품 수정 화면으로부터 전달받은 ItemFormDto를 통해 상품 엔티티 업데이트
@@ -91,20 +108,16 @@ public class ProductService {
         product.changeCategory(category);
         product.changeBrand(brand);
 
-        //상품 아이디 리스트 조회
-
+        //상품 이미지 아이디 리스트 조회
+        List<Long> productImgIds = productFormDto.getProductImgIds();
 
         //이미지 수정
+        for(int i=0;i<productImgFileList.size();i++){
+            productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
+        }
 
-
-        return null;
+        return product.getId();
     }
-
-    //조회 조건과 페이지 정보를 받아서 상품 데이터 조회
-
-
-    //메인 페이지에 보여줄 상품 데이터를 조회
-
 
     //상품 삭제
 }

@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(org.mockito.junit.jupiter.MockitoExtension.class)
-class ProductServiceTest {
+class AdminProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
