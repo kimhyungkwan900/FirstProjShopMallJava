@@ -3,6 +3,8 @@ package com.example.shop_mall_back.user.product.domain;
 import com.example.shop_mall_back.common.domain.Member;
 import com.example.shop_mall_back.common.domain.Product;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "wishlist_items")
 @IdClass(WishlistItemId.class)
+@Builder
+@AllArgsConstructor
 public class WishlistItem {
 
     @Id
