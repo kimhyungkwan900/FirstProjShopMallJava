@@ -68,12 +68,18 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-    //ModelMapper
+    // ModelMapper
     //서로 다른 클래스의 값을 필드의 이름과 자료형이 같으면  getter, setter를 통해 값을 복사해서 객체를 반환
     implementation 'org.modelmapper:modelmapper:3.1.1'
 
-    // validation
+    // validation 유효성 검사
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // JSON 처리
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     tasks.named('test') {
         useJUnitPlatform()
