@@ -111,4 +111,15 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    // 토큰 생명주기 반환
+    public int getAccessTokenExpirySeconds() {
+        return (int) ACCESS_TOKEN_DURATION.getSeconds();
+    }
+
+    // refresh 토큰 생명주기 반환
+    public int getRefreshTokenExpirySeconds() {
+        return (int) REFRESH_TOKEN_DURATION.getSeconds();
+    }
+
 }
