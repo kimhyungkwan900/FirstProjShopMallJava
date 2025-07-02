@@ -16,4 +16,11 @@ public interface WishlistItemRepository extends JpaRepository<WishlistItem, Wish
     List<WishlistItem> findByUserId(Long userId);
 
     Optional<WishlistItem> findByUserIdAndProductId(Long userId, Long productId);
+
+    /**
+     * 특정 사용자가 특정 상품에 대해 위시리스트 또는 알림 등을 이미 등록했는지 확인하는 메서드
+     * - 중복 등록 방지 용도로 사용됨
+     */
+    boolean existsByUserIdAndProductId(Long userId, Long productId);
+
 }
