@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FaqRepository extends JpaRepository<Faq, Long> {
 
-    List<Faq> findAllByOrderByCreated_atDesc(); //최신순으로 faq목록 가져오기
+    List<Faq> findAllByOrderByCreatedAtDesc(); //최신순으로 faq목록 가져오기
 }
