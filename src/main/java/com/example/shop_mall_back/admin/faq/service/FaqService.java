@@ -25,7 +25,7 @@ public class FaqService {
 
     //전체 조회
     public List<FaqDto> getAllFaqs(){
-        return faqRepository.findAllByOrderByCreated_atDesc()//db에서 faq를 최순으로 불러와서 정렬
+        return faqRepository.findAllByOrderByCreatedAtDesc()//db에서 faq를 최순으로 불러와서 정렬
                 .stream()
                 .map(FaqDto::new)//각각의 FAQ를 FaqDto로 바꿔줌
                 .collect(Collectors.toList());
@@ -48,6 +48,7 @@ public class FaqService {
 
     // 삭제
     public void deleteFaq(Long id) {
+
         faqRepository.deleteById(id);
     }
 
