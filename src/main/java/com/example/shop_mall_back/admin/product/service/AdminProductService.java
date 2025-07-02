@@ -74,7 +74,7 @@ public class AdminProductService {
     //상품 상세조회
     @Transactional(readOnly = true)
     public ProductDetailDto getProductDetail(Long productId){
-        List<ProductImage> productImgList = adminProductImgRepository.findByItemIdOrderByIdAsc(productId);
+        List<ProductImage> productImgList = adminProductImgRepository.findByProductIdOrderByIdAsc(productId);
         List<ProductImgDto> productImgDtoList = new ArrayList<>();
 
         for(ProductImage productImage : productImgList){
