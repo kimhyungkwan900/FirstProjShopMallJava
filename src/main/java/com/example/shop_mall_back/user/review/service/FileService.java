@@ -25,20 +25,19 @@ public class FileService {
         }
 
         try {
-            Path rootLocation = Paths.get(reviewImgLocation); // 여기서 Path로 변환
-            Files.createDirectories(rootLocation); // 디렉토리 없으면 생성
+            Path rootLocation = Paths.get(reviewImgLocation);
+            Files.createDirectories(rootLocation);
 
             String originalFilename = file.getOriginalFilename();
-            String ext = originalFilename.substring(originalFilename.lastIndexOf(".")); // 확장자 추출
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
             String filename = UUID.randomUUID() + ext;
 
             Path destination = rootLocation.resolve(filename);
             file.transferTo(destination.toFile());
 
-            // 실제 저장 경로와 클라이언트 응답 경로가 다를 수 있으니 구분 필요
-            String savedPath = "/uploads/review/" + filename;
-            log.info("파일 저장 완료: {}", savedPath);
-            return savedPath;
+            log.info("파일 저장 완료 (절대경로): {}", destination.toAbsolutePath());
+            // 💡 클라이언트가 접근 가능한 경로로 반환해야 함
+            return "/uploads/review/" + filename;
 
         } catch (IOException e) {
             log.error("파일 저장 실패", e);
@@ -51,9 +50,12 @@ public class FileService {
      */
     public void deleteFile(String filePath) {
         try {
-            Path pathToDelete = Paths.get(reviewImgLocation).resolve(
-                    Paths.get(filePath).getFileName().toString()
-            );
+            String filename = Paths.get(filePath).getFileName().toString();
+            Path pathToDelete = Paths.get(reviewImgLocation).resolve(filename);
+
+            log.info("삭제 대상 파일 이름: {}", filename);
+            log.info("삭제 절대 경로: {}", pathToDelete.toAbsolutePath());
+
             Files.deleteIfExists(pathToDelete);
             log.info("파일 삭제 성공: {}", filePath);
         } catch (IOException e) {

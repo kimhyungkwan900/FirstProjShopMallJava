@@ -6,6 +6,7 @@ import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +25,8 @@ public class ReviewDTO {
     private ReviewStatus reviewStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private List<ReviewImgDTO> reviewImgDTOList;
 
     private int likeCount;
     private int dislikeCount;

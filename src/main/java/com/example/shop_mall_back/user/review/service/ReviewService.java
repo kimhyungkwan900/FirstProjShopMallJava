@@ -1,16 +1,14 @@
 package com.example.shop_mall_back.user.review.service;
 
 import com.example.shop_mall_back.user.review.domain.Review;
-import com.example.shop_mall_back.user.review.dto.ReviewDTO;
-import com.example.shop_mall_back.user.review.dto.ReviewFormDTO;
-import com.example.shop_mall_back.user.review.dto.ReviewListDTO;
-import com.example.shop_mall_back.user.review.dto.ReviewUpdateDTO;
+import com.example.shop_mall_back.user.review.dto.*;
 import com.example.shop_mall_back.user.review.repository.ReviewReactionRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
@@ -24,11 +22,17 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
     private final ReviewReactionService reviewReactionService;
-    // 특정 리뷰
+    private final ReviewImgService reviewImgService;
+
+    // 리뷰 받아오기(수정)
     public ReviewDTO findByReviewId(Long id) {
-        return reviewRepository.findById(id).stream()
+        ReviewDTO dto = reviewRepository.findById(id).stream()
                 .map(review -> modelMapper.map(review, ReviewDTO.class))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("찾는 리뷰가 없습니다"));
+
+        dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(id));
+
+        return dto;
     }
 
     // 상품 별로 리뷰 목록
@@ -42,10 +46,9 @@ public class ReviewService {
                     ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
                     dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
                     dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+                    dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
                     return dto;
                 }).toList();
-
-
         double average = reviews.stream()
                 .mapToInt(Review::getReviewScore)
                 .average()
@@ -68,6 +71,7 @@ public class ReviewService {
                     ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
                     dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
                     dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+                    dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
                     return dto;
                 }).toList();
     }
@@ -83,7 +87,7 @@ public class ReviewService {
     }
 
     // 리뷰 수정
-    public void updateReview(Long id, ReviewUpdateDTO reviewUpdateDTO) {
+    public void updateReview(Long id, ReviewUpdateDTO reviewUpdateDTO,  List<MultipartFile> reviewImgFile) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow( () -> new InvalidParameterException("리뷰를 찾을 수 없습니다."));
         review.setReviewScore(reviewUpdateDTO.getScore());
@@ -91,6 +95,14 @@ public class ReviewService {
         review.setReviewSummation(reviewUpdateDTO.getSummation());
         review.setUpdatedAt(LocalDateTime.now());
         reviewRepository.save(review);
+
+
+        reviewImgService.deleteReviewImage(review.getId());
+        if(reviewImgFile != null && !reviewImgFile.isEmpty() ) {
+            for(MultipartFile file : reviewImgFile) {
+                reviewImgService.saveReviewImage(id, file);
+            }
+        }
     }
 
     public Review findEntityById(Long id) {

@@ -63,6 +63,7 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
+
     public enum SellStatus {
         판매중, 품절
     }
@@ -93,5 +94,10 @@ public class Product extends BaseEntity{
     //DeliveryInfo 정보 업데이트 메소드
     public void changeDeliveryInfo(DeliveryInfo deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
+    }
+
+    //상품 재고 차감
+    public void setStock(int i) {
+        this.stock = i;
     }
 }

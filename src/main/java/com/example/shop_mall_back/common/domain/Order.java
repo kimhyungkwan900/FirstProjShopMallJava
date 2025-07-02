@@ -2,6 +2,8 @@ package com.example.shop_mall_back.common.domain;
 
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberAddress;
+import com.example.shop_mall_back.admin.order.domain.OrderManage;
+import com.example.shop_mall_back.user.Order.constant.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,6 +58,16 @@ public class Order {
     //비회원 여부
     @Column(name = "is_guest")
     private Boolean isGuest;
+
+    //주문 상태 및 처리 이력
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private OrderManage orderManage;
+
+    //결제 상태
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status")
+    private PaymentStatus paymentStatus;
+
 
 
 }

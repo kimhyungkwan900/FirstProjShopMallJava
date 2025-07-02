@@ -6,8 +6,10 @@ import com.example.shop_mall_back.user.review.domain.enums.ImageType;
 import com.example.shop_mall_back.user.review.dto.ReviewDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewImgDTO;
 import com.example.shop_mall_back.user.review.repository.ReviewImgRepository;
+import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ReviewImgService {
 
     // 이미지 파일 저장 경로 (application.properties에서 주입받음)
@@ -25,7 +28,7 @@ public class ReviewImgService {
 
     private final ReviewImgRepository reviewImgRepository; // DB 저장용 레포지토리
     private final FileService fileService;                 // 실제 파일을 디스크에 저장/삭제하는 서비스
-    private final ReviewService reviewService;             // 리뷰 엔티티 조회용 서비스
+    private final ReviewRepository reviewRepository;             // 리뷰 엔티티 조회용 서비스
 
     /**
      * 리뷰 이미지 저장
@@ -38,7 +41,7 @@ public class ReviewImgService {
         String savedPath = fileService.saveFile(file);
 
         // 리뷰 엔티티 조회 (연관관계 설정을 위해)
-        Review review = reviewService.findEntityById(reviewId);
+        Review review = reviewRepository.findById(reviewId).orElseThrow();
 
         // ReviewImg 엔티티 생성 및 값 설정
         ReviewImg reviewImg = new ReviewImg();
@@ -61,22 +64,22 @@ public class ReviewImgService {
                 .map(ReviewImgDTO::of) // 엔티티를 DTO로 변환
                 .collect(Collectors.toList());
     }
-
     /**
      * 리뷰 이미지 삭제
      * - 실제 파일도 삭제
      * - DB에서도 삭제
      */
-    public void deleteReviewImage(Long reviewImgId) {
-        // ID로 이미지 엔티티 조회
-        ReviewImg reviewImg = reviewImgRepository.findById(reviewImgId)
-                .orElseThrow(() -> new EntityNotFoundException("리뷰 이미지가 존재하지 않습니다."));
+    public void deleteReviewImage(Long reviewId) {
+        List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(reviewId);
 
-        // 저장된 파일 삭제
-        fileService.deleteFile(reviewImg.getFilePath());
-
-        // DB에서 엔티티 삭제
-        reviewImgRepository.delete(reviewImg);
+        for (ReviewImg reviewImg : reviewImgs) {
+            try {
+                fileService.deleteFile(reviewImg.getFilePath());
+                reviewImgRepository.deleteById(reviewImg.getId());
+            } catch (Exception e) {
+                log.error("리뷰 이미지 삭제 실패: {}", reviewImg.getFilePath(), e);
+            }
+        }
     }
 
     /**

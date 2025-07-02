@@ -11,7 +11,7 @@ public class OrderManage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(nullable = false, name = "order_status")
     private OrderStatus orderStatus;
@@ -22,5 +22,12 @@ public class OrderManage {
 
     public enum OrderStatus{
         접수, 확인, 배송중, 배송완료, 결제실패
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
