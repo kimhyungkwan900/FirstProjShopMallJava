@@ -1,7 +1,6 @@
 package com.example.shop_mall_back.common.config.jwt;
 
 import com.example.shop_mall_back.common.constant.Role;
-import com.example.shop_mall_back.common.domain.Member;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

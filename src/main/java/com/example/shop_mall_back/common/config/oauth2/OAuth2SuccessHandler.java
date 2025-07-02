@@ -2,9 +2,9 @@ package com.example.shop_mall_back.common.config.oauth2;
 
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.common.constant.Role;
-import com.example.shop_mall_back.common.domain.RefreshToken;
-import com.example.shop_mall_back.common.repository.RefreshTokenRepository;
-import com.example.shop_mall_back.common.service.MemberService;
+import com.example.shop_mall_back.common.domain.login.Session;
+import com.example.shop_mall_back.common.repository.SessionRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.io.IOException;
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final SessionRepository sessionRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo;
     private final MemberService memberService;
 
@@ -36,12 +36,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = tokenProvider.generateRefreshToken();
 
         // RefreshToken 저장
-        RefreshToken tokenEntity = RefreshToken.builder()
+        Session tokenEntity = Session.builder()
                 .memberId(memberId)
-                .token(accessToken)
+                .refreshToken(refreshToken)
                 .build();
 
-        refreshTokenRepository.save(tokenEntity);
+        sessionRepository.save(tokenEntity);
 
         // 기존 쿠키 제거
         authRequestRepo.removeAuthorizationRequest(request, response);

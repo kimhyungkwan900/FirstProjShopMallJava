@@ -1,19 +1,19 @@
-package com.example.shop_mall_back.common.service;
+package com.example.shop_mall_back.common.service.serviceimpl;
 
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberAddress;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.dto.MemberAddressDTO;
 import com.example.shop_mall_back.common.repository.MemberAddressRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberAddressService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberAddressServiceImpl implements MemberAddressService{
+public class MemberAddressServiceImpl implements MemberAddressService {
 
     private final MemberRepository memberRepository;
     private final MemberAddressRepository memberAddressRepository;

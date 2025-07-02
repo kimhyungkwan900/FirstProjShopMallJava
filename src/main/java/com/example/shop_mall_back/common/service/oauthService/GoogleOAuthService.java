@@ -1,13 +1,9 @@
 package com.example.shop_mall_back.common.service.oauthService;
 
 import com.example.shop_mall_back.common.constant.*;
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberProfile;
-import com.example.shop_mall_back.common.repository.MemberProfileRepository;
-import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;

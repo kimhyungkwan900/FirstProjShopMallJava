@@ -1,7 +1,7 @@
 package com.example.shop_mall_back.user.Order.controller;
 
 import com.example.shop_mall_back.common.dto.MemberAddressDTO;
-import com.example.shop_mall_back.common.service.MemberAddressServiceImpl;
+import com.example.shop_mall_back.common.service.serviceimpl.MemberAddressServiceImpl;
 import com.example.shop_mall_back.user.Order.service.MemberOrderAddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

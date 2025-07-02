@@ -1,22 +1,21 @@
-package com.example.shop_mall_back.common.service;
+package com.example.shop_mall_back.common.service.serviceimpl;
 
 import com.example.shop_mall_back.common.constant.Age;
 import com.example.shop_mall_back.common.constant.Gender;
 import com.example.shop_mall_back.common.constant.Grade;
 import com.example.shop_mall_back.common.constant.Role;
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

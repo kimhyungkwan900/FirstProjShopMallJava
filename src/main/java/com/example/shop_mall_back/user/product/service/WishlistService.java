@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.user.product.service;
 
-import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.common.service.MemberService;

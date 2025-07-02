@@ -38,14 +38,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     // Spring Security 기본 보안 설정
 
-    // thymeleaf + 시큐리티
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-    // Thymeleaf 에서 Spring Security 표현식 사용 가능
-
-    // Thymeleaf
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-
     // 개발 편의성 롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

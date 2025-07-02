@@ -1,5 +1,7 @@
 package com.example.shop_mall_back.common.domain;
 
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.admin.order.domain.OrderManage;
 import com.example.shop_mall_back.user.Order.constant.PaymentStatus;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.common.dto;
 
-import com.example.shop_mall_back.common.domain.MemberAddress;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
