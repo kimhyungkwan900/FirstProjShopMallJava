@@ -2,8 +2,10 @@ package com.example.shop_mall_back.user.product.service;
 
 import com.example.shop_mall_back.common.domain.Member;
 import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.product.domain.WishlistItem;
 import com.example.shop_mall_back.user.product.dto.WishlistItemDto;
+import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.product.repository.WishlistItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WishlistService {
 
+    private final MemberRepository memberRepository;  // ✅ 추가
+    private final ProductRepository productRepository;
     private final WishlistItemRepository wishlistItemRepository;
 
     /**
