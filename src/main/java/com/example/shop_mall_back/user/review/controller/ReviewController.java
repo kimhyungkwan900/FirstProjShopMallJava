@@ -1,12 +1,12 @@
 package com.example.shop_mall_back.user.review.controller;
 
-import com.example.shop_mall_back.user.review.dto.ReviewDTO;
-import com.example.shop_mall_back.user.review.dto.ReviewFormDTO;
-import com.example.shop_mall_back.user.review.dto.ReviewListDTO;
-import com.example.shop_mall_back.user.review.dto.ReviewUpdateDTO;
+import com.example.shop_mall_back.user.review.dto.*;
+import com.example.shop_mall_back.user.review.service.ReviewImgService;
 import com.example.shop_mall_back.user.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,18 +30,24 @@ public class ReviewController {
     // 리뷰 받아오기
     @GetMapping("/mypage/review/update")
     public ReviewDTO findById(@RequestParam("reviewId") Long reviewId) {
-        return reviewService.findByReviewId(reviewId);
+        ReviewDTO dto = reviewService.findByReviewId(reviewId);
+        return dto;
     }
 
-    // 리뷰 등록
+    // 리뷰 등록 이미지 등록
     @PostMapping("/mypage/review/writer")
     public void insertReview(@RequestBody ReviewFormDTO reviewFormDTO) {
         reviewService.insertReview(reviewFormDTO);
     }
-    // 리뷰 수정
-    @PutMapping("/mypage/review/update")
-    public void updateReview(@RequestParam("reviewId") Long id, @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
-        reviewService.updateReview(id, reviewUpdateDTO);
+
+    // 리뷰 수정 이미지 수정
+    @PutMapping(value = "/mypage/review/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void updateReview(
+            @RequestParam("reviewId") Long id,
+            @RequestPart("review") ReviewUpdateDTO reviewUpdateDTO,
+            @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFile
+    ) {
+        reviewService.updateReview(id, reviewUpdateDTO, reviewImgFile);
     }
 
     // 리뷰 삭제
@@ -49,6 +55,8 @@ public class ReviewController {
     public void deleteReview(@RequestParam("reviewId") Long id){
         reviewService.deleteReview(id);
     }
+
+
 
 
 

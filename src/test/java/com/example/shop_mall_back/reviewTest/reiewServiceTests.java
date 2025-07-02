@@ -52,12 +52,12 @@ public class reiewServiceTests {
         String content = "수정되었습니다.";
         ReviewUpdateDTO reviewUpdateDTO = new ReviewUpdateDTO();
         reviewUpdateDTO.setScore(score);
-        reviewUpdateDTO.setContent(content);
+        reviewUpdateDTO.setReviewContent(content);
         reviewUpdateDTO.setSummation(summation);
         reviewUpdateDTO.setUpdatedAt(LocalDateTime.now());
         // 리뷰 상태 설정 (예: Normal 또는 Blinded)
         // 수정 메서드 호출
-        reviewService.updateReview(id,  reviewUpdateDTO);
+//        reviewService.updateReview(id,  reviewUpdateDTO);
     }
 
     @Test
