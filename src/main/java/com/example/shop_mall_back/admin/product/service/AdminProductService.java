@@ -1,8 +1,8 @@
 package com.example.shop_mall_back.admin.product.service;
 
 import com.example.shop_mall_back.admin.product.dto.*;
-import com.example.shop_mall_back.admin.product.repository.ProductImgRepository;
-import com.example.shop_mall_back.admin.product.repository.AdminProductProductRepository;
+import com.example.shop_mall_back.admin.product.repository.AdminProductImgRepository;
+import com.example.shop_mall_back.admin.product.repository.AdminProductRepository;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.product.domain.Brand;
 import com.example.shop_mall_back.user.product.domain.Category;
@@ -26,8 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminProductService {
 
-    private final AdminProductProductRepository adminProductRepository;
-    private final ProductImgRepository productImgRepository;
+    private final AdminProductRepository adminProductRepository;
+    private final AdminProductImgRepository adminProductImgRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
 
@@ -74,7 +74,7 @@ public class AdminProductService {
     //상품 상세조회
     @Transactional(readOnly = true)
     public ProductDetailDto getProductDetail(Long productId){
-        List<ProductImage> productImgList = productImgRepository.findByItemIdOrderByIdAsc(productId);
+        List<ProductImage> productImgList = adminProductImgRepository.findByItemIdOrderByIdAsc(productId);
         List<ProductImgDto> productImgDtoList = new ArrayList<>();
 
         for(ProductImage productImage : productImgList){

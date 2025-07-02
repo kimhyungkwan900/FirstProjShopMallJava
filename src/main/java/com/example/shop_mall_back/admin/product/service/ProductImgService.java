@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.admin.product.service;
 
-import com.example.shop_mall_back.admin.product.repository.ProductImgRepository;
+import com.example.shop_mall_back.admin.product.repository.AdminProductImgRepository;
 import com.example.shop_mall_back.user.product.domain.ProductImage;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,8 +19,8 @@ public class ProductImgService {
     @Value("${itemImgLocation}")
     String productImgLocation;
 
-    private final ProductImgRepository productImgRepository;
-    private final FileService fileService;
+    private final AdminProductImgRepository adminProductImgRepository;
+    private final AdminFileService adminFileService;
 
 
     //상품 이미지 등록
@@ -35,7 +35,7 @@ public class ProductImgService {
 
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
-            imgName = fileService.uploadFile(productImgLocation, oriImgName, productImgFile.getBytes());
+            imgName = adminFileService.uploadFile(productImgLocation, oriImgName, productImgFile.getBytes());
 
             //저장한 상품 이미지를 불러올 경로 설정
             imgUrl = "/images/item/" + imgName;
@@ -43,7 +43,7 @@ public class ProductImgService {
 
         //상품 이미지 정보 저장
         productImage.updateProductImg(oriImgName, imgName, imgUrl);
-        productImgRepository.save(productImage);
+        adminProductImgRepository.save(productImage);
     }
 
     //상품 이미지 수정
@@ -51,17 +51,17 @@ public class ProductImgService {
 
         //업로드된 이미지 파일이 비어있는지 확인
         if(!productImgFile.isEmpty()){
-            ProductImage savedProductImg = productImgRepository.findById(productImgId).orElseThrow(EntityNotFoundException::new);
+            ProductImage savedProductImg = adminProductImgRepository.findById(productImgId).orElseThrow(EntityNotFoundException::new);
 
             //기존 이미지 파일 삭제
             if(!StringUtils.isEmpty(savedProductImg.getImgName())){
-                fileService.deleteFile(productImgLocation + "/" + savedProductImg.getImgName());
+                adminFileService.deleteFile(productImgLocation + "/" + savedProductImg.getImgName());
             }
 
             //새로운 이미지 저장
             String oriImagename = productImgFile.getOriginalFilename();
 
-            String imgName = fileService.uploadFile(productImgLocation, oriImagename, productImgFile.getBytes());
+            String imgName = adminFileService.uploadFile(productImgLocation, oriImagename, productImgFile.getBytes());
 
             String imgUrl = "/images/item/" + imgName;
 

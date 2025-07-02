@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.user.Cart.domain;
+package com.example.shop_mall_back.user.Order.domain;
 
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
