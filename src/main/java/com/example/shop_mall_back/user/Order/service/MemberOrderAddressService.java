@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.user.Order.service;
 
-import com.example.shop_mall_back.common.domain.MemberAddress;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.dto.MemberAddressDTO;
 import com.example.shop_mall_back.common.repository.MemberAddressRepository;
 import lombok.RequiredArgsConstructor;

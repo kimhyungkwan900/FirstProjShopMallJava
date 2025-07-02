@@ -1,8 +1,8 @@
 package com.example.shop_mall_back.common.service.oauthService;
 
 import com.example.shop_mall_back.common.constant.*;
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

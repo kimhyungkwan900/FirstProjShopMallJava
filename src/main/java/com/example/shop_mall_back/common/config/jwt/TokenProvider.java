@@ -1,7 +1,6 @@
 package com.example.shop_mall_back.common.config.jwt;
 
 import com.example.shop_mall_back.common.constant.Role;
-import com.example.shop_mall_back.common.domain.Member;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -111,4 +110,15 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    // 토큰 생명주기 반환
+    public int getAccessTokenExpirySeconds() {
+        return (int) ACCESS_TOKEN_DURATION.getSeconds();
+    }
+
+    // refresh 토큰 생명주기 반환
+    public int getRefreshTokenExpirySeconds() {
+        return (int) REFRESH_TOKEN_DURATION.getSeconds();
+    }
+
 }

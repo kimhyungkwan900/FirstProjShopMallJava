@@ -1,20 +1,21 @@
-package com.example.shop_mall_back.common.service;
+package com.example.shop_mall_back.common.service.serviceimpl;
 
 import com.example.shop_mall_back.common.constant.Age;
 import com.example.shop_mall_back.common.constant.Gender;
 import com.example.shop_mall_back.common.constant.Grade;
 import com.example.shop_mall_back.common.constant.Role;
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
+import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,6 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberProfileRepository memberProfileRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     //<editor-fold desc="회원가입">
     @Override
@@ -56,25 +58,22 @@ public class MemberServiceImpl implements MemberService {
         // 저장된 member 객체 id 반환
         return member.getId();
     }
-
-    public Long oAuth2SignUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder) {
-
-
-
-
-        return 0L;
-    }
 //</editor-fold>
 
 //    <editor-fold desc="회원 정보 검색">
     @Override
-    public MemberFormDTO getMemberForm(String email) {
-        // memberEmail 로 member 검색
+    public MemberDTO getMemberDTOByEmail(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
 
-        // 해당 email을 가진 dto 반환 (id / pw / email / 전화번호)
-        return entityToDTO(member);
+        return entityToDTOMember(member);
+    }
+
+    @Override
+    public Role getRoleByMember(Member member) {
+        MemberProfile profile = memberProfileRepository.findByMemberId(member.getId());
+
+        return profile.getRole();
     }
 //</editor-fold>
 
@@ -122,6 +121,16 @@ public class MemberServiceImpl implements MemberService {
 
     private Member findByIdOrThrow(Long id) {
         return memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+    }
+
+    public Member authenticate(String userId, String rawPassword) {
+        Member member = memberRepository.findByUserId(userId);
+
+        if (!passwordEncoder.matches(rawPassword, member.getUserPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return member;
     }
 //    </editor-fold>
 

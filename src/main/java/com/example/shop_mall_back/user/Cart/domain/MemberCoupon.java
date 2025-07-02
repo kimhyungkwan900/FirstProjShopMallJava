@@ -1,7 +1,7 @@
 package com.example.shop_mall_back.user.Cart.domain;
 
 import com.example.shop_mall_back.admin.Coupon.domain.Coupon;
-import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

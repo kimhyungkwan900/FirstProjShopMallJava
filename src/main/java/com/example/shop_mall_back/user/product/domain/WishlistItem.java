@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.user.product.domain;
 
-import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
