@@ -1,6 +1,5 @@
 package com.example.shop_mall_back.user.Cart.repository;
 
-import com.example.shop_mall_back.common.domain.Member;
 import com.example.shop_mall_back.user.Cart.domain.RestockAlarm;
 import org.springframework.data.jpa.repository.JpaRepository;
 

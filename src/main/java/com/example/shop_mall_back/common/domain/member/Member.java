@@ -1,12 +1,10 @@
-package com.example.shop_mall_back.common.domain;
+package com.example.shop_mall_back.common.domain.member;
 
 
 import com.example.shop_mall_back.common.constant.OauthProvider;
-import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.crypto.password.PasswordEncoder;

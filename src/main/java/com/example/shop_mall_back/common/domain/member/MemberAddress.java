@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.common.domain;
+package com.example.shop_mall_back.common.domain.member;
 
 
 import jakarta.persistence.*;

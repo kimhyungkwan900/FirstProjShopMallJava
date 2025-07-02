@@ -2,7 +2,7 @@ package com.example.shop_mall_back.common.controller;
 
 
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
-import com.example.shop_mall_back.common.service.MemberService;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

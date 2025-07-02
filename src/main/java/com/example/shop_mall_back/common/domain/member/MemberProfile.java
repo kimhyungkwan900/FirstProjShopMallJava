@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.common.domain;
+package com.example.shop_mall_back.common.domain.member;
 
 import com.example.shop_mall_back.common.constant.Age;
 import com.example.shop_mall_back.common.constant.Gender;

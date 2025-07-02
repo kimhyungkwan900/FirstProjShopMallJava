@@ -1,8 +1,9 @@
-package com.example.shop_mall_back.common.service;
+package com.example.shop_mall_back.common.service.serviceimpl;
 
-import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberProfileDTO;
 import com.example.shop_mall_back.common.repository.MemberProfileRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

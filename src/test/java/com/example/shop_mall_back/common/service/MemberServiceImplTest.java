@@ -1,6 +1,6 @@
 //package com.example.shop_mall_back.common.service;
 //
-//import com.example.shop_mall_back.common.domain.Member;
+//import com.example.shop_mall_back.common.domain.member.Member;
 //import com.example.shop_mall_back.common.dto.MemberFormDTO;
 //import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 //import com.example.shop_mall_back.common.repository.MemberRepository;

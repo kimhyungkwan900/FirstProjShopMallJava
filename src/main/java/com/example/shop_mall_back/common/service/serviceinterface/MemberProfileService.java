@@ -1,7 +1,7 @@
-package com.example.shop_mall_back.common.service;
+package com.example.shop_mall_back.common.service.serviceinterface;
 
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberProfile;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberProfileDTO;
 
 public interface MemberProfileService {

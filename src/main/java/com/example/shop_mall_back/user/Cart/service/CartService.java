@@ -1,7 +1,7 @@
 package com.example.shop_mall_back.user.Cart.service;
 
 import com.example.shop_mall_back.common.domain.Cart;
-import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.Cart.domain.CartItem;
@@ -9,11 +9,8 @@ import com.example.shop_mall_back.user.Cart.domain.DeliveryFeeRule;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
 import com.example.shop_mall_back.user.Cart.repository.CartItemRepository;
 import com.example.shop_mall_back.user.Cart.repository.DeliveryFeeRuleRepository;
-import com.example.shop_mall_back.user.product.domain.WishlistItem;
-import com.example.shop_mall_back.user.product.domain.WishlistItemId;
 import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.Cart.repository.CartRepository;
-import com.example.shop_mall_back.user.product.repository.WishlistItemRepository;
 import com.example.shop_mall_back.user.product.service.WishlistService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

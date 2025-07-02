@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.common.domain;
 
+import com.example.shop_mall_back.common.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

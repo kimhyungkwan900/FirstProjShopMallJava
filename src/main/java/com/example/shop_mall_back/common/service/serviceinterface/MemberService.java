@@ -1,7 +1,7 @@
-package com.example.shop_mall_back.common.service;
+package com.example.shop_mall_back.common.service.serviceinterface;
 
 import com.example.shop_mall_back.common.constant.Role;
-import com.example.shop_mall_back.common.domain.Member;
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
