@@ -13,8 +13,6 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
 
     @Override
     public Page<Product> getProductPageByCondition(ProductSearchDto productSearchDto, Pageable pageable) {
-        QItem item =
-
         return null;
     }
 }

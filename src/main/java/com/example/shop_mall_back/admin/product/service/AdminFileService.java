@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Service
 @Log
-public class FileService {
+public class AdminFileService {
     public String uploadFile(String uploadPath, String originalFileName, byte[] fileData) throws Exception {
         //UUID (Universally Unique Identifier) : 서로 다른 개체들을 구별하기 위해서 이름을 부여할 때 사용
         UUID uuid = UUID.randomUUID();
