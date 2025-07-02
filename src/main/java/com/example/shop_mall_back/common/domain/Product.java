@@ -18,6 +18,8 @@ import java.util.List;
 @Getter
 @Table(name = "products")
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -33,6 +35,7 @@ public class Product {
     @Column(nullable = false)
     private int price;
 
+    @Builder.Default
     @Column(nullable = false)
     private int stock = 0;
 
@@ -40,6 +43,7 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    @Builder.Default
     @Column(nullable = false)
     private int viewCount = 0;
 
@@ -55,6 +59,7 @@ public class Product {
     @JoinColumn(name = "category")
     private Category category;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 

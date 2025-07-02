@@ -5,6 +5,7 @@ import com.example.shop_mall_back.user.review.dto.ReviewDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewFormDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewListDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewUpdateDTO;
+import com.example.shop_mall_back.user.review.repository.ReviewReactionRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,7 +23,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
-
+    private final ReviewReactionService reviewReactionService;
     // 특정 리뷰
     public ReviewDTO findByReviewId(Long id) {
         return reviewRepository.findById(id).stream()
@@ -31,11 +33,18 @@ public class ReviewService {
 
     // 상품 별로 리뷰 목록
     public ReviewListDTO findAllByProductId(Long productId) {
-        List<Review> reviews = reviewRepository.findAllByProductId(productId);
-
-        List<ReviewDTO> reviewDTOList = reviews.stream()
-                .map(review -> modelMapper.map(review, ReviewDTO.class))
+        List<Review> reviews = reviewRepository.findAllByProductId(productId).stream()
+                .sorted(Comparator.comparing(Review::getId))
                 .toList();
+        // 반환할 때 DTO로 변환하면서 like count dislike count 숫자를 추가해서 dto에 담아 return
+        List<ReviewDTO> reviewDTOList = reviews.stream()
+                .map(review -> {
+                    ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
+                    dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
+                    dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+                    return dto;
+                }).toList();
+
 
         double average = reviews.stream()
                 .mapToInt(Review::getReviewScore)
@@ -50,10 +59,17 @@ public class ReviewService {
 
     // 회원 별로 리뷰 목록
     public List<ReviewDTO> findAllByMemberId(Long memberId) {
-        List<Review> reviews = reviewRepository.findAllByMemberId(memberId);
-        return reviews.stream()
-                .map(review -> modelMapper.map(review, ReviewDTO.class))
+        List<Review> reviews = reviewRepository.findAllByMemberId(memberId).stream()
+                .sorted(Comparator.comparing(Review::getId))
                 .toList();
+        // 반환할 때 DTO로 변환하면서 like count dislike count 숫자를 추가해서 dto에 담아 return
+        return reviews.stream()
+                .map(review -> {
+                    ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
+                    dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
+                    dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+                    return dto;
+                }).toList();
     }
     // 리뷰 등록
     public void insertReview(ReviewFormDTO reviewFormDTO) {
@@ -71,9 +87,9 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow( () -> new InvalidParameterException("리뷰를 찾을 수 없습니다."));
         review.setReviewScore(reviewUpdateDTO.getScore());
-        review.setReviewContent(reviewUpdateDTO.getContent());
+        review.setReviewContent(reviewUpdateDTO.getReviewContent());
         review.setReviewSummation(reviewUpdateDTO.getSummation());
-        review.setUpdatedAt(reviewUpdateDTO.getUpdatedAt());
+        review.setUpdatedAt(LocalDateTime.now());
         reviewRepository.save(review);
     }
 
