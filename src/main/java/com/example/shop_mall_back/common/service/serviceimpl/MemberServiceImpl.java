@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -62,6 +64,12 @@ public class MemberServiceImpl implements MemberService {
 
 //    <editor-fold desc="회원 정보 검색">
     @Override
+    public Optional<Member> findByUserId(String userId) {
+
+        return memberRepository.findByUserId(userId);
+    }
+
+    @Override
     public MemberDTO getMemberDTOByEmail(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
@@ -72,6 +80,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Role getRoleByMember(Member member) {
         MemberProfile profile = memberProfileRepository.findByMemberId(member.getId());
+
+        if (profile == null) {
+            throw new IllegalStateException("사용자 프로필이 존재하지 않습니다.");
+        }
 
         return profile.getRole();
     }
@@ -114,7 +126,7 @@ public class MemberServiceImpl implements MemberService {
 //    <editor-fold desc="기타 편의성 메서드">
     // 중복 검사
     private void validateDuplicateMember(String email) {
-        if (memberRepository.findByEmail(email) != null) {
+        if (memberRepository.findByEmail(email).isPresent()) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
     }
@@ -124,10 +136,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public Member authenticate(String userId, String rawPassword) {
-        Member member = memberRepository.findByUserId(userId);
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("ID 혹은 비밀번호를 다시 확인해주세요"));
 
         if (!passwordEncoder.matches(rawPassword, member.getUserPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException("ID 혹은 비밀번호를 다시 확인해주세요");
         }
 
         return member;

@@ -6,11 +6,15 @@ import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 public interface MemberService {
 
     Long signUp(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder);
 
     MemberDTO getMemberDTOByEmail(String email);
+
+    Optional<Member> findByUserId(String userId);
 
     Role getRoleByMember(Member member);
 
