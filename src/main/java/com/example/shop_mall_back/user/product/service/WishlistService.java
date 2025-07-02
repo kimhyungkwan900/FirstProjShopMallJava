@@ -22,8 +22,6 @@ public class WishlistService {
     private final MemberRepository memberRepository;  // ✅ 추가
     private final ProductRepository productRepository;
     private final WishlistItemRepository wishlistItemRepository;
-    private final ProductRepository productRepository;
-    private final MemberRepository memberRepository;
 
     /**
      * 특정 사용자 ID에 해당하는 찜 목록(위시리스트) 조회
