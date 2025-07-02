@@ -2,8 +2,11 @@ package com.example.shop_mall_back.user.product.service;
 
 import com.example.shop_mall_back.common.domain.Member;
 import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.MemberService;
 import com.example.shop_mall_back.user.product.domain.WishlistItem;
 import com.example.shop_mall_back.user.product.dto.WishlistItemDto;
+import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.product.repository.WishlistItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 public class WishlistService {
 
     private final WishlistItemRepository wishlistItemRepository;
+    private final ProductRepository productRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 특정 사용자 ID에 해당하는 찜 목록(위시리스트) 조회
