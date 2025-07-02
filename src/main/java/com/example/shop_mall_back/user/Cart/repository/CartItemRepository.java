@@ -49,4 +49,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
             "where ci.cart.member.id = :memberId and ci.isSelected = true and ci.isSoldOut = false")
     Integer calculateSelectedTotalAmount(@Param("memberId") Long memberId);
 
+    List<CartItem> findByCartMemberId(Long memberId);
 }

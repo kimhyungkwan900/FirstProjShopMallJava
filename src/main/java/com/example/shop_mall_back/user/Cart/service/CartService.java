@@ -273,7 +273,5 @@ public class CartService {
         }
     }
 
-
-    // [10] 주문 연동 로직은 추후 구현 예정
 }
 
