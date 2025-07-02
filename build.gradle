@@ -28,7 +28,6 @@ ext {
 }
 
 dependencies {
-
     // 보안 && Oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
     // OAuth2 인증 서버 기능 제공 (Spring Authorization Server)

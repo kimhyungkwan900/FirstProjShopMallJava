@@ -36,7 +36,7 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findAllByProductId(productId).stream()
                 .sorted(Comparator.comparing(Review::getId))
                 .toList();
-
+        // 반환할 때 DTO로 변환하면서 like count dislike count 숫자를 추가해서 dto에 담아 return
         List<ReviewDTO> reviewDTOList = reviews.stream()
                 .map(review -> {
                     ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
@@ -59,10 +59,17 @@ public class ReviewService {
 
     // 회원 별로 리뷰 목록
     public List<ReviewDTO> findAllByMemberId(Long memberId) {
-        List<Review> reviews = reviewRepository.findAllByMemberId(memberId);
-        return reviews.stream()
-                .map(review -> modelMapper.map(review, ReviewDTO.class))
+        List<Review> reviews = reviewRepository.findAllByMemberId(memberId).stream()
+                .sorted(Comparator.comparing(Review::getId))
                 .toList();
+        // 반환할 때 DTO로 변환하면서 like count dislike count 숫자를 추가해서 dto에 담아 return
+        return reviews.stream()
+                .map(review -> {
+                    ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
+                    dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
+                    dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+                    return dto;
+                }).toList();
     }
     // 리뷰 등록
     public void insertReview(ReviewFormDTO reviewFormDTO) {
@@ -80,9 +87,9 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow( () -> new InvalidParameterException("리뷰를 찾을 수 없습니다."));
         review.setReviewScore(reviewUpdateDTO.getScore());
-        review.setReviewContent(reviewUpdateDTO.getContent());
+        review.setReviewContent(reviewUpdateDTO.getReviewContent());
         review.setReviewSummation(reviewUpdateDTO.getSummation());
-        review.setUpdatedAt(reviewUpdateDTO.getUpdatedAt());
+        review.setUpdatedAt(LocalDateTime.now());
         reviewRepository.save(review);
     }
 
