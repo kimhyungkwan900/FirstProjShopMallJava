@@ -23,7 +23,6 @@ public class CouponService {
         if (couponRepository.existsByCouponCode(dto.getCouponCode())) {
             throw new IllegalArgumentException("이미 존재하는 쿠폰 입니다");
         }
-        return null;
       
         //2. dto -> entity 변환
         Coupon coupon = dto.toEntity();
