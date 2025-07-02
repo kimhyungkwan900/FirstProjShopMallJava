@@ -17,7 +17,7 @@ public class WishlistController {
 
     // 특정 사용자의 위시리스트를 조회하는 GET 요청 처리
     @GetMapping("/user/{id}")
-    public List<WishlistItemDto> getWishlist(@PathVariable Long userId) {
+    public List<WishlistItemDto> getWishlist(@PathVariable("id") Long userId) {
         // 경로에서 받은 사용자의 id를 기반으로 해당 사용자의 위시리스트를 서비스에서 조회하여 반환
         return wishlistService.getWishlistByUserId(userId);
     }

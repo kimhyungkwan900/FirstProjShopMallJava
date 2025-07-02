@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AdminProductImgRepository extends JpaRepository<ProductImage,Long> {
-    List<ProductImage> findByItemIdOrderByIdAsc(Long productId);
+    List<ProductImage> findByProductIdOrderByIdAsc(Long productId);
 
-    ProductImage findByItemIdAndRepimgYn(Long itemId, String repimgYn);
+    ProductImage findByProductIdAndIsRepImg(Long productId, boolean isRepImg);
 }

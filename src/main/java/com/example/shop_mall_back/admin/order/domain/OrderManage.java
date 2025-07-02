@@ -21,7 +21,7 @@ public class OrderManage {
     private Order order;
 
     public enum OrderStatus{
-        접수, 확인, 배송중, 배송완료
+        접수, 확인, 배송중, 배송완료, 결제실패
     }
 
     public void setOrder(Order order) {

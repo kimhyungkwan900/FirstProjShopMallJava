@@ -13,6 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "categories")
+@Builder
+@AllArgsConstructor
 public class Category {
 
     @Id
@@ -26,6 +28,7 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> children = new ArrayList<>();
 }

@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WishlistService {
 
+    private final MemberRepository memberRepository;  // ✅ 추가
+    private final ProductRepository productRepository;
     private final WishlistItemRepository wishlistItemRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;

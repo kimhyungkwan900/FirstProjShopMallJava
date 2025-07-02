@@ -38,8 +38,6 @@ public class ProductFormDto {
 
     private Product.SellStatus sellStatus;
 
-    private List<ProductImgDto> productImgDtoList = new ArrayList<>();
-
     private List<Long> productImgIds = new ArrayList<>();
 
 
@@ -50,7 +48,7 @@ public class ProductFormDto {
         return modelMapper.map(this, Product.class);
     }
 
-    public static ProductFormDto of(Product item){
-        return modelMapper.map(item,ProductFormDto.class);
+    public static ProductFormDto of(Product product){
+        return modelMapper.map(product,ProductFormDto.class);
     }
 }
