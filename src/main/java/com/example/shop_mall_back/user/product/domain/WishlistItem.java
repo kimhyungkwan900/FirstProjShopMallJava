@@ -26,4 +26,12 @@ public class WishlistItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void setUser(Member member) {
+        this.user = member;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

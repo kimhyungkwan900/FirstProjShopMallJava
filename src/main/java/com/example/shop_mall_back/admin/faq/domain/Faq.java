@@ -23,16 +23,16 @@ public class Faq {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answer;
 
-    private LocalDateTime created_at; //등록일
-    private LocalDateTime updated_at; //수정일
+    private LocalDateTime createdAt; //등록일
+    private LocalDateTime updatedAt; //수정일
 
     @PrePersist //데이터가 저장되기 전에 실행
     protected void onCreate(){
-        this.created_at = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
     @PreUpdate //데이터가 수정되기 전에 실행
     protected void onUpdate() {
-        this.updated_at = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

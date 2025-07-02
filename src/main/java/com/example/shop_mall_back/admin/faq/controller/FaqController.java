@@ -48,4 +48,6 @@ public class FaqController {
         faqService.deleteFaq(id);
         return ResponseEntity.noContent().build();
     }
+
+    //검색 기능..
 }
