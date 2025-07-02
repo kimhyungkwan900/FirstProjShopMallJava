@@ -24,7 +24,7 @@ repositories {
 }
 
 ext {
-    querydslVersion = "5.0.0" // 또는 원하는 버전
+    querydslVersion = "5.1.0" // 또는 원하는 버전
 }
 
 dependencies {

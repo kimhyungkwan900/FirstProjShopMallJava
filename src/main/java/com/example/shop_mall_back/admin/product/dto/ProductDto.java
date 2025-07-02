@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @Builder
@@ -22,6 +24,10 @@ public class ProductDto {
     private int viewCount;
 
     private Product.SellStatus sellStatus;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
 
     //외래키
     private BrandDto brand;
