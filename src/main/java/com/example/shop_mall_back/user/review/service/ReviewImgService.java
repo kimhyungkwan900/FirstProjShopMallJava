@@ -72,6 +72,7 @@ public class ReviewImgService {
 
         for (ReviewImg reviewImg : reviewImgs) {
             try {
+                System.out.println(reviewImg.getFilePath().toString());
                 reviewFileService.deleteFile(reviewImg.getFilePath());
                 reviewImgRepository.deleteById(reviewImg.getId());
             } catch (Exception e) {

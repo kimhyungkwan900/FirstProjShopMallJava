@@ -6,11 +6,13 @@ import com.example.shop_mall_back.user.review.service.ReviewReactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class ReviewReactionController {
     private final ReviewReactionService reviewReactionService;
 
