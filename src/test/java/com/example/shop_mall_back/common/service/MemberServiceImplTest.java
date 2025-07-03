@@ -4,6 +4,7 @@
 //import com.example.shop_mall_back.common.dto.MemberFormDTO;
 //import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 //import com.example.shop_mall_back.common.repository.MemberRepository;
+//import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;

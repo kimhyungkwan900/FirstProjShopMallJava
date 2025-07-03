@@ -1,11 +1,17 @@
 package com.example.shop_mall_back.admin.product.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "delivery_info")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DeliveryInfo {
 
     @Id

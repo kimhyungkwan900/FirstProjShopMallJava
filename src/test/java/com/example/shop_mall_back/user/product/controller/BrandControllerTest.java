@@ -32,13 +32,13 @@ class BrandControllerTest {
     void getAllBrands_ShouldReturnBrandList() throws Exception {
         // Builder 방식으로 BrandDto 객체 생성
         BrandDto brand1 = BrandDto.builder()
-                .id(1L)
-                .name("아라사카")
+                .id(5L)
+                .name("아라사카5")
                 .build();
 
         BrandDto brand2 = BrandDto.builder()
-                .id(2L)
-                .name("밀리테크")
+                .id(3L)
+                .name("밀리테크3")
                 .build();
 
         List<BrandDto> brandList = List.of(brand1, brand2);
@@ -50,9 +50,9 @@ class BrandControllerTest {
         mockMvc.perform(get("/api/brands")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].name").value("아라사카"))
-                .andExpect(jsonPath("$[1].id").value(2L))
-                .andExpect(jsonPath("$[1].name").value("밀리테크"));
+                .andExpect(jsonPath("$[0].id").value(5L))
+                .andExpect(jsonPath("$[0].name").value("아라사카5"))
+                .andExpect(jsonPath("$[1].id").value(3L))
+                .andExpect(jsonPath("$[1].name").value("밀리테크3"));
     }
 }
