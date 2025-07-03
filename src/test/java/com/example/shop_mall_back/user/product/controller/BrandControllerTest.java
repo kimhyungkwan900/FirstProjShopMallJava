@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.product.controller;
 
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.product.dto.BrandDto;
 import com.example.shop_mall_back.user.product.service.BrandService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,9 @@ class BrandControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     @MockBean
     private BrandService brandService;
