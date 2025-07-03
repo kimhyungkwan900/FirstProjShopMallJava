@@ -1,8 +1,8 @@
 package com.example.shop_mall_back.user.Order.service;
 
 import com.example.shop_mall_back.admin.order.domain.OrderManage;
-import com.example.shop_mall_back.common.domain.Member;
-import com.example.shop_mall_back.common.domain.MemberAddress;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.common.repository.MemberAddressRepository;
