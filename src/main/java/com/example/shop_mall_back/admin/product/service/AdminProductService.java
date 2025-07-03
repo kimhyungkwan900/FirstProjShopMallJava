@@ -72,7 +72,7 @@ public class AdminProductService {
 
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @Transactional(readOnly = true)
-    public Page<ProductDto> getAdminItemPage(ProductSearchDto productSearchDto, Pageable pageable){
+    public Page<ProductDto> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable){
         return adminProductRepository.getProductPageByCondition(productSearchDto, pageable)
                 .map(product -> modelMapper.map(product, ProductDto.class));
     }

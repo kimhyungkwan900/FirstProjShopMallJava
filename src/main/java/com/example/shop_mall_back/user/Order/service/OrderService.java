@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.Order.service;
 
 import com.example.shop_mall_back.admin.order.domain.OrderManage;
+import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.domain.Order;
@@ -40,6 +41,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CartService cartService;
     private final InventoryService inventoryService;
+    private final OrderManageRepository orderManageRepository;
 
     /**
      * 주문 생성 메서드
@@ -76,6 +78,12 @@ public class OrderService {
         order.setDeliveryRequest(orderDto.getDelivery_request());
         order.setIsGuest(false);  // 비회원 주문 아님
         order = orderRepository.save(order);  // 주문 저장 (ID 자동 생성됨)
+
+        //관리자가 주문 관리할 수 있도록 order_manage 에 주문정보 저장
+        OrderManage orderManage = new OrderManage();
+        orderManage.setOrderStatus(OrderManage.OrderStatus.접수);
+        orderManage.setOrder(order);
+        orderManageRepository.save(orderManage);
 
         int totalAmount = 0;
         int totalCount = 0;
