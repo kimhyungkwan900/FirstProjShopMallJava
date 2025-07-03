@@ -20,15 +20,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
     private final SessionRepository sessionRepository;
-    private final MemberRepository memberRepository;
-    private final OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo;
     private final MemberService memberService;
+    private final OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -38,7 +36,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String email = oAuth2User.getEmail();
         Role role = oAuth2User.getRole();
 
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+        Member member = memberService.findByEmail(email);
 
         // 토큰 생성
         String accessToken = tokenProvider.generateAccessToken(memberId, email, role);
