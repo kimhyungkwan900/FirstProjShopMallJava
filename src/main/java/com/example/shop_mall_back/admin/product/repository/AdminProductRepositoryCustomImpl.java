@@ -40,27 +40,19 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
         }
         //판매 상태로 검색
         if(StringUtils.hasText(productSearchDto.getSellStatus())){
-
+            builder.and(product.sellStatus.eq(Product.SellStatus.valueOf(productSearchDto.getSellStatus())));
         }
-        //카테고리 대분류로 검색
+        //카테고리 ID로 검색
         if(StringUtils.hasText(String.valueOf(productSearchDto.getCategoryID()))){
-
-        }
-        //카테고리 중분류로 검색
-        if(StringUtils.hasText(String.valueOf(productSearchDto.getSubCategoryID()))){
-
-        }
-        //카테고리 소분류로 검색
-        if(StringUtils.hasText(String.valueOf(productSearchDto.getSubSubCategoryID()))){
-
+            builder.and(product.category.id.eq(productSearchDto.getCategoryID()));
         }
         //등록 일자로 검색
-        if(StringUtils.hasText(String.valueOf(productSearchDto.getCreateTime()))){
-
+        if(productSearchDto.getDateType() != null && productSearchDto.getDateType().equals("등록일")){
+            builder.and(product.regTime.between(productSearchDto.getStartDate(), productSearchDto.getEndDate()));
         }
         //수정일자로 검색
-        if(StringUtils.hasText(String.valueOf(productSearchDto.getUpdateTime()))){
-
+        if(productSearchDto.getDateType() != null  && productSearchDto.getDateType().equals("수정일")){
+            builder.and(product.updateTime.between(productSearchDto.getStartDate(), productSearchDto.getEndDate()));
         }
 
         //쿼리 실행
