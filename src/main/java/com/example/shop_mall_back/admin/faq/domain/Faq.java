@@ -17,6 +17,9 @@ public class Faq {
     @GeneratedValue(strategy = GenerationType.AUTO) //자동으로 숫자 up
     private Long id;
 
+    @Column(nullable = false, length = 50)
+    private String category; // 고정값으로 사용 (배송, 환불 등)
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String question;
 
