@@ -26,6 +26,7 @@ import java.util.List;
 /**
  * 주문 처리 서비스
  * - 주문 생성, 결제 성공/실패 상태 관리 등을 담당
+ * 장바구니 -> 주문 변경
  */
 @Service
 @RequiredArgsConstructor
@@ -99,8 +100,10 @@ public class OrderService {
             orderItem.setProduct(product);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(product.getPrice());  // 단가
-            orderItem.setSelectedOption(cartItem.getSelected_option());
+            orderItem.setSelectedOption(cartItem.getSelectedOption());
             orderItemRepository.save(orderItem);
+
+
 
             // 5-3. 총액 및 총수량 계산 (배송비 포함)
             totalAmount += cartService.calculateTotalWithDeliveryDetails(memberId);
