@@ -16,6 +16,8 @@ public interface MemberService {
 
     Optional<Member> findByUserId(String userId);
 
+    Member findByEmail(String email);
+
     Role getRoleByMember(Member member);
 
     Member authenticate(String userId, String rawPassword);
