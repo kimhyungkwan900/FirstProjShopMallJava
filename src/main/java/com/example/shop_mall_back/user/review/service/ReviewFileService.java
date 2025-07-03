@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @Log4j2
-public class FileService {
+public class ReviewFileService {
 
     @Value("${reviewImgLocation}")
     private String reviewImgLocation; // application.properties에서 주입
@@ -52,14 +52,8 @@ public class FileService {
         try {
             String filename = Paths.get(filePath).getFileName().toString();
             Path pathToDelete = Paths.get(reviewImgLocation).resolve(filename);
-
-            log.info("삭제 대상 파일 이름: {}", filename);
-            log.info("삭제 절대 경로: {}", pathToDelete.toAbsolutePath());
-
             Files.deleteIfExists(pathToDelete);
-            log.info("파일 삭제 성공: {}", filePath);
         } catch (IOException e) {
-            log.error("파일 삭제 실패", e);
             throw new RuntimeException("파일 삭제 실패", e);
         }
     }

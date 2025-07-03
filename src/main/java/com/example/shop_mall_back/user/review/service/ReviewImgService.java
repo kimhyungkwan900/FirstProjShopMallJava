@@ -3,11 +3,9 @@ package com.example.shop_mall_back.user.review.service;
 import com.example.shop_mall_back.user.review.domain.Review;
 import com.example.shop_mall_back.user.review.domain.ReviewImg;
 import com.example.shop_mall_back.user.review.domain.enums.ImageType;
-import com.example.shop_mall_back.user.review.dto.ReviewDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewImgDTO;
 import com.example.shop_mall_back.user.review.repository.ReviewImgRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +25,7 @@ public class ReviewImgService {
     private String reviewImgLocation;
 
     private final ReviewImgRepository reviewImgRepository; // DB 저장용 레포지토리
-    private final FileService fileService;                 // 실제 파일을 디스크에 저장/삭제하는 서비스
+    private final ReviewFileService reviewFileService;                 // 실제 파일을 디스크에 저장/삭제하는 서비스
     private final ReviewRepository reviewRepository;             // 리뷰 엔티티 조회용 서비스
 
     /**
@@ -38,7 +36,7 @@ public class ReviewImgService {
      */
     public ReviewImgDTO saveReviewImage(Long reviewId, MultipartFile file) {
         // 파일 저장 후 경로 반환
-        String savedPath = fileService.saveFile(file);
+        String savedPath = reviewFileService.saveFile(file);
 
         // 리뷰 엔티티 조회 (연관관계 설정을 위해)
         Review review = reviewRepository.findById(reviewId).orElseThrow();
@@ -74,7 +72,7 @@ public class ReviewImgService {
 
         for (ReviewImg reviewImg : reviewImgs) {
             try {
-                fileService.deleteFile(reviewImg.getFilePath());
+                reviewFileService.deleteFile(reviewImg.getFilePath());
                 reviewImgRepository.deleteById(reviewImg.getId());
             } catch (Exception e) {
                 log.error("리뷰 이미지 삭제 실패: {}", reviewImg.getFilePath(), e);
