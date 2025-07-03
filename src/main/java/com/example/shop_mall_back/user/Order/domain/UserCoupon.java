@@ -27,6 +27,7 @@ public class UserCoupon {
     @JoinColumn(name = "coupon_id", foreignKey = @ForeignKey(name = "fk_usercoupon_coupon_id"))
     private Coupon coupon;  // 쿠폰 (coupon 테이블 참조)
 
+    @Builder.Default
     @Column(name = "is_used", nullable = false)
     private Boolean isUsed = false;  // 사용 여부
 
