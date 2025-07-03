@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
@@ -51,6 +52,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         sessionRepository.save(tokenEntity);
 
         // 기존 쿠키 제거
+        // CookieUtils.deleteCookie(request, response, "SHOP_MALL_OAUTH2_AUTH_REQUEST");
         authRequestRepo.removeAuthorizationRequest(request, response);
 
         // 쿠키에 토큰 저장
