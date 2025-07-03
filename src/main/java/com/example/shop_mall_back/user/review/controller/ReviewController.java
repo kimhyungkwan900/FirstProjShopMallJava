@@ -12,12 +12,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     // 상품별 리뷰 목록 컨트롤
-    @GetMapping("/products")
+    @GetMapping("/product/review")
     public ReviewListDTO findAllByProductId(@RequestParam("productId") Long productId) {
         return reviewService.findAllByProductId(productId);
     }
