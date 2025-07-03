@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.reviewTest;
 
+import com.example.shop_mall_back.user.review.controller.ReviewController;
 import com.example.shop_mall_back.user.review.dto.ReviewListDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
