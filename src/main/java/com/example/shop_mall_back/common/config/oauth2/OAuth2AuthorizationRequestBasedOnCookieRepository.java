@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 public class OAuth2AuthorizationRequestBasedOnCookieRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     // Cookie 저장시 사용할 이름
-    private static final String SHOP_MALL_COOKIE = "SHOPMALL_OAUTH2_AUTH_REQUEST";
+    private static final String SHOP_MALL_COOKIE = "SHOP_MALL_OAUTH2_AUTH_REQUEST";
 
     // 쿠키를 읽어 역 직렬화
     @Override
