@@ -31,7 +31,6 @@ public class ReviewService {
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("찾는 리뷰가 없습니다"));
 
         dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(id));
-
         return dto;
     }
 
