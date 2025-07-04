@@ -71,13 +71,21 @@ public class ProductService {
                                            Optional<Integer> minPrice,
                                            Optional<Integer> maxPrice,
                                            Optional<String> keyword,
+                                           Optional<Boolean> includeChildren,
                                            Pageable pageable) {
         System.out.println("✅ filterProducts called with keyword: " + keyword);
         return productRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            categoryId.ifPresent(cid -> predicates.add(
-                    cb.equal(root.get("category").get("id"), cid)));
+            // ✅ 카테고리: includeChildren이 true면 하위 포함
+            if (categoryId.isPresent()) {
+                if (includeChildren.orElse(false)) {
+                    List<Long> categoryIds = categoryService.getAllChildCategoryIds(categoryId.get());
+                    predicates.add(root.get("category").get("id").in(categoryIds));
+                } else {
+                    predicates.add(cb.equal(root.get("category").get("id"), categoryId.get()));
+                }
+            }
 
             brandId.ifPresent(bid -> predicates.add(
                     cb.equal(root.get("brand").get("id"), bid)));

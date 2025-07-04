@@ -60,6 +60,7 @@ public class ProductController {
             @RequestParam Optional<Integer> minPrice,    // 선택적 최소 가격
             @RequestParam Optional<Integer> maxPrice,    // 선택적 최대 가격
             @RequestParam Optional<String> keyword,
+            @RequestParam Optional<Boolean> includeChildren,
             @RequestParam(defaultValue = "0") int page,  // 기본 페이지 번호: 0
             @RequestParam(defaultValue = "10") int size, // 기본 페이지 크기: 10
             @RequestParam(defaultValue = "id") String sort,         // 기본 정렬 컬럼: id
@@ -68,7 +69,7 @@ public class ProductController {
         // 정렬 객체 생성
         Sort sortObj = Sort.by(Sort.Direction.fromString(direction), sort);
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        return productService.filterProducts(categoryId, brandId, minPrice, maxPrice, keyword, pageable);
+        return productService.filterProducts(categoryId, brandId, minPrice, maxPrice, keyword, includeChildren, pageable);
     }
 
     // 인기 상품 목록 조회 (조회수 기준 내림차순)
