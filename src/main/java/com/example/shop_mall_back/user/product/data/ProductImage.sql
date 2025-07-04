@@ -1,3 +1,16 @@
+-- 노트북/태블릿
+-- 스마트폰
+-- 이어폰/헤드폰
+-- 모니터
+-- 스마트워치
+-- 스킨케어
+-- 메이크업
+-- 향수
+-- 바디케어
+-- 과일
+-- 채소
+-- 정육/계란
+
 -- 간편식
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,231);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,232);

@@ -12,6 +12,7 @@ import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,6 +23,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -56,10 +60,12 @@ public class SecurityConfig {
         http
                 // CSRF 보호 비활성화 TODO: 개발 후 활성화
                 .csrf(AbstractHttpConfigurer::disable)
+                //
+                .cors(Customizer.withDefaults())
                 // 경로 요청에 따른 인가 설정
                 .authorizeHttpRequests(auth -> auth
                         // 비인증 접근 가능
-                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/css/**", "/js/**", "/images/**","/api/**").permitAll()
                         // 그외 전부 인증후 접근
                         .anyRequest().authenticated()
                 )
@@ -74,6 +80,19 @@ public class SecurityConfig {
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
