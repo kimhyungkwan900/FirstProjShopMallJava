@@ -97,7 +97,7 @@ public class CartService {
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
-            cartItem.setSelected_option(selectedOption);
+            cartItem.setSelectedOption(selectedOption);
             cartItem.setIsSelected(true);   // 기본값: 선택된 상태
             cartItem.setIsSoldOut(false);   // 기본값: 품절 아님
             cartItemRepository.save(cartItem);
@@ -139,7 +139,7 @@ public class CartService {
             dto.setCart_id(items.getCart().getId());
             dto.setProduct_id(items.getProduct().getId());
             dto.setQuantity(items.getQuantity());
-            dto.setSelected_option(items.getSelected_option());
+            dto.setSelected_option(items.getSelectedOption());
             dto.setIs_selected(items.getIsSelected() != null && items.getIsSelected());
             dto.setIs_sold_out(items.getIsSoldOut() != null && items.getIsSoldOut());
             return dto;
@@ -166,7 +166,7 @@ public class CartService {
         }
 
         cartItem.setQuantity(updateQuantity);
-        cartItem.setSelected_option(updateSelectedOption);
+        cartItem.setSelectedOption(updateSelectedOption);
         cartItemRepository.save(cartItem);
     }
 
@@ -183,6 +183,7 @@ public class CartService {
         }
 
         if (Boolean.TRUE.equals(cartItem.getIsSoldOut()) && isSelected) {
+            restockAlarmService.requestRestockAlarm(memberId, cartItem.getProduct().getId());
             throw new IllegalArgumentException("품절된 상품은 선택할 수 없습니다.");
         }
 
@@ -241,6 +242,7 @@ public class CartService {
             if (product.getStock() <= 0) {
                 item.setIsSelected(false); // 품절이므로 선택 해제
                 item.setIsSoldOut(true);  // 품절 처리
+                restockAlarmService.requestRestockAlarm(memberId, product.getId());
             } else {
                 item.setIsSelected(true);
                 item.setIsSoldOut(false);
@@ -259,7 +261,7 @@ public class CartService {
                 .orElseThrow(()->new IllegalArgumentException("장바구니 항목이 존재하지 않습니다."));
 
         //2. 본인 소유인지 확인
-        if(cartItem.getCart().getMember().getId().equals(memberId)) {
+        if(!cartItem.getCart().getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("해당 장바구니 항목을 이동할 권한이 없습니다");
         }
 

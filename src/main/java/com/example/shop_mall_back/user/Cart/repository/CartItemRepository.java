@@ -50,4 +50,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     Integer calculateSelectedTotalAmount(@Param("memberId") Long memberId);
 
     List<CartItem> findByCartMemberId(Long memberId);
+
+    List<CartItem> findByCart_Member_Id(Long id);
+
+    Object findByCartAndProduct(Cart fakeCart, Product fakeProduct);
 }

@@ -30,7 +30,7 @@ public class RestockAlarmService {
      */
     public void requestRestockAlarm(Long memberId, Long productId) {
         // 1. 이미 해당 회원이 이 상품에 대해 알림을 신청했는지 확인
-        if (restockAlarmRepository.existsByMemberAndProductId(memberId, productId)) {
+        if (restockAlarmRepository.existsByMember_IdAndProduct_Id(memberId, productId)) {
             throw new IllegalStateException("이미 알림 신청이 되어 있습니다.");
         }
 
