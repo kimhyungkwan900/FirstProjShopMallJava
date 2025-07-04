@@ -8,5 +8,5 @@ import lombok.Setter;
 //검색 조건용 DTO
 public class FaqSearchDto {
     private String category; //카테고리 선택(필수)
-    private String KeyWord; //검색어(옵션)
+    private String keyWord; //검색어(옵션)
 }

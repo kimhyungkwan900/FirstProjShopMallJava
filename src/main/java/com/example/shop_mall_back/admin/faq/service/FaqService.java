@@ -22,7 +22,6 @@ public class FaqService {
     private final FaqRepository faqRepository;
 
 
-
     //전체 목록 조회 + 페이징
     @Transactional(readOnly = true)
     public Page<FaqDto> findAll(Pageable pageable){
