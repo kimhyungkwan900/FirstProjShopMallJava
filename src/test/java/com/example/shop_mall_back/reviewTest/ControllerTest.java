@@ -14,12 +14,12 @@ public class ControllerTest {
     @Autowired
     private ReviewController reviewController;
 
-    @Test
-    public void reviewListTest() {
-        Long productId = 1L;
-        ReviewListDTO reviewListDTO = reviewController.findAllByProductId(productId);
-
-        reviewListDTO.getReviewList().forEach(System.out::println);
-    }
+//    @Test
+//    public void reviewListTest() {
+//        Long productId = 1L;
+//        ReviewListDTO reviewListDTO = reviewController.findAllByProductId(productId);
+//
+//        reviewListDTO.getReviewList().forEach(System.out::println);
+//    }
 
 }

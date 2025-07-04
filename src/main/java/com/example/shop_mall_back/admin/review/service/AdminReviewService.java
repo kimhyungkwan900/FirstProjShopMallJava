@@ -5,19 +5,27 @@ import com.example.shop_mall_back.admin.review.dto.AdminReviewBlindDTO;
 import com.example.shop_mall_back.admin.review.dto.AdminReviewDTO;
 import com.example.shop_mall_back.admin.review.repository.AdminReviewRepository;
 import com.example.shop_mall_back.user.review.domain.Review;
+import com.example.shop_mall_back.user.review.domain.ReviewReport;
 import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import com.example.shop_mall_back.user.review.dto.ReviewDTO;
+import com.example.shop_mall_back.user.review.repository.ReviewReportRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import com.example.shop_mall_back.user.review.service.ReviewImgService;
 import com.example.shop_mall_back.user.review.service.ReviewReactionService;
+import com.example.shop_mall_back.user.review.service.ReviewReportService;
 import com.example.shop_mall_back.user.review.service.ReviewService;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +36,8 @@ public class AdminReviewService {
     private final ReviewService reviewService;
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
-    private final ReviewReactionService reviewReactionService;
     private final ReviewImgService reviewImgService;
+    private final ReviewReportService reviewReportService;
 
     //리뷰 블라인드 처리
     @Transactional
@@ -39,32 +47,62 @@ public class AdminReviewService {
         // 리뷰 status 상태 업데이트
         Review review =  modelMapper.map(reviewDTO, Review.class);
         reviewRepository.save(review);
-        // 리뷰 블라인드 사유 입력
+        // 리뷰 블라인드 사유 선택 등록
+        reviewBlindDTO.setBlindAt(LocalDateTime.now());
         ReviewBlind reviewBlind = modelMapper.map(reviewBlindDTO,ReviewBlind.class);
         adminReviewRepository.save(reviewBlind);
     }
 
     //리뷰 블라인드 해제 - 블라인드 내역 삭제
     @Transactional
-    public void reviewUnblind(Long reviewId, Long blindId){
+    public void reviewUnblind(Long reviewId){
         ReviewDTO reviewDTO = reviewService.findByReviewId(reviewId);
         // 리뷰의 status 상태를 normal로 바꾸고 저장
         reviewDTO.setReviewStatus(ReviewStatus.normal);
         Review review =  modelMapper.map(reviewDTO, Review.class);
         reviewRepository.save(review);
         // 블라인드 처리한 정보 삭제
-        adminReviewRepository.deleteById(blindId);
+        adminReviewRepository.deleteByReviewId(reviewId);
     }
 
+    public Page<AdminReviewDTO> getFilteredReviews(String filter, String searchType, String keyword, Pageable pageable) {
+        Specification<Review> spec = Specification.where(null);
+        if ("report".equalsIgnoreCase(filter)) {
+            spec = spec.and((root, query, cb) -> {
+                Subquery<Long> subquery = query.subquery(Long.class);
+                Root<ReviewReport> subRoot = subquery.from(ReviewReport.class);
+                subquery.select(subRoot.get("reviewId"))
+                        .where(cb.equal(subRoot.get("reviewId"), root.get("id")));
+                return cb.exists(subquery);
+                    });
 
-    public Page<ReviewDTO> findByReviewAll(Pageable pageable) {
-        Page<Review> reviews = reviewRepository.findAll(pageable);
+        } else if ("blind".equalsIgnoreCase(filter)) {
+            spec = spec.and((root, query, cb) -> {
+                // 블라인드 필터 조건 유지
+                cb.equal(root.get("reviewStatus"), ReviewStatus.blinded);
 
+                // fetch join 또는 left join 추가 (필요하면)
+                root.fetch("reviewBlind", JoinType.LEFT);
+
+                return cb.equal(root.get("reviewStatus"), ReviewStatus.blinded);
+            });
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            if ("writer".equalsIgnoreCase(searchType)) {
+                spec = spec.and((root, query, cb) ->
+                        cb.like(root.get("member").get("name"), "%" + keyword + "%")
+                );
+            } else if ("product".equalsIgnoreCase(searchType)) {
+                spec = spec.and((root, query, cb) ->
+                        cb.like(root.get("product").get("name"), "%" + keyword + "%")
+                );
+            }
+        }
+        Page<Review> reviews = reviewRepository.findAll(spec, pageable);
         return reviews.map(review -> {
-            ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
-            dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
-            dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+            AdminReviewDTO dto = modelMapper.map(review, AdminReviewDTO.class);
             dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
+            dto.setReportCount(reviewReportService.countReviewReportByReviewId(review.getId())); // 추가
             return dto;
         });
     }

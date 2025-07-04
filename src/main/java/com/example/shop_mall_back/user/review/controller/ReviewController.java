@@ -4,6 +4,7 @@ import com.example.shop_mall_back.user.review.dto.*;
 import com.example.shop_mall_back.user.review.service.ReviewImgService;
 import com.example.shop_mall_back.user.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +20,22 @@ public class ReviewController {
 
     // 상품별 리뷰 목록 컨트롤
     @GetMapping("/product/review")
-    public ReviewListDTO findAllByProductId(@RequestParam("productId") Long productId) {
-        return reviewService.findAllByProductId(productId);
+    public ReviewListDTO findAllByProductId(
+            @RequestParam("productId") Long productId,
+            @RequestParam(value = "sort", required = false, defaultValue = "latest") String sort) {
+        return reviewService.findAllByProductId(productId, sort);
     }
+
+
+
     // 회원별 리뷰 목록 컨트롤
     @GetMapping("/mypage/reviews")
-    public List<ReviewDTO> findAllByMemberId(@RequestParam("memberId") Long memberId) {
-        return reviewService.findAllByMemberId(memberId);
+    public Page<ReviewDTO> findAllByMemberId(
+            @RequestParam("memberId") Long memberId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size
+    ) {
+        return reviewService.findAllByMemberId(memberId, page, size);
     }
 
     // 리뷰 받아오기

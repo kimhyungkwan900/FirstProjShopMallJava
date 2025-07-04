@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminReviewRepository extends JpaRepository<ReviewBlind, Long> {
 
+    void deleteByReviewId(Long reviewId);
 }
