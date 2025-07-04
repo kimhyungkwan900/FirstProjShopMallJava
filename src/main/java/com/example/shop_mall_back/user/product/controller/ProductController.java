@@ -21,8 +21,19 @@ public class ProductController {
     private final ProductService productService;
 
     // 모든 상품을 페이징 처리하여 반환
+    // 모든 상품을 페이징 + 정렬 처리하여 반환
     @GetMapping
-    public Page<ProductDto> listProducts(Pageable pageable) {
+    public Page<ProductDto> listProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "desc") String direction
+    ) {
+        Sort sorting = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sort).ascending()
+                : Sort.by(sort).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
         return productService.getProducts(pageable);
     }
 
@@ -48,6 +59,8 @@ public class ProductController {
             @RequestParam Optional<Long> brandId,        // 선택적 브랜드 ID
             @RequestParam Optional<Integer> minPrice,    // 선택적 최소 가격
             @RequestParam Optional<Integer> maxPrice,    // 선택적 최대 가격
+            @RequestParam Optional<String> keyword,
+            @RequestParam Optional<Boolean> includeChildren,
             @RequestParam(defaultValue = "0") int page,  // 기본 페이지 번호: 0
             @RequestParam(defaultValue = "10") int size, // 기본 페이지 크기: 10
             @RequestParam(defaultValue = "id") String sort,         // 기본 정렬 컬럼: id
@@ -56,7 +69,7 @@ public class ProductController {
         // 정렬 객체 생성
         Sort sortObj = Sort.by(Sort.Direction.fromString(direction), sort);
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        return productService.filterProducts(categoryId, brandId, minPrice, maxPrice, pageable);
+        return productService.filterProducts(categoryId, brandId, minPrice, maxPrice, keyword, includeChildren, pageable);
     }
 
     // 인기 상품 목록 조회 (조회수 기준 내림차순)
