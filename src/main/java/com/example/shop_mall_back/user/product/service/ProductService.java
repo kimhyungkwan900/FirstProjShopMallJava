@@ -6,11 +6,14 @@ import com.example.shop_mall_back.user.product.dto.ProductDto;
 import com.example.shop_mall_back.user.product.dto.ProductImageDto;
 import com.example.shop_mall_back.user.product.repository.ProductImageRepository;
 import com.example.shop_mall_back.user.product.repository.ProductRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +43,7 @@ public class ProductService {
      * 특정 상품의 상세 정보 조회 + 조회수 증가
      * - 조회수(viewCount)를 1 증가시키고 저장 후 반환
      */
+    @Transactional
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
@@ -66,19 +70,36 @@ public class ProductService {
                                            Optional<Long> brandId,
                                            Optional<Integer> minPrice,
                                            Optional<Integer> maxPrice,
+                                           Optional<String> keyword,
                                            Pageable pageable) {
+        System.out.println("✅ filterProducts called with keyword: " + keyword);
         return productRepository.findAll((root, query, cb) -> {
-            var predicates = cb.conjunction();
-            categoryId.ifPresent(cid -> predicates.getExpressions().add(
+            List<Predicate> predicates = new ArrayList<>();
+
+            categoryId.ifPresent(cid -> predicates.add(
                     cb.equal(root.get("category").get("id"), cid)));
-            brandId.ifPresent(bid -> predicates.getExpressions().add(
+
+            brandId.ifPresent(bid -> predicates.add(
                     cb.equal(root.get("brand").get("id"), bid)));
-            minPrice.ifPresent(min -> predicates.getExpressions().add(
+
+            minPrice.ifPresent(min -> predicates.add(
                     cb.greaterThanOrEqualTo(root.get("price"), min)));
-            maxPrice.ifPresent(max -> predicates.getExpressions().add(
+
+            maxPrice.ifPresent(max -> predicates.add(
                     cb.lessThanOrEqualTo(root.get("price"), max)));
-            return predicates;
+
+            keyword.filter(kw -> !kw.trim().isEmpty())
+                    .ifPresent(kw -> {
+                        System.out.println("🔍 keyword filter: " + kw);
+                        predicates.add(
+                                cb.like(cb.lower(root.get("name").as(String.class)), "%" + kw.toLowerCase() + "%")
+                        );
+                    });
+
+            // 🔽 핵심: query.where(...)에 명시적으로 적용
+            return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(ProductDto::from);
+
     }
 
     /**
