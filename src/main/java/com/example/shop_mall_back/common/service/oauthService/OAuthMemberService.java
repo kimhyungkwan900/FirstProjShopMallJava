@@ -26,6 +26,9 @@ public class OAuthMemberService {
     public void createProfileIfNotExists(Member member, String name, String nickname, String profileImg, Gender gender, Age age) {
         boolean hasProfile = memberProfileRepository.existsByMemberId(member.getId());
 
+        if(name == null || name.isEmpty()) {
+            name = "oauthUser";
+        }
 
         if(gender == null){
             gender = Gender.UNKNOWN;
