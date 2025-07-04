@@ -4,6 +4,7 @@ import com.example.shop_mall_back.admin.order.domain.OrderManage;
 import com.example.shop_mall_back.admin.order.dto.OrderManageDto;
 import com.example.shop_mall_back.admin.order.dto.OrderSearchDto;
 import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -31,8 +32,13 @@ public class OrderManageService {
     /*
     주문정보를 조회로 가져오면
     체크박스로 선택해서 orderStatus의 접수를 확인, 배송중, 배송완료 처리하는 건데
-
      */
+    public void updateOrderStatus(OrderManageDto orderManageDto){
+        //프론트에서 받아온 OrderManage의 orderManageId로
+        OrderManage orderManage = orderManageRepository.findById(orderManageDto.getOrderManageId())
+                .orElseThrow(EntityNotFoundException::new);
 
+        orderManage.setOrderStatus(orderManageDto.getOrderStatus());
+    }
 
 }
