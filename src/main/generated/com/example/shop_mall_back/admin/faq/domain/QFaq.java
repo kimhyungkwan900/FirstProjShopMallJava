@@ -21,6 +21,8 @@ public class QFaq extends EntityPathBase<Faq> {
 
     public final StringPath answer = createString("answer");
 
+    public final StringPath category = createString("category");
+
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

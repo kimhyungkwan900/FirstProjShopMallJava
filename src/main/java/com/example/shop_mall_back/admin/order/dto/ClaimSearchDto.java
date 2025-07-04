@@ -5,15 +5,15 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class OrderSearchDto {
+public class ClaimSearchDto {
 
-    //검색조건 선택: 주문ID, 주문자ID, 주문 상태, 주문일자(regtime)
+    //검색조건 선택: 주문ID, 고객ID, 고객 요청 유형, 요청일자(regtime)
 
-    private String searchType;  //orderId, phoneNum, memberId
+    private String searchType;  //orderId, memberId
 
     private String searchContent;
 
-    private String orderStatus;
+    private String returnType;
 
     private String dateType;
 
