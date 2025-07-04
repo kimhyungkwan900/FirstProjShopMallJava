@@ -65,7 +65,7 @@ public class AdminProductController {
     }
 
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
-    @GetMapping({"/admin/products", "/admin/products/{page}"})
+    @GetMapping({"/products", "/products/{page}"})
     public ResponseEntity<?> productManage(ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
@@ -90,7 +90,7 @@ public class AdminProductController {
     }
 
     //---상품 수정
-    @PutMapping("/products/{productId}")
+    @PatchMapping("/products/{productId}")
     public ResponseEntity<?> updateProudct(@Valid @RequestBody ProductFormDto productFormDto, BindingResult bindingResult, @RequestParam("productImgFile") List<MultipartFile> productImgFileList){
 
         if(bindingResult.hasErrors()){
