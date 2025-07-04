@@ -50,6 +50,8 @@ public class Order {
     //결제 수단
     @Column(name = "payment_method", length = 50)
     private String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     // 배송 요청 사항
     @Column(name = "delivery_request")
@@ -63,10 +65,9 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private OrderManage orderManage;
 
-    //결제 상태
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
-    private PaymentStatus paymentStatus;
+    // 배송 요청사항
+    @Column(length = 100)
+    private String deliveryRequestNote;
 
 
 

@@ -22,11 +22,25 @@ public class QOrderManage extends EntityPathBase<OrderManage> {
 
     public static final QOrderManage orderManage = new QOrderManage("orderManage");
 
+    public final com.example.shop_mall_back.common.domain.QBaseEntity _super = new com.example.shop_mall_back.common.domain.QBaseEntity(this);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final com.example.shop_mall_back.common.domain.QOrder order;
 
     public final EnumPath<OrderManage.OrderStatus> orderStatus = createEnum("orderStatus", OrderManage.OrderStatus.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regTime = _super.regTime;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 
     public QOrderManage(String variable) {
         this(OrderManage.class, forVariable(variable), INITS);
