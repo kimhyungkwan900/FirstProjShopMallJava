@@ -19,6 +19,7 @@ public class ClaimManage {
     @JoinColumn(name = "return_id", foreignKey = @ForeignKey(name = "fk_return_id"))
     private OrderReturn orderReturn;
 
+    @Setter
     @Column
     private Boolean isApproved;
 }

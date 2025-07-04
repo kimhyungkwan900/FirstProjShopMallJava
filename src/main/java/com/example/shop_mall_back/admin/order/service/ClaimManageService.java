@@ -1,8 +1,10 @@
 package com.example.shop_mall_back.admin.order.service;
 
+import com.example.shop_mall_back.admin.order.domain.ClaimManage;
 import com.example.shop_mall_back.admin.order.dto.ClaimManageDto;
 import com.example.shop_mall_back.admin.order.dto.ClaimSearchDto;
 import com.example.shop_mall_back.admin.order.repository.ClaimManageRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -32,8 +34,12 @@ public class ClaimManageService {
     }
 
     //고객 요청 승인여부 수정
-    public void updateClaimApproval(){
+    public void updateClaimApproval(ClaimManageDto claimManageDto){
+        //프론트에서 받아온 ClaimManage의 claimId로 ClaimManage 테이블 탐색
+        ClaimManage claimManage = claimManageRepository.findById(claimManageDto.getClaimId())
+                .orElseThrow(EntityNotFoundException::new);
 
+        claimManage.setIsApproved(claimManageDto.getIsApproved() == true);
     }
 
 }

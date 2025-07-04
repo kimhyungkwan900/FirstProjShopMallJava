@@ -26,7 +26,7 @@ public class OrderManageController {
 
     //---조회 조건과 페이지 정보를 받아서 주문 데이터 조회
     @GetMapping({"/orders", "/orders/{page}"})
-    public ResponseEntity<?> ordersManage(OrderSearchDto orderSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+    public ResponseEntity<?> ordersManage(OrderSearchDto orderSearchDto, @PathVariable("page") Optional<Integer> page){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
         Page<OrderManageDto> orders = orderManageService.getOrderInfoPage(orderSearchDto, pageable);
