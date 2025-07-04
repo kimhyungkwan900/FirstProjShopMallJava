@@ -65,7 +65,7 @@ public class SecurityConfig {
                 // 경로 요청에 따른 인가 설정
                 .authorizeHttpRequests(auth -> auth
                         // 비인증 접근 가능
-                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/css/**", "/js/**", "/images/**","/api/**").permitAll()
                         // 그외 전부 인증후 접근
                         .anyRequest().authenticated()
                 )
