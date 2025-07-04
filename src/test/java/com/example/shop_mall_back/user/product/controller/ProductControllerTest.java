@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.product.controller;
 
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.product.dto.ProductDto;
 import com.example.shop_mall_back.user.product.dto.ProductImageDto;
 import com.example.shop_mall_back.user.product.service.ProductService;
@@ -9,24 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(ProductController.class)
-class ProductControllerTest {
-
+public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     @MockBean
     private ProductService productService;

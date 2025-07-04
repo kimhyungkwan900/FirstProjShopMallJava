@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.product.controller;
 
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.product.dto.WishlistItemDto;
 import com.example.shop_mall_back.user.product.dto.WishlistToggleRequest;
 import com.example.shop_mall_back.user.product.service.WishlistService;
@@ -27,6 +28,9 @@ class WishlistControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     @MockBean
     private WishlistService wishlistService;

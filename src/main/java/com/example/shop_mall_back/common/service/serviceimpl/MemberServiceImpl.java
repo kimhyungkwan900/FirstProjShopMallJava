@@ -64,8 +64,16 @@ public class MemberServiceImpl implements MemberService {
 //    <editor-fold desc="회원 정보 검색">
     @Override
     public Optional<Member> findByUserId(String userId) {
-
         return memberRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Member findByEmail(String email) {
+
+        Member member = memberRepository.findByEmail(email).orElse(null);
+
+
+        return member;
     }
 
     @Override

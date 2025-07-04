@@ -1,8 +1,6 @@
 package com.example.shop_mall_back.admin.product.controller;
 
-import com.example.shop_mall_back.admin.product.dto.ProductDetailDto;
-import com.example.shop_mall_back.admin.product.dto.ProductDto;
-import com.example.shop_mall_back.admin.product.dto.ProductFormDto;
+import com.example.shop_mall_back.admin.product.dto.*;
 import com.example.shop_mall_back.admin.product.repository.AdminProductRepository;
 import com.example.shop_mall_back.admin.product.service.AdminProductService;
 import com.example.shop_mall_back.common.domain.Product;
@@ -10,6 +8,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -64,8 +66,18 @@ public class AdminProductController {
 
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @GetMapping({"/admin/products", "/admin/products/{page}"})
-    public String productManage(@PathVariable Long page){
-        return null;
+    public ResponseEntity<?> productManage(ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Page<ProductDto> products = adminProductService.getAdminProductPage(productSearchDto, pageable);
+
+        ProductListDto productListDto = ProductListDto.builder()
+                .products(products)
+                .productSearchDto(productSearchDto)
+                .maxPage(10)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(productListDto);
     }
 
     //---상품 상세정보 조회

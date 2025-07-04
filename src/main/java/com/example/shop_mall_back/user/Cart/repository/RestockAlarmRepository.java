@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.Cart.repository;
 
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.user.Cart.domain.RestockAlarm;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,7 +15,7 @@ public interface RestockAlarmRepository extends JpaRepository<RestockAlarm, Long
     /**
      * 특정 회원이 특정 상품에 대해 이미 재입고 알림을 신청했는지 여부 확인
      */
-    boolean existsByMemberAndProductId(Long memberId, Long productId);
+    boolean existsByMember_IdAndProduct_Id(Long memberId, Long productId);
 
     /**
      * 특정 상품에 대해 아직 알림이 발송되지 않은 알림 목록 조회

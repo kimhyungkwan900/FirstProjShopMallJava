@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.Cart.repository;
 
 import com.example.shop_mall_back.common.domain.Cart;
+import com.example.shop_mall_back.common.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -20,4 +21,6 @@ import java.util.Optional;
  */
 public interface CartRepository extends JpaRepository<Cart,Long> {
     Optional<Cart> findByMember_Id(Long memberId);
+
+    Object findByMember(Member fakeMember);
 }

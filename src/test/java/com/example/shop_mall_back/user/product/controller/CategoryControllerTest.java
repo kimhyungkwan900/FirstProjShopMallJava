@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.product.controller;
 
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.product.dto.CategoryDto;
 import com.example.shop_mall_back.user.product.service.CategoryService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,9 @@ class CategoryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     @MockBean
     private CategoryService categoryService;

@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.product.controller;
 
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.product.dto.BrandDto;
 import com.example.shop_mall_back.user.product.service.BrandService;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +26,9 @@ class BrandControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    private TokenProvider tokenProvider;
+
+    @MockBean
     private BrandService brandService;
 
     @Test
@@ -32,13 +36,13 @@ class BrandControllerTest {
     void getAllBrands_ShouldReturnBrandList() throws Exception {
         // Builder 방식으로 BrandDto 객체 생성
         BrandDto brand1 = BrandDto.builder()
-                .id(1L)
-                .name("아라사카")
+                .id(5L)
+                .name("아라사카5")
                 .build();
 
         BrandDto brand2 = BrandDto.builder()
-                .id(2L)
-                .name("밀리테크")
+                .id(3L)
+                .name("밀리테크3")
                 .build();
 
         List<BrandDto> brandList = List.of(brand1, brand2);
@@ -50,9 +54,9 @@ class BrandControllerTest {
         mockMvc.perform(get("/api/brands")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].name").value("아라사카"))
-                .andExpect(jsonPath("$[1].id").value(2L))
-                .andExpect(jsonPath("$[1].name").value("밀리테크"));
+                .andExpect(jsonPath("$[0].id").value(5L))
+                .andExpect(jsonPath("$[0].name").value("아라사카5"))
+                .andExpect(jsonPath("$[1].id").value(3L))
+                .andExpect(jsonPath("$[1].name").value("밀리테크3"));
     }
 }

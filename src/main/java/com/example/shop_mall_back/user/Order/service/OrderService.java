@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.Order.service;
 
 import com.example.shop_mall_back.admin.order.domain.OrderManage;
+import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.domain.Order;
@@ -26,6 +27,7 @@ import java.util.List;
 /**
  * 주문 처리 서비스
  * - 주문 생성, 결제 성공/실패 상태 관리 등을 담당
+ * 장바구니 -> 주문 변경
  */
 @Service
 @RequiredArgsConstructor
@@ -40,6 +42,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CartService cartService;
     private final InventoryService inventoryService;
+    private final OrderManageRepository orderManageRepository;
 
     /**
      * 주문 생성 메서드
@@ -77,6 +80,12 @@ public class OrderService {
         order.setIsGuest(false);  // 비회원 주문 아님
         order = orderRepository.save(order);  // 주문 저장 (ID 자동 생성됨)
 
+        //관리자가 주문 관리할 수 있도록 order_manage 에 주문정보 저장
+        OrderManage orderManage = new OrderManage();
+        orderManage.setOrderStatus(OrderManage.OrderStatus.접수);
+        orderManage.setOrder(order);
+        orderManageRepository.save(orderManage);
+
         int totalAmount = 0;
         int totalCount = 0;
 
@@ -99,8 +108,10 @@ public class OrderService {
             orderItem.setProduct(product);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(product.getPrice());  // 단가
-            orderItem.setSelectedOption(cartItem.getSelected_option());
+            orderItem.setSelectedOption(cartItem.getSelectedOption());
             orderItemRepository.save(orderItem);
+
+
 
             // 5-3. 총액 및 총수량 계산 (배송비 포함)
             totalAmount += cartService.calculateTotalWithDeliveryDetails(memberId);

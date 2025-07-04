@@ -1,12 +1,15 @@
 package com.example.shop_mall_back.common.config;
 
 import com.example.shop_mall_back.common.config.jwt.TokenAuthenticationFilter;
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
+import com.example.shop_mall_back.common.config.oauth2.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.example.shop_mall_back.common.config.oauth2.OAuth2SuccessHandler;
+import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.oauthService.GoogleOAuthService;
 import com.example.shop_mall_back.common.service.oauthService.KakaoOAuthService;
 import com.example.shop_mall_back.common.service.oauthService.NaverOAuthService;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,17 +28,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    public OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo() {
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
+    }
+
+    @Bean
+    public OAuth2SuccessHandler oAuth2SuccessHandler(
+            TokenProvider tokenProvider,
+            SessionRepository sessionRepository,
+            MemberService memberService,
+            OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo
+    ) {
+        return new OAuth2SuccessHandler(tokenProvider, sessionRepository, memberService, authRequestRepo);
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService,
-                                           TokenAuthenticationFilter tokenAuthenticationFilter) throws Exception {
+                                           TokenAuthenticationFilter tokenAuthenticationFilter,OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
 
         http
                 // CSRF 보호 비활성화 TODO: 개발 후 활성화

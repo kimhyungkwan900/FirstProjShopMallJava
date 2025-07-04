@@ -20,18 +20,18 @@ public class CartItem {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", foreignKey=@ForeignKey(name = "fk_cartitem_cart_id"))
+    @JoinColumn(name = "cart_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id",foreignKey = @ForeignKey(name = "fk_cartitem_product_id"))
+    @JoinColumn(name = "product_id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Product product;
 
     @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)
-    private String selected_option;
+    private String selectedOption;
 
     @Column(name = "is_selected")
     private Boolean isSelected;  // 주문을 위한 선택 여부
