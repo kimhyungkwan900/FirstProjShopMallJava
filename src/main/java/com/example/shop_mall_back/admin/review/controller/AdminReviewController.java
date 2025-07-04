@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.admin.review.controller;
 
 import com.example.shop_mall_back.admin.review.dto.AdminReviewBlindDTO;
+import com.example.shop_mall_back.admin.review.dto.AdminReviewDTO;
 import com.example.shop_mall_back.admin.review.service.AdminReviewService;
 import com.example.shop_mall_back.user.review.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/admin/reviews")
+@RequestMapping("/api/admin/review")
 @RequiredArgsConstructor
 public class AdminReviewController {
 
     private final AdminReviewService adminReviewService;
     //관리자 리뷰 목록 받아오기
     @GetMapping("")
-    public Page<ReviewDTO> getReviews(
+    public Page<AdminReviewDTO> getReviews(
             @RequestParam("filter") String filter,
             @RequestParam("page") int page,
             @RequestParam("size") int size,
@@ -29,13 +30,13 @@ public class AdminReviewController {
     }
 
     // 리뷰 블라인드 처리
-    @PostMapping
+    @PostMapping("blind")
     public void reviewBlind(@RequestBody AdminReviewBlindDTO adminReviewDTO){
         adminReviewService.reviewBlind(adminReviewDTO);
     }
     // 리뷰 블라인드 해제(블라인드 내역도 삭제)
-    @DeleteMapping
-    public void reviewUnBlind(@RequestParam("reviewId") Long reviewId, @RequestParam("blindId") Long blindId){
-        adminReviewService.reviewUnblind(reviewId, blindId);
+    @DeleteMapping("blind")
+    public void reviewUnBlind(@RequestParam("reviewId") Long reviewId){
+        adminReviewService.reviewUnblind(reviewId);
     }
 }

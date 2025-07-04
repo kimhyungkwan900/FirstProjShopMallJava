@@ -20,4 +20,9 @@ public class ReviewReportService {
         ReviewReport reviewReport = modelMapper.map(reviewReportFormDTO, ReviewReport.class);
         reviewReportRepository.save(reviewReport);
     }
+
+    // 신고 개수 가져오기
+    public int countReviewReportByReviewId(Long reviewId) {
+        return reviewReportRepository.countByReviewId(reviewId);
+    }
 }
