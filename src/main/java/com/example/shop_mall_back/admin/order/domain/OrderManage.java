@@ -22,7 +22,7 @@ public class OrderManage extends BaseEntity {
 
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_id"))
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_manage"))
     private Order order;
 
     public enum OrderStatus{

@@ -2,6 +2,8 @@ package com.example.shop_mall_back.common.config.jwt;
 
 import com.example.shop_mall_back.common.constant.Role;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
@@ -39,6 +42,8 @@ public class TokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + duration.toMillis());
 
+        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecretKey()));
+
         // Header : 토큰의 메타정보
         // 토큰 타입 : JWT_TYPE
         // 토큰 발급자 : jwtProperties
@@ -65,7 +70,7 @@ public class TokenProvider {
 
         // 상단 정보기반 builder
         return builder
-                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -121,4 +126,11 @@ public class TokenProvider {
         return (int) REFRESH_TOKEN_DURATION.getSeconds();
     }
 
+    public Duration getAccessTokenDuration() {
+        return ACCESS_TOKEN_DURATION;
+    }
+
+    public Duration getRefreshTokenDuration() {
+        return REFRESH_TOKEN_DURATION;
+    }
 }

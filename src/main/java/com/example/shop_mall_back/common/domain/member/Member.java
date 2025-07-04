@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "members")
+@Table(name = "members", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_members_email", columnNames = "email"),
+        @UniqueConstraint(name = "uk_members_user_id", columnNames = "user_id")
+})
 @Builder
 @Getter
 @ToString(exclude = {"userPassword", "emailAuthCode", "phoneAuthCode"})
@@ -26,14 +29,14 @@ public class Member {
     private Long id;
 
     // user 로그인 id
-    @Column(name = "user_id", nullable = false, length = 16, unique = true)
+    @Column(name = "user_id", nullable = false, length = 16)
     private String userId;
 
     // user 로그인 password
     @Column(name = "user_password", nullable = false, length = 100)
     private String userPassword;
 
-    @Column(nullable = false, length = 40, unique = true)
+    @Column(nullable = false, length = 40)
     private String email;
 
     @Column(name = "email_verified")
@@ -42,7 +45,7 @@ public class Member {
     @Column(name = "email_auth_code")
     private String emailAuthCode;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_num")
     private String phoneNumber;
 
     @Column(name = "phone_verified")
@@ -86,7 +89,7 @@ public class Member {
     public static Member createOAuth2User(String phoneNumber, String email, OauthProvider oauthProvider, String providerId) {
         return Member.builder()
                 .userId(email)
-                .userPassword(null)
+                .userPassword(UUID.randomUUID().toString())
                 .email(email)
                 .emailVerified(true)
                 .emailAuthCode(null)
