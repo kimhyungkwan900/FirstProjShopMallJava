@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class OrderManageDto {
 
-    private Long orderId;
+    private Long orderManageId;
 
     private OrderManage.OrderStatus orderStatus;
 
