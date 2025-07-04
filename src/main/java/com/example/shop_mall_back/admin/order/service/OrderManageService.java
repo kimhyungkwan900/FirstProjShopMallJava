@@ -29,12 +29,8 @@ public class OrderManageService {
     }
 
     //고객 주문상태 처리
-    /*
-    주문정보를 조회로 가져오면
-    체크박스로 선택해서 orderStatus의 접수를 확인, 배송중, 배송완료 처리하는 건데
-     */
     public void updateOrderStatus(OrderManageDto orderManageDto){
-        //프론트에서 받아온 OrderManage의 orderManageId로
+        //프론트에서 받아온 OrderManage의 orderManageId로 OrderManage 테이블 탐색
         OrderManage orderManage = orderManageRepository.findById(orderManageDto.getOrderManageId())
                 .orElseThrow(EntityNotFoundException::new);
 

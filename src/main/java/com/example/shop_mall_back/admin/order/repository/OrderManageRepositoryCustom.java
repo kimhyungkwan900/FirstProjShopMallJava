@@ -9,4 +9,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderManageRepositoryCustom {
     Page<OrderManage> getOrderPageByCondition(OrderSearchDto orderSearchDto, Pageable pageable);
+
 }

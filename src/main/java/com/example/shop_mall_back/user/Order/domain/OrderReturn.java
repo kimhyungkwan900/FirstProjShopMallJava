@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "order_return")
 @Getter
@@ -28,6 +30,8 @@ public class OrderReturn {
     @Column(name = "detail")
     private String detail;
 
+    @Column(name = "returned_at", nullable = false, updatable = false)
+    private LocalDateTime regDate = LocalDateTime.now();
 
     public enum ReturnType{
         exchange, RETURN, CANCEL
