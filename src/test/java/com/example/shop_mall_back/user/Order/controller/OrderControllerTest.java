@@ -26,4 +26,4 @@ class OrderControllerTest {
     @MockBean
     private OrderRepository orderRepository;
 
-    @MockBean
+}
