@@ -5,17 +5,22 @@ import com.example.shop_mall_back.admin.review.dto.AdminReviewBlindDTO;
 import com.example.shop_mall_back.admin.review.dto.AdminReviewDTO;
 import com.example.shop_mall_back.admin.review.repository.AdminReviewRepository;
 import com.example.shop_mall_back.user.review.domain.Review;
+import com.example.shop_mall_back.user.review.domain.ReviewReport;
 import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import com.example.shop_mall_back.user.review.dto.ReviewDTO;
+import com.example.shop_mall_back.user.review.repository.ReviewReportRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import com.example.shop_mall_back.user.review.service.ReviewImgService;
 import com.example.shop_mall_back.user.review.service.ReviewReactionService;
 import com.example.shop_mall_back.user.review.service.ReviewService;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +35,7 @@ public class AdminReviewService {
     private final ModelMapper modelMapper;
     private final ReviewReactionService reviewReactionService;
     private final ReviewImgService reviewImgService;
+    private final ReviewReportRepository reviewReportRepository;
 
     //리뷰 블라인드 처리
     @Transactional
@@ -57,13 +63,37 @@ public class AdminReviewService {
     }
 
 
-    public Page<ReviewDTO> findByReviewAll(Pageable pageable) {
-        Page<Review> reviews = reviewRepository.findAll(pageable);
+    public Page<ReviewDTO> getFilteredReviews(String filter, String searchType, String keyword, Pageable pageable) {
+        Specification<Review> spec = Specification.where(null);
+        if ("report".equalsIgnoreCase(filter)) {
+            spec = spec.and((root, query, cb) -> {
+                Subquery<Long> subquery = query.subquery(Long.class);
+                Root<ReviewReport> subRoot = subquery.from(ReviewReport.class);
+                subquery.select(subRoot.get("reviewId"))
+                        .where(cb.equal(subRoot.get("reviewId"), root.get("id")));
+                return cb.exists(subquery);
+                    });
 
+        } else if ("blind".equalsIgnoreCase(filter)) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("reviewStatus"), ReviewStatus.blinded));
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            if ("writer".equalsIgnoreCase(searchType)) {
+                spec = spec.and((root, query, cb) ->
+                        cb.like(root.get("member").get("name"), "%" + keyword + "%")
+                );
+            } else if ("product".equalsIgnoreCase(searchType)) {
+                spec = spec.and((root, query, cb) ->
+                        cb.like(root.get("product").get("name"), "%" + keyword + "%")
+                );
+            }
+        }
+        Page<Review> reviews = reviewRepository.findAll(spec, pageable);
         return reviews.map(review -> {
             ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
             dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
             dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+            dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
             dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
             return dto;
         });

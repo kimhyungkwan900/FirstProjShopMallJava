@@ -15,15 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminReviewController {
 
-    private AdminReviewService adminReviewService;
+    private final AdminReviewService adminReviewService;
     //관리자 리뷰 목록 받아오기
-    @GetMapping
-    public Page<ReviewDTO> findAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+    @GetMapping("")
+    public Page<ReviewDTO> getReviews(
+            @RequestParam("filter") String filter,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam(value = "searchType", required = false) String searchType,
+            @RequestParam(value = "keyword", required = false) String keyword
     ) {
-        Pageable pageable = PageRequest.of(page, size);
-        return adminReviewService.findByReviewAll(pageable);
+        return adminReviewService.getFilteredReviews(filter, searchType, keyword, PageRequest.of(page, size));
     }
 
     // 리뷰 블라인드 처리
