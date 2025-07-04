@@ -68,6 +68,10 @@ public class Order {
     @Column(name = "payment_status")
     private PaymentStatus paymentStatus;
 
+    // 배송 요청사항
+    @Column(length = 100)
+    private String deliveryRequestNote;
+
 
 
 }

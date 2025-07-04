@@ -122,7 +122,7 @@ public class OrderService {
         }
 
         // 6. 계산된 주문 정보 반영 및 상태 저장
-        order.setPaymentStatus(PaymentStatus.결제대기);
+        order.setPaymentStatus(PaymentStatus.PENDING);
         order.setTotalAmount(totalAmount);
         order.setTotalCount(totalCount);
         orderRepository.save(order);  // 변경 사항 반영
@@ -142,7 +142,7 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
 
         // 결제 상태 변경
-        order.setPaymentStatus(PaymentStatus.결제성공);
+        order.setPaymentStatus(PaymentStatus.SUCCESS);
 
         // 주문 관리 엔티티 설정 (주문 상태 관리용)
         OrderManage orderManage = order.getOrderManage();
@@ -164,8 +164,53 @@ public class OrderService {
     public void cancelPay(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
-        order.setPaymentStatus(PaymentStatus.결제실패);
+        order.setPaymentStatus(PaymentStatus.FAILED);
         orderRepository.save(order);
     }
+
+    // 배송 요청사항 저장 메서드
+    public void saveDeliveryRequestNote(Long orderId, OrderDto orderDto) {
+
+        // 요청사항 최대 허용 길이
+        int MAX_REQUEST_NOTE_LENGTH = 100;
+
+        // 1. 주문 유효성 검사
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+
+        // 2. 요청사항 유효성 검증
+        String requestNote = orderDto.getDelivery_request();
+
+        // (a) 요청사항이 최대 길이를 초과하면 예외 발생
+        if (requestNote.length() > MAX_REQUEST_NOTE_LENGTH) {
+            throw new IllegalArgumentException(MAX_REQUEST_NOTE_LENGTH + "자 이내로 입력해야 합니다.");
+        }
+
+        // (b) 요청사항에 특수문자가 포함되어 있으면 예외 발생
+        if (!isValidRequestNote(requestNote)) {
+            throw new IllegalArgumentException("특수문자는 작성하실 수 없습니다.");
+        }
+
+        // 3. 요청사항을 주문 엔티티에 저장하고 DB에 반영
+        order.setDeliveryRequest(requestNote); // 주문 객체에 요청사항 설정
+        orderRepository.save(order);           // 변경사항 저장
+    }
+
+    /**
+     * 요청사항 유효성 검사 메서드
+     * - null/빈 문자열 허용
+     * - 한글, 영문, 숫자, 공백만 허용
+     * - 특수문자 차단
+     */
+    private boolean isValidRequestNote(String requestNote) {
+        // 요청사항이 null 또는 빈 문자열이면 유효
+        if (requestNote == null || requestNote.isEmpty()) {
+            return true;
+        }
+
+        // 특수문자 차단 (한글, 영문, 숫자, 공백만 허용)
+        return requestNote.matches("^[가-힣a-zA-Z0-9 ]*$");
+    }
+
 }
 
