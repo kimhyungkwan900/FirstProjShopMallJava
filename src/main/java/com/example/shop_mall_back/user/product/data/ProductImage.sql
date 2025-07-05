@@ -1,15 +1,278 @@
+-- 원피스
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,1);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,2);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,3);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,4);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,5);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,6);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,7);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,8);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,9);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,10);
+
+-- 블라우스
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,11);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,12);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,13);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,14);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,15);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,16);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,17);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,18);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,19);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,20);
+
+-- 니트/스웨터
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,21);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,22);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,23);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,24);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,25);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,26);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,27);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,28);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,29);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,30);
+
+-- 트렌치코트
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,31);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,32);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,33);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,34);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,35);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,36);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,37);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,38);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,39);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,40);
+
+-- 티셔츠
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,41);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,42);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,43);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,44);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,45);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,46);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,47);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,48);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,49);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,50);
+
+-- 맨투맨
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,51);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,52);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,53);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,54);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,55);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,56);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,57);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,58);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,59);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,60);
+
+-- 셔츠
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,61);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,62);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,63);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,64);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,65);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,66);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,67);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,68);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,69);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,70);
+
+-- 청바지
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,71);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,72);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,73);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,74);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,75);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,76);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,77);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,78);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,79);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,80);
+
+-- 가방
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,81);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,82);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,83);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,84);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,85);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,86);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,87);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,88);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,89);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,90);
+
+-- 지갑
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,91);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,92);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,93);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,94);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,95);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,96);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,97);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,98);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,99);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,100);
+
+-- 모자
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,101);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,102);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,103);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,104);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,105);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,106);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,107);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,108);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,109);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,110);
+
 -- 노트북/태블릿
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/laptop/1.png',true,111);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/laptop/2.png',true,112);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/laptop/3.png',true,113);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/laptop/4.png',true,114);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/laptop/5.png',true,115);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/laptop/6.png',true,116);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/laptop/7.png',true,117);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/laptop/8.png',true,118);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/laptop/9.png',true,119);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/laptop/10.png',true,120);
+
 -- 스마트폰
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/phone/1.png',true,121);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/phone/2.png',true,122);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/phone/3.png',true,123);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/phone/4.png',true,124);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/phone/5.png',true,125);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/phone/6.png',true,126);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/phone/7.png',true,127);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/phone/8.png',true,128);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/phone/9.png',true,129);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/phone/10.png',true,130);
+
 -- 이어폰/헤드폰
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/earbird/1.png',true,131);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/earbird/2.png',true,132);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/earbird/3.png',true,133);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/earbird/4.png',true,134);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/earbird/5.png',true,135);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/earbird/6.png',true,136);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/earbird/7.png',true,137);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/earbird/8.png',true,138);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/earbird/9.png',true,139);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/earbird/10.png',true,140);
+
 -- 모니터
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/monitor/1.png',true,141);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/monitor/2.png',true,142);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/monitor/3.png',true,143);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/monitor/4.png',true,144);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/monitor/5.png',true,145);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/monitor/6.png',true,146);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/monitor/7.png',true,147);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/monitor/8.png',true,148);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/monitor/9.png',true,149);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/monitor/10.png',true,150);
+
 -- 스마트워치
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/smartwatch/1.png',true,151);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/smartwatch/2.png',true,152);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/smartwatch/3.png',true,153);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/smartwatch/4.png',true,154);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/smartwatch/5.png',true,155);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/smartwatch/6.png',true,156);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/smartwatch/7.png',true,157);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/smartwatch/8.png',true,158);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/smartwatch/9.png',true,159);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/smartwatch/10.png',true,160);
+
 -- 스킨케어
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/skincare/1.png',true,161);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/skincare/2.png',true,162);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/skincare/3.png',true,163);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/skincare/4.png',true,164);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/skincare/5.png',true,165);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/skincare/6.png',true,166);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/skincare/7.png',true,167);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/skincare/8.png',true,168);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/skincare/9.png',true,169);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/skincare/10.png',true,170);
+
 -- 메이크업
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/makeup/1.png',true,171);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/makeup/2.png',true,172);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/makeup/3.png',true,173);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/makeup/4.png',true,174);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/makeup/5.png',true,175);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/makeup/6.png',true,176);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/makeup/7.png',true,177);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/makeup/8.png',true,178);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/makeup/9.png',true,179);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/makeup/10.png',true,180);
+
 -- 향수
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/perfume/1.png',true,181);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/perfume/2.png',true,182);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/perfume/3.png',true,183);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/perfume/4.png',true,184);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/perfume/5.png',true,185);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/perfume/6.png',true,186);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/perfume/7.png',true,187);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/perfume/8.png',true,188);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/perfume/9.png',true,189);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/perfume/10.png',true,190);
+
 -- 바디케어
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/bodycare/1.png',true,191);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/bodycare/2.png',true,192);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/bodycare/3.png',true,193);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/bodycare/4.png',true,194);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/bodycare/5.png',true,195);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/bodycare/6.png',true,196);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/bodycare/7.png',true,197);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/bodycare/8.png',true,198);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/bodycare/9.png',true,199);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/bodycare/10.png',true,200);
+
 -- 과일
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/fruits/1.png',true,201);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/fruits/2.png',true,202);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/fruits/3.png',true,203);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/fruits/4.png',true,204);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/fruits/5.png',true,205);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/fruits/6.png',true,206);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/fruits/7.png',true,207);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/fruits/8.png',true,208);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/fruits/9.png',true,209);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/fruits/10.png',true,210);
+
 -- 채소
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,211);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,212);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,213);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,214);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,215);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,216);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,217);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,218);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,219);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,220);
+
 -- 정육/계란
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,221);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,222);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,223);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,224);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,225);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,226);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,227);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,228);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,229);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,230);
 
 -- 간편식
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,231);
@@ -132,13 +395,13 @@ INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_i
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/toys/10.png',true,330);
 
 -- 유모차/카시트
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/stroller/1.png',true,331);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/stroller/2.png',true,332);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/stroller/3.png',true,333);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/stroller/4.png',true,334);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/stroller/1.jpg',true,331);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/stroller/2.jpg',true,332);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/stroller/3.jpg',true,333);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/stroller/4.jpg',true,334);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/stroller/5.png',true,335);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/stroller/6.png',true,336);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/stroller/7.png',true,337);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/stroller/7.jpg',true,337);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/stroller/8.png',true,338);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/stroller/9.png',true,339);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/stroller/10.png',true,340);
