@@ -25,5 +25,7 @@ public class AdminReviewDTO {
 
     private List<ReviewImgDTO> reviewImgDTOList;
 
+    private String blindReason;
+
     private int reportCount;
 }

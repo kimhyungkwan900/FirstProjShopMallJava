@@ -17,7 +17,7 @@ public class ImageWebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String uploadPath = Paths.get(reviewImgLocation).toUri().toString();
 
-        registry.addResourceHandler("/uploads/review/**")
+        registry.addResourceHandler("/images/review/**")
                 .addResourceLocations(uploadPath);
     }
 }

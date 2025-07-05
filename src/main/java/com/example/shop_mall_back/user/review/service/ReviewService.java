@@ -1,8 +1,10 @@
 package com.example.shop_mall_back.user.review.service;
 
+import com.example.shop_mall_back.admin.review.dto.AdminReviewReportDTO;
 import com.example.shop_mall_back.user.review.domain.Review;
 import com.example.shop_mall_back.user.review.dto.*;
 import com.example.shop_mall_back.user.review.repository.ReviewReactionRepository;
+import com.example.shop_mall_back.user.review.repository.ReviewReportRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -78,20 +80,20 @@ public class ReviewService {
     }
 
     // 회원 별로 리뷰 목록
-    public List<ReviewDTO> findAllByMemberId(Long memberId) {
-        List<Review> reviews = reviewRepository.findAllByMemberId(memberId).stream()
-                .sorted(Comparator.comparing(Review::getId))
-                .toList();
-        // 반환할 때 DTO로 변환하면서 like count dislike count 숫자를 추가해서 dto에 담아 return
-        return reviews.stream()
-                .map(review -> {
-                    ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
-                    dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
-                    dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
-                    dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
-                    return dto;
-                }).toList();
-    }
+//    public List<ReviewDTO> findAllByMemberId(Long memberId) {
+//        List<Review> reviews = reviewRepository.findAllByMemberId(memberId).stream()
+//                .sorted(Comparator.comparing(Review::getId))
+//                .toList();
+//        // 반환할 때 DTO로 변환하면서 like count dislike count 숫자를 추가해서 dto에 담아 return
+//        return reviews.stream()
+//                .map(review -> {
+//                    ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
+//                    dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
+//                    dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+//                    dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
+//                    return dto;
+//                }).toList();
+//    }
     // 리뷰 등록
     public void insertReview(ReviewFormDTO reviewFormDTO) {
         Review review = modelMapper.map(reviewFormDTO, Review.class);
@@ -141,5 +143,6 @@ public class ReviewService {
             return dto;
         });
     }
+
 
 }

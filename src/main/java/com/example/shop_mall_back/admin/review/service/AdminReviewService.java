@@ -78,14 +78,9 @@ public class AdminReviewService {
 
         } else if ("blind".equalsIgnoreCase(filter)) {
             spec = spec.and((root, query, cb) -> {
-                // 블라인드 필터 조건 유지
-                cb.equal(root.get("reviewStatus"), ReviewStatus.blinded);
-
-                // fetch join 또는 left join 추가 (필요하면)
-                root.fetch("reviewBlind", JoinType.LEFT);
-
                 return cb.equal(root.get("reviewStatus"), ReviewStatus.blinded);
             });
+
         }
         if (keyword != null && !keyword.isBlank()) {
             if ("writer".equalsIgnoreCase(searchType)) {
@@ -103,7 +98,13 @@ public class AdminReviewService {
             AdminReviewDTO dto = modelMapper.map(review, AdminReviewDTO.class);
             dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
             dto.setReportCount(reviewReportService.countReviewReportByReviewId(review.getId())); // 추가
+            ReviewBlind reviewBlind = adminReviewRepository.findTopByReviewIdOrderByBlindAtDesc(review.getId());
+            if (reviewBlind != null) {
+                dto.setBlindReason(reviewBlind.getReason());
+            }
             return dto;
         });
     }
+
+
 }

@@ -37,7 +37,7 @@ public class ReviewFileService {
 
             log.info("파일 저장 완료 (절대경로): {}", destination.toAbsolutePath());
             // 💡 클라이언트가 접근 가능한 경로로 반환해야 함
-            return "/uploads/review/" + filename;
+            return "/images/review/" + filename;
 
         } catch (IOException e) {
             log.error("파일 저장 실패", e);
