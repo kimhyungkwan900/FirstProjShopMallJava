@@ -36,7 +36,11 @@ public class ProductService {
      */
     public Page<ProductDto> getProducts(Pageable pageable) {
         return productRepository.findAll(pageable)
-                .map(ProductDto::from);
+                .map(p -> {
+                    ProductDto dto = ProductDto.from(p);
+                    dto.setImages(getProductImages(p.getId())); // ⭐
+                    return dto;
+                });
     }
 
     /**
@@ -58,7 +62,11 @@ public class ProductService {
      */
     public Page<ProductDto> searchProducts(String keyword, Pageable pageable) {
         return productRepository.findByNameContaining(keyword, pageable)
-                .map(ProductDto::from);
+                .map(p -> {
+                    ProductDto dto = ProductDto.from(p);
+                    dto.setImages(getProductImages(p.getId()));
+                    return dto;
+                });
     }
 
     /**
@@ -118,16 +126,27 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
         Long brandId = product.getBrand().getId();
+
         return productRepository.findByBrandId(brandId, pageable)
-                .map(ProductDto::from);
+                .map(p -> {
+                    ProductDto dto = ProductDto.from(p);
+                    List<ProductImageDto> images = getProductImages(p.getId());
+                    dto.setImages(getProductImages(p.getId()));
+                    return dto;
+                });
     }
+
 
     /**
      * 특정 카테고리에 속한 상품 조회
      */
     public Page<ProductDto> getProductsByCategory(Long categoryId, Pageable pageable) {
         return productRepository.findByCategoryId(categoryId, pageable)
-                .map(ProductDto::from);
+                .map(p -> {
+                    ProductDto dto = ProductDto.from(p);
+                    dto.setImages(getProductImages(p.getId())); // ⭐
+                    return dto;
+                });
     }
 
     /**
@@ -135,7 +154,11 @@ public class ProductService {
      */
     public Page<ProductDto> getProductsByBrand(Long brandId, Pageable pageable) {
         return productRepository.findByBrandId(brandId, pageable)
-                .map(ProductDto::from);
+                .map(p -> {
+                    ProductDto dto = ProductDto.from(p);
+                    dto.setImages(getProductImages(p.getId())); // ⭐
+                    return dto;
+                });
     }
 
     /**
@@ -154,6 +177,10 @@ public class ProductService {
     public Page<ProductDto> getProductsByCategoryAndChildren(Long categoryId, Pageable pageable) {
         List<Long> categoryIds = categoryService.getAllChildCategoryIds(categoryId); // 재귀 포함
         return productRepository.findByCategoryIdIn(categoryIds, pageable)
-                .map(ProductDto::from);
+                .map(p -> {
+                    ProductDto dto = ProductDto.from(p);
+                    dto.setImages(getProductImages(p.getId())); // ⭐
+                    return dto;
+                });
     }
 }
