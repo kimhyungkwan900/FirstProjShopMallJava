@@ -3,6 +3,7 @@ package com.example.shop_mall_back.admin.faq.service;
 import com.example.shop_mall_back.admin.faq.domain.Faq;
 import com.example.shop_mall_back.admin.faq.dto.FaqDto;
 import com.example.shop_mall_back.admin.faq.dto.FaqSearchDto;
+import com.example.shop_mall_back.admin.faq.dto.PageRequestDto;
 import com.example.shop_mall_back.admin.faq.repository.FaqRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class FaqService {
     //검색 + 페이징
     @Transactional(readOnly = true)
     public Page<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, Pageable pageable){
-        return faqRepository.searchFaqs(faqSearchDto, pageable)
+        return faqRepository.searchFaqs(faqSearchDto, (PageRequestDto) pageable)
                 .map(FaqDto::new);
     }
 
