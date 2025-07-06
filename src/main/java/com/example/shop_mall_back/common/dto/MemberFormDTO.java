@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -16,11 +17,13 @@ public class MemberFormDTO {
 
     @NotBlank
     @Length(min = 6, max = 20)
-    private String user_id;
+    @JsonProperty("user_id")
+    private String userId;
 
     @NotBlank
     @Length(min = 6, max = 20)
-    private String user_password;
+    @JsonProperty("user_password")
+    private String userPassword;
 
     @NotBlank
     @Email
@@ -29,5 +32,6 @@ public class MemberFormDTO {
 
     @NotBlank
     @Length(max = 15)
-    private String phone_number;
+    @JsonProperty("phone_number")
+    private String phoneNumber;
 }

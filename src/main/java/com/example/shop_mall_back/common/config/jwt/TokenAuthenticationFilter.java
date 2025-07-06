@@ -25,6 +25,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        String requestURI = request.getRequestURI();
+
+        // 회원가입 요청은 무조건 통과
+        if (requestURI.equals("/api/members/signup")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // access_token 쿠키에서 꺼내기
         String accessToken = CookieUtils.getCookie(request, "access_token")
                 .map(Cookie::getValue)

@@ -50,7 +50,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .expiresAt(LocalDateTime.now().plus(tokenProvider.getAccessTokenDuration()))
-                .loginTime(LocalDateTime.now())
                 .ipAddress(request.getRemoteAddr())
                 .build();
 
