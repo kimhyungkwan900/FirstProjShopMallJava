@@ -3,6 +3,8 @@ package com.example.shop_mall_back.admin.faq.controller;
 
 import com.example.shop_mall_back.admin.faq.dto.FaqDto;
 import com.example.shop_mall_back.admin.faq.dto.FaqSearchDto;
+import com.example.shop_mall_back.admin.faq.dto.PageRequestDto;
+import com.example.shop_mall_back.admin.faq.dto.PageResponseDto;
 import com.example.shop_mall_back.admin.faq.service.FaqService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,47 +25,44 @@ public class FaqController {
 
     //조회
     @GetMapping("/list")
-    public Page<FaqDto> list(Pageable pageable){
-        //나중에 제거
-        log.info("Faq List Request - Page : {}", pageable.getPageNumber());
-        return faqService.findAll(pageable);
+    public PageResponseDto<FaqDto> getFaqList(PageRequestDto pageRequestDto) {
+        log.info("Faq 목록 요청: page={}, size={}", pageRequestDto.getPage(), pageRequestDto.getSize());
+        return faqService.findAll(pageRequestDto);
     }
 
     //검색
     @GetMapping("/search")
-    public Page<FaqDto> search(FaqSearchDto faqSearchDto, Pageable pageable){
-        //나중에 제거
-        log.info("FAQ Search: category={}, keyword={}", faqSearchDto.getCategory(), faqSearchDto.getKeyWord());
-        return faqService.searchFaqs(faqSearchDto , pageable);
+    public PageResponseDto<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, PageRequestDto pageRequestDto) {
+        log.info("FAQ 검색 요청: category={}, keyword={}", faqSearchDto.getCategory(), faqSearchDto.getKeyWord());
+        return faqService.searchFaqs(faqSearchDto, pageRequestDto);
     }
 
     //등록
     @PostMapping("/create")
-    public Map<String, Long> register(@RequestBody FaqDto faqDto){
-        //나중에 제거
-        log.info("FAQ 등록 : {}", faqDto);
+    public Map<String, Long> register(@RequestBody FaqDto faqDto) {
+        log.info("FAQ 등록 요청: {}", faqDto);
         Long id = faqService.createFaq(faqDto);
         return Map.of("id", id);
     }
 
     //상세 조회
     @GetMapping("/{id}")
-    public FaqDto get(@PathVariable Long id){
-        log.info("FAQ 상세조회 : id={}", id);
+    public FaqDto get(@PathVariable Long id) {
+        log.info("FAQ 상세 조회 요청: id={}", id);
         return faqService.getFaqById(id);
     }
 
     //수정
     @PutMapping("/update/{id}")
-    public Map<String, String> modify(@PathVariable Long id, @RequestBody FaqDto faqDto){
-        log.info("FAQ 수정 : id={}, data ={}", id, faqDto);
+    public Map<String, String> modify(@PathVariable Long id, @RequestBody FaqDto faqDto) {
+        log.info("FAQ 수정 요청: id={}, data={}", id, faqDto);
         faqService.updateFaq(id, faqDto);
         return Map.of("result", "success");
     }
 
     //삭제
     @DeleteMapping("/delete")
-    public Map<String, String> remove(@RequestBody List<Long> ids){
+    public Map<String, String> remove(@RequestBody List<Long> ids) {
         log.info("FAQ 삭제 요청: {}", ids);
         faqService.deleteFaqs(ids);
         return Map.of("result", "success");

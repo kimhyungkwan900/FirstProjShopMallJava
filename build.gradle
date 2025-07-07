@@ -24,11 +24,11 @@ repositories {
 }
 
 ext {
-    querydslVersion = "5.1.0" // 또는 원하는 버전
+    querydslVersion = "5.0.0" // 또는 원하는 버전
 }
 
 dependencies {
-    // 보안 && Oauth2
+// 보안 && Oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
     // OAuth2 인증 서버 기능 제공 (Spring Authorization Server)
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
