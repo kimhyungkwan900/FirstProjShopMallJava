@@ -83,7 +83,7 @@ public class AdminReviewService {
 
         }
         if (keyword != null && !keyword.isBlank()) {
-            if ("writer".equalsIgnoreCase(searchType)) {
+            if ("name".equalsIgnoreCase(searchType)) {
                 spec = spec.and((root, query, cb) ->
                         cb.like(root.get("member").get("name"), "%" + keyword + "%")
                 );
