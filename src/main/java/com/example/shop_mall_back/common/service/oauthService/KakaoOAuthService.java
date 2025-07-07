@@ -52,7 +52,8 @@ public class KakaoOAuthService implements OAuth2UserService<OAuth2UserRequest, O
                 attributes,
                 member.getId(),
                 member.getEmail(),
-                Role.MEMBER
+                Role.MEMBER,
+                OauthProvider.KAKAO
         );
     }
 }
