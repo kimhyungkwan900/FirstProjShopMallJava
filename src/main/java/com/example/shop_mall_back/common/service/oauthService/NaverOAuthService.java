@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.common.service.oauthService;
 
+import com.example.shop_mall_back.common.config.oauth2.CustomOAuth2User;
 import com.example.shop_mall_back.common.constant.*;
 import com.example.shop_mall_back.common.domain.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -40,14 +41,15 @@ public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, O
         Gender gen = Gender.conversion(gender);
         Age age = Age.conversion(ageRange);
 
-        Member member = oAuthMemberService.findOrCreateMember(phoneNumber, email, OauthProvider.NAVER, providerId);
 
+        Member member = oAuthMemberService.findOrCreateMember("01022221111", "test@naver.com", OauthProvider.NAVER, providerId);
         oAuthMemberService.createProfileIfNotExists(member, name, nickname, profileImg, gen, age);
 
-        return new DefaultOAuth2User(
-                List.of(new SimpleGrantedAuthority("ROLE_USER")),
+        return new CustomOAuth2User(
                 attributes,
-                "id"
+                member.getId(),
+                member.getEmail(),
+                Role.MEMBER
         );
     }
 }

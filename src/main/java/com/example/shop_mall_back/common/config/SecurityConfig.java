@@ -10,8 +10,10 @@ import com.example.shop_mall_back.common.service.oauthService.KakaoOAuthService;
 import com.example.shop_mall_back.common.service.oauthService.NaverOAuthService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,6 +32,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Order(1)
+@Log4j2
 public class SecurityConfig {
 
     @Bean
@@ -56,16 +60,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService,
                                            TokenAuthenticationFilter tokenAuthenticationFilter,OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
-
         http
                 // CSRF 보호 비활성화 TODO: 개발 후 활성화
                 .csrf(AbstractHttpConfigurer::disable)
                 //
                 .cors(Customizer.withDefaults())
+
+                .formLogin(AbstractHttpConfigurer::disable)
                 // 경로 요청에 따른 인가 설정
                 .authorizeHttpRequests(auth -> auth
                         // 비인증 접근 가능
-                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/css/**", "/js/**", "/images/**","/api/**").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/css/**", "/js/**", "/images/**","/api/**","/api/members/signup").permitAll()
                         // 그외 전부 인증후 접근
                         .anyRequest().authenticated()
                 )

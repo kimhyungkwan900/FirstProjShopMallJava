@@ -39,8 +39,4 @@ public class Session {
 
     @Column(nullable = false)
     private LocalDateTime expiresAt;
-
-    @CreatedDate
-    @Column(name = "login_time", nullable = false, updatable = false)
-    private LocalDateTime loginTime;
 }
