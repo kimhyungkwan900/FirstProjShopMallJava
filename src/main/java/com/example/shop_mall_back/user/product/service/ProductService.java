@@ -9,7 +9,9 @@ import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,7 +129,14 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
         Long brandId = product.getBrand().getId();
 
-        return productRepository.findByBrandId(brandId, pageable)
+        // 조회수 기준 내림차순 정렬
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "viewCount")
+        );
+
+        return productRepository.findByBrandId(brandId, sortedPageable)
                 .map(p -> {
                     ProductDto dto = ProductDto.from(p);
                     List<ProductImageDto> images = getProductImages(p.getId());

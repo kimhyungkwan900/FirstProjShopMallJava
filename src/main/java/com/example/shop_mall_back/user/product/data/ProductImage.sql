@@ -251,28 +251,28 @@ INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_i
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/fruits/10.png',true,210);
 
 -- 채소
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/vegetable/1.png',true,211);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/vegetable/2.png',true,212);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/vegetable/3.png',true,213);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/vegetable/4.png',true,214);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/vegetable/5.png',true,215);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/vegetable/6.png',true,216);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/vegetable/7.png',true,217);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/vegetable/8.png',true,218);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/vegetable/9.png',true,219);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/vegetable/10.png',true,220);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/vegetables/1.png',true,211);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/vegetables/2.png',true,212);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/vegetables/3.png',true,213);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/vegetables/4.png',true,214);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/vegetables/5.png',true,215);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/vegetables/6.png',true,216);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/vegetables/7.png',true,217);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/vegetables/8.png',true,218);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/vegetables/9.png',true,219);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/vegetables/10.png',true,220);
 
 -- 정육/계란
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/meet_egg/1.png',true,221);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/meet_egg/2.png',true,222);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/meet_egg/3.png',true,223);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/meet_egg/4.png',true,224);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/meet_egg/5.png',true,225);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/meet_egg/6.png',true,226);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/meet_egg/7.png',true,227);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/meet_egg/8.png',true,228);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/meet_egg/9.png',true,229);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/meet_egg/10.png',true,230);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/meat_egg/1.png',true,221);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/meat_egg/2.png',true,222);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/meat_egg/3.png',true,223);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/meat_egg/4.png',true,224);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/meat_egg/5.png',true,225);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/meat_egg/6.png',true,226);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/meat_egg/7.png',true,227);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/meat_egg/8.png',true,228);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/meat_egg/9.png',true,229);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/meat_egg/10.png',true,230);
 
 -- 간편식
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,231);
