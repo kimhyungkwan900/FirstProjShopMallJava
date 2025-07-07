@@ -24,6 +24,8 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final StringPath deliveryRequest = createString("deliveryRequest");
 
+    public final StringPath deliveryRequestNote = createString("deliveryRequestNote");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final BooleanPath isGuest = createBoolean("isGuest");

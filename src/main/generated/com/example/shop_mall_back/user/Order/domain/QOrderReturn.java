@@ -29,6 +29,8 @@ public class QOrderReturn extends EntityPathBase<OrderReturn> {
 
     public final StringPath reason = createString("reason");
 
+    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
+
     public final EnumPath<OrderReturn.ReturnType> returnType = createEnum("returnType", OrderReturn.ReturnType.class);
 
     public QOrderReturn(String variable) {

@@ -203,7 +203,7 @@ public class OrderService {
      * - 한글, 영문, 숫자, 공백만 허용
      * - 특수문자 차단
      */
-    private boolean isValidRequestNote(String requestNote) {
+    public boolean isValidRequestNote(String requestNote) {
         // 요청사항이 null 또는 빈 문자열이면 유효
         if (requestNote == null || requestNote.isEmpty()) {
             return true;
@@ -223,15 +223,16 @@ public class OrderService {
      * @param paymentToken 결제 인증 토큰
      * @return 결제 상태 (SUCCESS 또는 FAILED)
      */
-    private String processMockPayment(String paymentMethod, String paymentToken) {
+    public String processMockPayment(String paymentMethod, String paymentToken) {
 
         // 1. 허용된 결제수단 목록 정의
         List<String> paymentMethodList = List.of("CREDIT_CARD", "MOBILE_PHONE", "BANK_TRANSFER");
 
         // 2. 결제수단 유효성 검사
-        if (!paymentMethodList.contains(paymentMethod)) {
+        if (paymentMethod == null || !paymentMethodList.contains(paymentMethod)) {
             throw new IllegalArgumentException("유효한 결제수단이 아닙니다.");
         }
+
 
         // 3. 결제 토큰 유효성 검사
         if (!validatePaymentToken(paymentToken)) {
@@ -254,7 +255,7 @@ public class OrderService {
      * @param paymentToken 결제 인증 토큰
      * @return 유효하면 true, 아니면 false
      */
-    private boolean validatePaymentToken(String paymentToken) {
+    public boolean validatePaymentToken(String paymentToken) {
         return paymentToken != null && paymentToken.startsWith("TOKEN_");
     }
 
@@ -273,7 +274,7 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
 
         // 1-1. 이미 결제 완료된 주문인지 체크
-        if (!order.getPaymentStatus().equals(PaymentStatus.SUCCESS)) {
+        if (order.getPaymentStatus().equals(PaymentStatus.SUCCESS)) {
             throw new IllegalArgumentException("이미 결제 처리된 주문입니다.");
         }
 
