@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.reviewTest;
+package com.example.shop_mall_back.user.reviewTest;
 
 import com.example.shop_mall_back.user.review.domain.enums.Reaction;
 import com.example.shop_mall_back.user.review.dto.ReviewReactionDTO;
