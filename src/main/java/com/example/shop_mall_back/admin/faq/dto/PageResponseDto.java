@@ -21,7 +21,7 @@ public class PageResponseDto <E>{
 
     private int totalCount, prevPage, nextPage, totalPage, current; //전체 데이터 수, 클릭시 이동할 페이지, 전체페이지수, 현재 페이지 번호
 
-    @Builder(builderClassName = "withAll")
+    @Builder(builderMethodName = "withAll")
     public PageResponseDto(List<E> dtoList, PageRequestDto pageRequestDTO, long totalCount) {
         this.dtoList = dtoList; //현재 페이지에 들어갈 데이터 리스트
         this.pageRequestDto = pageRequestDto; //페이지 요청 정보(몇 페이지, 한 페이지에 몇개)
