@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.admin.review.dto;
 
+import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import com.example.shop_mall_back.user.review.dto.ReviewDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewImgDTO;
 import lombok.Getter;
@@ -12,8 +13,19 @@ import java.util.List;
 @Setter
 public class AdminReviewDTO {
     private Long id;
-    private ReviewDTO reviewDTO;
-    private Long AdminID;
-    private String reason;
-    private LocalDateTime blindAd;
+    private int score;
+    private String summation;
+    private String reviewContent;
+    private Long memberId;
+    private Long productId;
+    private Long orderId;
+    private ReviewStatus reviewStatus;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    private List<ReviewImgDTO> reviewImgDTOList;
+
+    private String blindReason;
+
+    private int reportCount;
 }

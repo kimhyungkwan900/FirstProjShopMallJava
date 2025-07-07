@@ -36,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
         validateDuplicateMember(memberFormDTO.getEmail());
 
         // 멤버 객체 생성
-        Member member = Member.create(memberFormDTO.getUser_id(), memberFormDTO.getUser_password(), memberFormDTO.getEmail(), memberFormDTO.getPhone_number(), passwordEncoder);
+        Member member = Member.create(memberFormDTO.getUserId(), memberFormDTO.getUserPassword(), memberFormDTO.getEmail(), memberFormDTO.getPhoneNumber(), passwordEncoder);
 
         // 멤버 기본 프로필 생성
         MemberProfile memberProfile = MemberProfile.builder()
@@ -103,7 +103,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = findByIdOrThrow(memberFormDTO.getId());
 
         // 새로 입력받은 password 를 newPass 에 저장
-        String newPass = passwordEncoder.encode(memberFormDTO.getUser_password());
+        String newPass = passwordEncoder.encode(memberFormDTO.getUserPassword());
 
         // password 변경
         member.changePassword(newPass);

@@ -31,10 +31,10 @@ public interface MemberService {
     default MemberFormDTO entityToDTOMemberForm(Member member) {
         return MemberFormDTO.builder()
                 .id(member.getId())
-                .user_id(member.getUserId())
-                .user_password(member.getUserPassword())
+                .userId(member.getUserId())
+                .userPassword(member.getUserPassword())
                 .email(member.getEmail())
-                .phone_number(member.getPhoneNumber())
+                .phoneNumber(member.getPhoneNumber())
                 .build();
     }
 
@@ -56,10 +56,10 @@ public interface MemberService {
     default Member dtoToEntity(MemberFormDTO memberFormDTO) {
         return Member.builder()
                 .id(memberFormDTO.getId())
-                .userId(memberFormDTO.getUser_id())
-                .userPassword(memberFormDTO.getUser_password())
+                .userId(memberFormDTO.getUserId())
+                .userPassword(memberFormDTO.getUserPassword())
                 .email(memberFormDTO.getEmail())
-                .phoneNumber(memberFormDTO.getPhone_number())
+                .phoneNumber(memberFormDTO.getPhoneNumber())
                 .build();
     }
 }

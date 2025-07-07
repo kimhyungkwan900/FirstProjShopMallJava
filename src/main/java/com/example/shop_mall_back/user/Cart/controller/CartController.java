@@ -50,7 +50,7 @@ public class CartController {
      * @param itemId 장바구니 항목 ID
      */
     @DeleteMapping("/items/{itemId}")
-    public ResponseEntity<String> deleteCartItem(@PathVariable Long memberId,
+    public ResponseEntity<String> deleteCartItem(@RequestParam Long memberId,
                                                  @PathVariable Long itemId) {
         cartService.deleteCartItem(memberId, itemId);
         return ResponseEntity.ok("장바구니 상품이 삭제 되었습니다");
@@ -66,7 +66,7 @@ public class CartController {
     @GetMapping("/items")
     public ResponseEntity<List<CartItemDto>> getCartItems(@RequestParam Long memberId) {
         List<CartItemDto> result = cartService.getCartItems(memberId);
-        return ResponseEntity.ok(result); // ← 기존 코드에서는 빈 리스트 반환, 여기서 수정함
+        return ResponseEntity.ok(result);
     }
 
     /**
@@ -77,7 +77,7 @@ public class CartController {
      * @param selectedOption 수정할 옵션
      */
     @PutMapping("/items/{itemId}")
-    public ResponseEntity<String> updateCartItem(@PathVariable Long memberId,
+    public ResponseEntity<String> updateCartItem(@RequestParam Long memberId,
                                                  @PathVariable Long itemId,
                                                  @RequestParam int quantity,
                                                  @RequestParam String selectedOption) {
@@ -96,7 +96,7 @@ public class CartController {
      * @param isSelected true → 선택 / false → 선택 해제
      */
     @PatchMapping("/items/{itemId}/select")
-    public ResponseEntity<String> toggleSelect(@PathVariable Long memberId,
+    public ResponseEntity<String> toggleSelect(@RequestParam Long memberId,
                                                @PathVariable Long itemId,
                                                @RequestParam boolean isSelected) {
         cartService.toggleCartItemSelection(memberId, itemId, isSelected);

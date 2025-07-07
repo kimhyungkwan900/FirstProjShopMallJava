@@ -6,6 +6,7 @@ import com.example.shop_mall_back.user.review.dto.ReviewFormDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewListDTO;
 import com.example.shop_mall_back.user.review.dto.ReviewUpdateDTO;
 import com.example.shop_mall_back.user.review.service.ReviewService;
+import org.hibernate.query.Page;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,16 +65,17 @@ public class reiewServiceTests {
     @DisplayName("상품별 리뷰 목록")
     public void findReviewByProductIdTest(){
         Long productId = 1L;
-        ReviewListDTO list = reviewService.findAllByProductId(productId);
+        String sort = "createdAt";
+        ReviewListDTO list = reviewService.findAllByProductId(productId, sort);
         list.getReviewList().forEach(System.out::println);
     }
 
-    @Test
-    @DisplayName("회원별 리뷰 목록")
-    public void findReviewByMemberIdTest(){
-        Long memberId = 2L;
-        List<ReviewDTO> list = reviewService.findAllByMemberId(memberId);
-        list.forEach(System.out::println);
-    }
+//    @Test
+//    @DisplayName("회원별 리뷰 목록")
+//    public void findReviewByMemberIdTest(){
+//        Long memberId = 2L;
+//        Page<ReviewDTO> list = reviewService.findAllByMemberId(memberId);
+//        list.forEach(System.out::println);
+//    }
 }
 

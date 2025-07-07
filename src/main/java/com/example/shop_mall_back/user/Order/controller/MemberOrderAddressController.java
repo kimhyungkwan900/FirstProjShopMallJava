@@ -33,6 +33,11 @@ public class MemberOrderAddressController {
         List<MemberAddressDTO> list = memberOrderAddressService.getMemberAddressList(memberId);
         return ResponseEntity.ok(list);
     }
+    // 👇 추가: IllegalArgumentException 처리
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 
     /**
      * [2] 배송지 추가

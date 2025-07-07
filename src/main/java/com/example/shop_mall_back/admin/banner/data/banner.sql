@@ -1,0 +1,1 @@
+insert into banners(display_order, is_active, visible_from, visible_to, alt, image_url, link) values (1,true,'2025-10-14 23:59:59','2025-07-07 00:00:00','70% 할인','/images/banners/1.png','/');

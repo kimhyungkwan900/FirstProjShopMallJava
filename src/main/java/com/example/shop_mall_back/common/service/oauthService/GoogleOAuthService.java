@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.common.service.oauthService;
 
+import com.example.shop_mall_back.common.config.oauth2.CustomOAuth2User;
 import com.example.shop_mall_back.common.constant.*;
 import com.example.shop_mall_back.common.domain.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +32,16 @@ public class GoogleOAuthService implements OAuth2UserService<OAuth2UserRequest, 
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
 
-        Member member = oAuthMemberService.findOrCreateMember(null, email, OauthProvider.GOOGLE, providerId);
+        Member member = oAuthMemberService.findOrCreateMember("01012122121", "test@gmail.com", OauthProvider.GOOGLE, providerId);
 
         oAuthMemberService.createProfileIfNotExists(member, name, name, profileImg, null, null);
 
 
-        return new DefaultOAuth2User(
-                List.of(new SimpleGrantedAuthority("ROLE_USER")),
+        return new CustomOAuth2User(
                 attributes,
-                "sub"
+                member.getId(),
+                member.getEmail(),
+                Role.MEMBER
         );
     }
 }
