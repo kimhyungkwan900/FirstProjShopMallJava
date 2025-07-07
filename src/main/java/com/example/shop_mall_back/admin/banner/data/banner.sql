@@ -1,0 +1,1 @@
+insert into banners values ('')

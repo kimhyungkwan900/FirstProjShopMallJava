@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 //
                 .cors(Customizer.withDefaults())
-
+                // 기본 로그인 FORM 비활성화
                 .formLogin(AbstractHttpConfigurer::disable)
                 // 경로 요청에 따른 인가 설정
                 .authorizeHttpRequests(auth -> auth

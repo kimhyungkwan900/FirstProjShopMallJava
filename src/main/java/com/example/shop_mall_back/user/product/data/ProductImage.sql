@@ -143,10 +143,10 @@ INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_i
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/laptop/10.png',true,120);
 
 -- 스마트폰
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/phone/1.png',true,121);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/phone/2.png',true,122);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/phone/3.png',true,123);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/phone/4.png',true,124);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/phone/1.jpg',true,121);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/phone/2.jpg',true,122);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/phone/3.jpg',true,123);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/phone/4.jpg',true,124);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/phone/5.png',true,125);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/phone/6.png',true,126);
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/phone/7.png',true,127);
