@@ -3,6 +3,7 @@ package com.example.shop_mall_back.user.Cart.domain;
 import com.example.shop_mall_back.common.domain.Cart;
 import com.example.shop_mall_back.common.domain.Product;
 import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,4 +39,5 @@ public class CartItem {
 
     @Column(name = "is_sold_out")
     private Boolean isSoldOut;  // 품절 여부
+
 }
