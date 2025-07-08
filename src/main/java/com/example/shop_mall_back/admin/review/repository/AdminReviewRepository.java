@@ -13,5 +13,5 @@ public interface AdminReviewRepository extends JpaRepository<ReviewBlind, Long> 
 
     ReviewBlind findTopByReviewIdOrderByBlindAtDesc(Long reviewId);
 
-    Optional<ReviewBlind> findByReviewId(Long reviewId);
+
 }

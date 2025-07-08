@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.user.Order.domain;
+package com.example.shop_mall_back.user.myOrder.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,6 +22,7 @@ public class OrderReturn {
     private Long memberId;
 
     @Column(name = "return_type")
+    @Enumerated(EnumType.STRING)
     private ReturnType returnType;
 
     @Column(name = "reason")
@@ -33,7 +34,12 @@ public class OrderReturn {
     @Column(name = "returned_at", nullable = false, updatable = false)
     private LocalDateTime regDate = LocalDateTime.now();
 
-    public enum ReturnType{
-        exchange, RETURN, CANCEL
+    public enum ReturnType {
+        CANCEL_REQUEST,    // 취소 신청
+        CANCEL_COMPLETE,   // 취소 완료
+        RETURN_REQUEST,    // 반품 신청
+        RETURN_COMPLETE,   // 반품 완료
+        EXCHANGE_REQUEST,  // 교환 신청
+        EXCHANGE_COMPLETE  // 교환 완료
     }
 }

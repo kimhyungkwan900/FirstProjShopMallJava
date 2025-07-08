@@ -1,10 +1,9 @@
 package com.example.shop_mall_back.admin.order.repository;
 
 import com.example.shop_mall_back.admin.order.domain.ClaimManage;
-import com.example.shop_mall_back.admin.order.domain.OrderManage;
 import com.example.shop_mall_back.admin.order.domain.QClaimManage;
 import com.example.shop_mall_back.admin.order.dto.ClaimSearchDto;
-import com.example.shop_mall_back.user.Order.domain.OrderReturn;
+import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
