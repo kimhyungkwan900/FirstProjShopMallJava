@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.common.controller;
 
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
+import com.example.shop_mall_back.common.config.oauth2.CustomOAuth2User;
 import com.example.shop_mall_back.common.constant.LoginResult;
 import com.example.shop_mall_back.common.constant.LoginType;
 import com.example.shop_mall_back.common.constant.Role;
@@ -39,12 +40,28 @@ public class AuthController {
     private final LoginHistoryService loginHistoryService;
 
     // 현재 로그인 중인 사용자 정보 반환
+//    @GetMapping("/me")
+//    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal(expression = "membername") String email){
+//        //이메일로 사용자 조회
+//        MemberDTO memberDto = memberService.getMemberDTOByEmail(email);
+//
+//        return ResponseEntity.ok(memberDto);
+//    }
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal(expression = "membername") String email){
-        //이메일로 사용자 조회
-        MemberDTO memberDto = memberService.getMemberDTOByEmail(email);
+    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal Object principal) {
+        log.info("현재 로그인된 Principal: {}", principal);
 
-        return ResponseEntity.ok(memberDto);
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 정보가 없습니다.");
+        }
+
+        if (principal instanceof CustomOAuth2User user) {
+            log.info("인증된 이메일: {}", user.getName());
+            MemberDTO dto = memberService.getMemberDTOByEmail(user.getName());
+            return ResponseEntity.ok(dto);
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 사용자 타입입니다.");
     }
 
     @PostMapping("/login")
