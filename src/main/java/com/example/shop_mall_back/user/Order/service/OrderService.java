@@ -108,7 +108,6 @@ public class OrderService {
             orderItem.setProduct(product);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(product.getPrice());  // 단가
-            orderItem.setSelectedOption(cartItem.getSelectedOption());
             orderItemRepository.save(orderItem);
 
 

@@ -95,7 +95,7 @@ class CartServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
 
         // when: 장바구니 추가 호출
-        cartService.addCartItem(memberId, productId, quantity, selectedOption);
+        cartService.addCartItem(memberId, productId, quantity);
 
         // then: cartRepository.save()가 호출되었는지 검증
         verify(cartRepository, times(1)).save(any(Cart.class));
@@ -187,7 +187,6 @@ class CartServiceTest {
         cartItem.setQuantity(3);
         cartItem.setIsSoldOut(false);
         cartItem.setIsSelected(true);
-        cartItem.setSelectedOption("옵션1");
 
         // Mock 리턴값 정의
         when(cartRepository.findByMember_Id(memberId)).thenReturn(Optional.of(cart));
@@ -240,18 +239,16 @@ class CartServiceTest {
         cartItem.setQuantity(3);           // 기존 수량
         cartItem.setIsSoldOut(false);      // 품절 아님
         cartItem.setIsSelected(true);      // 선택됨
-        cartItem.setSelectedOption("옵션1"); // 기존 옵션
 
         // Mock 리턴값 설정
         when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItem));
         when(inventoryService.isStockEnough(product.getId(), updateQuantity)).thenReturn(true);
 
         // when: 수량 및 옵션 수정 호출
-        cartService.updateCartItemOption(memberId, cartItemId, updateQuantity, updateOption);
+        cartService.updateCartItemOption(memberId, cartItemId, updateQuantity);
 
         // then: 변경 사항 검증
         assertThat(cartItem.getQuantity()).isEqualTo(updateQuantity);
-        assertThat(cartItem.getSelectedOption()).isEqualTo(updateOption);
         verify(cartItemRepository, times(1)).save(cartItem);
     }
 
@@ -265,7 +262,7 @@ class CartServiceTest {
 
         // when + then: 예외 검증
         assertThatThrownBy(() ->
-                cartService.updateCartItemOption(memberId, cartItemId, 0, "옵션X")
+                cartService.updateCartItemOption(memberId, cartItemId, 0)
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수량은 1개 이상이어야 합니다.");
@@ -291,7 +288,7 @@ class CartServiceTest {
 
         // when + then: 예외 검증
         assertThatThrownBy(() ->
-                cartService.updateCartItemOption(memberId, cartItemId, 1, "옵션X")
+                cartService.updateCartItemOption(memberId, cartItemId, 1)
         )
                 .isInstanceOf(SecurityException.class)
                 .hasMessage("해당 장바구니 항목을 수정할 권한이 없습니다.");
@@ -322,7 +319,7 @@ class CartServiceTest {
 
         // when + then: 예외 검증
         assertThatThrownBy(() ->
-                cartService.updateCartItemOption(memberId, cartItemId, 999, "옵션X")
+                cartService.updateCartItemOption(memberId, cartItemId, 999)
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("요청한 수량이 재고보다 많습니다.");
