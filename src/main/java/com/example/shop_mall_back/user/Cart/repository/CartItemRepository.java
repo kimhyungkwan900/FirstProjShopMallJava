@@ -17,7 +17,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
      * 특정 장바구니(cart) 안에서 동일한 상품(product)과 옵션(selectedOption)을 가진 항목이 존재하는지 조회
      * → 상품 추가 시, 기존 항목과 중복되는지 확인하는 데 사용됨
      */
-    Optional<CartItem> findByCartAndProductAndSelectedOption(Cart cart, Product product, String selectedOption);
+    Optional<CartItem> findByCartAndProduct(Cart cart, Product product);
 
     /**
      * 해당 장바구니(cart)에 담긴 모든 장바구니 항목들을 조회
@@ -53,5 +53,4 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     List<CartItem> findByCart_Member_Id(Long id);
 
-    Object findByCartAndProduct(Cart fakeCart, Product fakeProduct);
 }

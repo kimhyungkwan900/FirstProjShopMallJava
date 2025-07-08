@@ -42,10 +42,9 @@ public class CartService {
      * @param memberId         장바구니에 상품을 담을 사용자 ID
      * @param productId        담을 상품 ID
      * @param quantity         담을 수량 (1 이상)
-     * @param selectedOption   사용자가 선택한 옵션 (ex. 사이즈, 색상 등)
      */
     @Transactional
-    public void addCartItem(Long memberId, Long productId, int quantity, String selectedOption) {
+    public void addCartItem(Long memberId, Long productId, int quantity) {
         //0. 상품 조회
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("유효한 상품이 아닙니다."));
@@ -84,7 +83,7 @@ public class CartService {
                 .orElseThrow(() -> new IllegalArgumentException("상품 없음"));
 
         //상품 존재하는지 확인
-        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProductAndSelectedOption(cart, product, selectedOption);
+        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProduct(cart, product);
 
         if (existingItemOpt.isPresent()) {
             // 이미 있다면 수량만 증가
@@ -97,7 +96,6 @@ public class CartService {
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
-            cartItem.setSelectedOption(selectedOption);
             cartItem.setIsSelected(true);   // 기본값: 선택된 상태
             cartItem.setIsSoldOut(false);   // 기본값: 품절 아님
             cartItemRepository.save(cartItem);
@@ -139,7 +137,6 @@ public class CartService {
             dto.setCart_id(items.getCart().getId());
             dto.setProduct_id(items.getProduct().getId());
             dto.setQuantity(items.getQuantity());
-            dto.setSelected_option(items.getSelectedOption());
             dto.setIs_selected(items.getIsSelected() != null && items.getIsSelected());
             dto.setIs_sold_out(items.getIsSoldOut() != null && items.getIsSoldOut());
             return dto;
@@ -147,9 +144,9 @@ public class CartService {
     }
 
     /**
-     * [4] 장바구니 항목의 수량 및 옵션을 수정
+     * [4] 장바구니 항목의 수량을 수정
      */
-    public void updateCartItemOption(Long memberId, Long cartItemId, int updateQuantity, String updateSelectedOption) {
+    public void updateCartItemOption(Long memberId, Long cartItemId, int updateQuantity) {
         if (updateQuantity <= 0) {
             throw new IllegalArgumentException("수량은 1개 이상이어야 합니다.");
         }
@@ -166,7 +163,6 @@ public class CartService {
         }
 
         cartItem.setQuantity(updateQuantity);
-        cartItem.setSelectedOption(updateSelectedOption);
         cartItemRepository.save(cartItem);
     }
 

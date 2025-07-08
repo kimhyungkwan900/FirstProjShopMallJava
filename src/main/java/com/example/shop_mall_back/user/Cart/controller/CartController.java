@@ -28,15 +28,14 @@ public class CartController {
      * @param memberId 사용자 ID
      * @param productId 상품 ID
      * @param quantity 수량 (1 이상)
-     * @param selectedOption 선택된 옵션 (ex. 색상, 사이즈)
+
      */
-    @PostMapping("/items")
+    @PostMapping("/items/{productId}")
     public ResponseEntity<String> addCartItem(@RequestParam Long memberId,
-                                              @RequestParam Long productId,
-                                              @RequestParam int quantity,
-                                              @RequestParam String selectedOption) {
+                                              @PathVariable Long productId,
+                                              @RequestParam int quantity) {
         try {
-            cartService.addCartItem(memberId, productId, quantity, selectedOption);
+            cartService.addCartItem(memberId, productId, quantity);
             return ResponseEntity.ok("장바구니에 상품이 추가되었습니다.");
         } catch (IllegalArgumentException e) {
             // 재고 부족, 품절 등의 예외 메시지를 사용자에게 전달
@@ -74,15 +73,13 @@ public class CartController {
      * @param memberId 사용자 ID
      * @param itemId 장바구니 항목 ID
      * @param quantity 수정할 수량
-     * @param selectedOption 수정할 옵션
      */
     @PutMapping("/items/{itemId}")
     public ResponseEntity<String> updateCartItem(@RequestParam Long memberId,
                                                  @PathVariable Long itemId,
-                                                 @RequestParam int quantity,
-                                                 @RequestParam String selectedOption) {
+                                                 @RequestParam int quantity) {
         try {
-            cartService.updateCartItemOption(memberId, itemId, quantity, selectedOption);
+            cartService.updateCartItemOption(memberId, itemId, quantity);
             return ResponseEntity.ok("장바구니 항목이 수정되었습니다.");
         } catch (IllegalArgumentException | SecurityException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

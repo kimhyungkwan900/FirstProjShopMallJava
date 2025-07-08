@@ -40,17 +40,15 @@ class CartControllerTest {
     @Test
     @DisplayName("장바구니 상품 추가 - 성공")
     public void addCartItem_success() throws Exception {
-        doNothing().when(cartService).addCartItem(anyLong(), anyLong(), anyInt(),anyString());
+        doNothing().when(cartService).addCartItem(anyLong(), anyLong(), anyInt());
 
-        mockMvc.perform(post("/api/cart/items")
+        mockMvc.perform(post("/api/cart/items/{productId}",10)
                 .param("memberId", "1")
-                .param("productId", "10")
-                .param("quantity", "2")
-                .param("selectedOption", "옵션1"))
+                .param("quantity", "2"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("장바구니에 상품이 추가되었습니다."));
 
-        verify(cartService).addCartItem(1L,10L,2,"옵션1");
+        verify(cartService).addCartItem(1L,10L,2);
     }
 
     @Test
@@ -58,13 +56,11 @@ class CartControllerTest {
     void addCartItem_fail() throws Exception{
 
         Mockito.doThrow(new IllegalArgumentException("상품의 재고가 부족합니다."))
-                .when(cartService).addCartItem(anyLong(), anyLong(), anyInt(),anyString());
+                .when(cartService).addCartItem(anyLong(), anyLong(), anyInt());
 
-        mockMvc.perform(post("/api/cart/items")
+        mockMvc.perform(post("/api/cart/items/{productId}",10)
                         .param("memberId", "1")
-                        .param("productId", "10")
-                        .param("quantity", "2")
-                        .param("selectedOption", "옵션1"))
+                        .param("quantity", "2"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("상품의 재고가 부족합니다."));
     }
@@ -112,12 +108,11 @@ class CartControllerTest {
 
         mockMvc.perform(put("/api/cart/items/{itemId}", 5L)
                 .param("memberId", "1")
-                .param("quantity", "2")
-                .param("selectedOption", "옵션1"))
+                .param("quantity", "2"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("장바구니 항목이 수정되었습니다."));
 
-        verify(cartService).updateCartItemOption(1L, 5L, 2, "옵션1");
+        verify(cartService).updateCartItemOption(1L, 5L, 2);
     }
 
     @Test

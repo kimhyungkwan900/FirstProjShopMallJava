@@ -30,8 +30,6 @@ public class QSession extends EntityPathBase<Session> {
 
     public final StringPath ipAddress = createString("ipAddress");
 
-    public final DateTimePath<java.time.LocalDateTime> loginTime = createDateTime("loginTime", java.time.LocalDateTime.class);
-
     public final com.example.shop_mall_back.common.domain.member.QMember member;
 
     public final StringPath refreshToken = createString("refreshToken");
