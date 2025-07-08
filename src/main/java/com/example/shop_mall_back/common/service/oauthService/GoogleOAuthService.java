@@ -41,7 +41,8 @@ public class GoogleOAuthService implements OAuth2UserService<OAuth2UserRequest, 
                 attributes,
                 member.getId(),
                 member.getEmail(),
-                Role.MEMBER
+                Role.MEMBER,
+                OauthProvider.GOOGLE
         );
     }
 }

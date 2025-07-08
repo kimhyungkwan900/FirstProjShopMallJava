@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.common.config.oauth2;
 
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
+import com.example.shop_mall_back.common.constant.OauthProvider;
 import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.login.Session;
 import com.example.shop_mall_back.common.domain.member.Member;
@@ -13,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -20,9 +22,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
@@ -40,9 +44,28 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         Member member = memberService.findByEmail(email);
 
+        // provider와 attributes 가져오기
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        OauthProvider provider = oAuth2User.getProvider();
+
         // 토큰 생성
         String accessToken = tokenProvider.generateAccessToken(memberId, email, role);
         String refreshToken = tokenProvider.generateRefreshToken();
+
+        // 기본 만료 시간
+        long refreshTokenDuration = tokenProvider.getRefreshTokenExpirySeconds();
+
+        // 네이버인 경우 expires_in 문자열 처리
+        if (provider == OauthProvider.NAVER) {
+            Object rawExpiresIn = attributes.get("expires_in");
+            if (rawExpiresIn instanceof String) {
+                try {
+                    refreshTokenDuration = Long.parseLong((String) rawExpiresIn);
+                } catch (NumberFormatException e) {
+                    log.warn("네이버 expires_in 형변환 실패, 기본값 사용");
+                }
+            }
+        }
 
         // RefreshToken 저장
         Session tokenEntity = Session.builder()
@@ -64,6 +87,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         CookieUtils.addCookie(response,"refresh_token",refreshToken,tokenProvider.getRefreshTokenExpirySeconds());
 
         // 리다이렉트
-        response.sendRedirect("http://localhost:5173/");
+        response.sendRedirect("http://localhost:5173/oauth2/success?accessToken=" + accessToken);
     }
 }
