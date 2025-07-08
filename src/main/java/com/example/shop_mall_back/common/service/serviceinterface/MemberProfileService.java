@@ -10,6 +10,8 @@ public interface MemberProfileService {
 
     void memberProfileUpdate(MemberProfileDTO memberProfileDTO);
 
+    MemberProfile findByMemberIdOrThrow(Long memberId);
+
     default MemberProfileDTO entityToDTO(MemberProfile memberProfile) {
         return MemberProfileDTO.builder()
                 .id(memberProfile.getId())

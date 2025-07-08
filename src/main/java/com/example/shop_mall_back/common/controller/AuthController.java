@@ -1,14 +1,16 @@
 package com.example.shop_mall_back.common.controller;
 
+import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
-import com.example.shop_mall_back.common.config.oauth2.CustomOAuth2User;
 import com.example.shop_mall_back.common.constant.LoginResult;
 import com.example.shop_mall_back.common.constant.LoginType;
 import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.login.Session;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.LoginRequestDTO;
 import com.example.shop_mall_back.common.dto.MemberDTO;
+import com.example.shop_mall_back.common.dto.MemberWithProfileDTO;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
@@ -24,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -40,28 +43,32 @@ public class AuthController {
     private final LoginHistoryService loginHistoryService;
 
     // 현재 로그인 중인 사용자 정보 반환
-//    @GetMapping("/me")
-//    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal(expression = "membername") String email){
-//        //이메일로 사용자 조회
-//        MemberDTO memberDto = memberService.getMemberDTOByEmail(email);
-//
-//        return ResponseEntity.ok(memberDto);
-//    }
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal Object principal) {
-        log.info("현재 로그인된 Principal: {}", principal);
-
+    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal CustomUserPrincipal principal){
+        //이메일로 사용자 조회
         if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 정보가 없습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
-        if (principal instanceof CustomOAuth2User user) {
-            log.info("인증된 이메일: {}", user.getName());
-            MemberDTO dto = memberService.getMemberDTOByEmail(user.getName());
-            return ResponseEntity.ok(dto);
-        }
+        // Member 객체 직접 접근 가능
+        Member member = principal.getMember();
+        MemberProfile profile = principal.getProfile();
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 사용자 타입입니다.");
+        MemberWithProfileDTO dto = new MemberWithProfileDTO(
+                member.getId(),
+                member.getEmail(),
+                member.getUserId(),
+                member.getPhoneNumber(),
+                profile.getNickname(),
+                profile.getRole(),
+                profile.getGrade(),
+                profile.getGender(),
+                profile.getAge(),
+                profile.getProfileImgUrl(),
+                profile.getDelivAddress()
+        );
+
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/login")
