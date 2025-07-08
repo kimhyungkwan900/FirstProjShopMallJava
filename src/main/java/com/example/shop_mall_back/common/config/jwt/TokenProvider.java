@@ -1,6 +1,9 @@
 package com.example.shop_mall_back.common.config.jwt;
 
+import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.common.constant.Role;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -22,6 +25,8 @@ import java.util.List;
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
+    private final MemberService memberService;
+    private final MemberProfileService memberProfileService;
 
     private static final Duration ACCESS_TOKEN_DURATION =Duration.ofMinutes(30);
     private static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(7);
@@ -91,8 +96,12 @@ public class TokenProvider {
         // claims 가져오기
         Claims claims = getClaims(token);
         
-        // role 에 들어간 정보 가져오기
+        // token의 정보 받아오기
+        Long memberId = claims.get("memberId", Long.class);
         String role = claims.get("role", String.class);
+
+        // 커스텀 Principal 생성
+        CustomUserPrincipal principal = new CustomUserPrincipal(memberService.findByIdOrThrow(memberId), memberProfileService.findByMemberIdOrThrow(memberId));
 
         // Security 권한 객체로 변환 Ex) ROLE_USER
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));

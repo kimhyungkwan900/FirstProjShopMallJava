@@ -29,7 +29,6 @@ public class OAuthMemberService {
         if(name == null || name.isEmpty()) {
             name = "oauthUser";
         }
-
         if(gender == null){
             gender = Gender.UNKNOWN;
         }

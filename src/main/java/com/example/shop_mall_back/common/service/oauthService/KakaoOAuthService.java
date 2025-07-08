@@ -26,34 +26,39 @@ public class KakaoOAuthService implements OAuth2UserService<OAuth2UserRequest, O
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
+        try {
+            OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
-        String providerId = String.valueOf(attributes.get("id"));
-        String email = (String) kakaoAccount.get("email");
-        String name = (String) kakaoAccount.get("nickname");
-        String phoneNumber = (String) kakaoAccount.get("phone_number");
-        String gender = (String) kakaoAccount.get("gender");
-        String ageRange = (String) kakaoAccount.get("age_range");
-        String nickname = (String) profile.get("nickname");
-        String profileImg = (String) profile.get("profile_image_url");
+            String providerId = String.valueOf(attributes.get("id"));
+            String email = (String) kakaoAccount.get("email");
+            String name = (String) kakaoAccount.get("nickname");
+            String phoneNumber = (String) kakaoAccount.get("phone_number");
+            String gender = (String) kakaoAccount.get("gender");
+            String ageRange = (String) kakaoAccount.get("age_range");
+            String nickname = (String) profile.get("nickname");
+            String profileImg = (String) profile.get("profile_image_url");
 
-        Gender gen = Gender.conversion(gender);
-        Age age = Age.conversion(ageRange);
+            Gender gen = Gender.conversion(gender);
+            Age age = Age.conversion(ageRange);
 
-        Member member = oAuthMemberService.findOrCreateMember("01011112222", "email@test", OauthProvider.KAKAO, providerId);
+            Member member = oAuthMemberService.findOrCreateMember("01011112222", "email@test", OauthProvider.KAKAO, providerId);
 
-        oAuthMemberService.createProfileIfNotExists(member, name, nickname, profileImg, gen, age);
+            oAuthMemberService.createProfileIfNotExists(member, name, nickname, profileImg, gen, age);
 
-        return new CustomOAuth2User(
-                attributes,
-                member.getId(),
-                member.getEmail(),
-                Role.MEMBER,
-                OauthProvider.KAKAO
-        );
+            return new CustomOAuth2User(
+                    attributes,
+                    member.getId(),
+                    member.getEmail(),
+                    Role.MEMBER,
+                    OauthProvider.KAKAO
+            );
+        } catch (Exception e) {
+            throw new OAuth2AuthenticationException("API 로그인 에러 발생");
+        }
+
     }
 }

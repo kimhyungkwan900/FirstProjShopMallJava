@@ -1,13 +1,16 @@
 package com.example.shop_mall_back.common.controller;
 
+import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.common.constant.LoginResult;
 import com.example.shop_mall_back.common.constant.LoginType;
 import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.login.Session;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.LoginRequestDTO;
 import com.example.shop_mall_back.common.dto.MemberDTO;
+import com.example.shop_mall_back.common.dto.MemberWithProfileDTO;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
@@ -23,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -40,11 +44,31 @@ public class AuthController {
 
     // 현재 로그인 중인 사용자 정보 반환
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal(expression = "membername") String email){
+    public ResponseEntity<?> getCurrentMember(@AuthenticationPrincipal CustomUserPrincipal principal){
         //이메일로 사용자 조회
-        MemberDTO memberDto = memberService.getMemberDTOByEmail(email);
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
 
-        return ResponseEntity.ok(memberDto);
+        // Member 객체 직접 접근 가능
+        Member member = principal.getMember();
+        MemberProfile profile = principal.getProfile();
+
+        MemberWithProfileDTO dto = new MemberWithProfileDTO(
+                member.getId(),
+                member.getEmail(),
+                member.getUserId(),
+                member.getPhoneNumber(),
+                profile.getNickname(),
+                profile.getRole(),
+                profile.getGrade(),
+                profile.getGender(),
+                profile.getAge(),
+                profile.getProfileImgUrl(),
+                profile.getDelivAddress()
+        );
+
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/login")

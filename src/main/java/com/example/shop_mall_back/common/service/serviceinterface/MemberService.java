@@ -2,6 +2,7 @@ package com.example.shop_mall_back.common.service.serviceinterface;
 
 import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,8 @@ public interface MemberService {
     Role getRoleByMember(Member member);
 
     Member authenticate(String userId, String rawPassword);
+
+    Member findByIdOrThrow(Long id);
 
     void memberFormUpdate(MemberFormDTO memberFormDTO,PasswordEncoder passwordEncoder);
 
