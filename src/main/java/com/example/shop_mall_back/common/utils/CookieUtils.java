@@ -3,8 +3,10 @@ package com.example.shop_mall_back.common.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -26,12 +28,16 @@ public class CookieUtils {
         return Optional.empty();
     }
 
-    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge){
-        Cookie cookie = new Cookie(name, Base64.getEncoder().encodeToString(value.getBytes()));
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(maxAge);
-        response.addCookie(cookie);
+    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None") // 크로스 도메인 대응
+                .path("/")
+                .maxAge(Duration.ofSeconds(maxAge))
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response,String name){
