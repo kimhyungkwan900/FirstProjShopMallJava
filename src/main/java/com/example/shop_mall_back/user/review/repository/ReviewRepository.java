@@ -19,4 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, JpaSpecif
     List<Review> findAllByProductId(@Param("productId") Long productId);
 
     Page<Review> findByMemberId(Long memberId, Pageable pageable);
+
+    boolean existsByOrderId(Long orderId);
+
 }
