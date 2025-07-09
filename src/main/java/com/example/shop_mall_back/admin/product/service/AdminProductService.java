@@ -13,6 +13,7 @@ import com.example.shop_mall_back.user.product.repository.BrandRepository;
 import com.example.shop_mall_back.user.product.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log4j2
 public class AdminProductService {
 
     private final AdminProductRepository adminProductRepository;
@@ -73,8 +75,41 @@ public class AdminProductService {
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @Transactional(readOnly = true)
     public Page<ProductDto> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable){
-        return adminProductRepository.getProductPageByCondition(productSearchDto, pageable)
-                .map(product -> modelMapper.map(product, ProductDto.class));
+        //나중에 삭제
+        log.info("▶▶ getProductPageByCondition, incoming DTO = {}", productSearchDto);
+
+        Page<Product> productPage = adminProductRepository.getProductPageByCondition(productSearchDto, pageable);
+
+        return productPage.map(product ->
+                ProductDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .stock(product.getStock())
+                        .viewCount(product.getViewCount())
+                        .sellStatus(product.getSellStatus())
+                        // 브랜드, 카테고리 null 체크 후 매핑
+                        .brand(
+                                product.getBrand() != null
+                                        ? BrandDto.builder()
+                                        .id(product.getBrand().getId())
+                                        .name(product.getBrand().getName())
+                                        .build()
+                                        : null
+                        )
+                        .category(
+                                product.getCategory() != null
+                                        ? CategoryDto.builder()
+                                        .id(product.getCategory().getId())
+                                        .name(product.getCategory().getName())
+//                                        .category(product.getCategory().getParent())
+                                        .build()
+                                        : null
+                        )
+                        .regTime(product.getRegTime())
+                        .updateTime(product.getUpdateTime())
+                        .build()
+        );
     }
 
     //---상품 상세정보 조회
