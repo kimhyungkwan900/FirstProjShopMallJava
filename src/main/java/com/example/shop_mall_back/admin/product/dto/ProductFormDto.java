@@ -42,15 +42,15 @@ public class ProductFormDto {
 
     private List<Long> productImgIds = new ArrayList<>();
 
-
-    //--------- 직접 코딩 하기
-    private static ModelMapper modelMapper = new ModelMapper();
-
     public Product createProduct(){
-        return modelMapper.map(this, Product.class);
-    }
+        Product product = Product.builder()
+                .name(name)
+                .price(price)
+                .description(description)
+                .stock(stock)
+                .sellStatus(sellStatus)
+                .build();
 
-    public static ProductFormDto of(Product product){
-        return modelMapper.map(product,ProductFormDto.class);
+        return product;
     }
 }
