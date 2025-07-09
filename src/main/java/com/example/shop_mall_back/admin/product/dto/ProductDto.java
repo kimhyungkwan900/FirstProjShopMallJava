@@ -27,7 +27,7 @@ public class ProductDto {
 
     private Product.SellStatus sellStatus;
 
-    private LocalDateTime createTime;
+    private LocalDateTime regTime;
 
     private LocalDateTime updateTime;
 

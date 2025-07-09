@@ -66,7 +66,9 @@ public class AdminProductController {
 
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @GetMapping({"/products", "/products/{page}"})
-    public ResponseEntity<?> productManage(ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+    public ResponseEntity<?> productManage(@ModelAttribute ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page){
+
+        log.info(">>> incoming searchDto: {}", productSearchDto);
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
         Page<ProductDto> products = adminProductService.getAdminProductPage(productSearchDto, pageable);

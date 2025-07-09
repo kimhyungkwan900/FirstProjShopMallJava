@@ -27,19 +27,19 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
         //동적 where 절 조립
         //상품 아이디로 검색
         BooleanBuilder builder = new BooleanBuilder();
-        if(productSearchDto.getId() != null){
-            builder.and(product.id.eq(productSearchDto.getId()));
+        if(productSearchDto.getProductId() != null){
+            builder.and(product.id.eq(productSearchDto.getProductId()));
         }
         //상품명으로 검색
-        if(productSearchDto.getProductName() != null){
-            builder.and(product.name.like("%"+productSearchDto.getProductName()+"%"));
+        if(StringUtils.hasText(productSearchDto.getProductName())){
+            builder.and(product.name.like("%"+productSearchDto.getProductName().trim()+"%"));
         }
         //브랜드명으로 검색
-        if(productSearchDto.getBrandName() != null){
+        if(StringUtils.hasText(productSearchDto.getBrandName())){
             builder.and(product.brand.name.like("%"+productSearchDto.getBrandName()+"%"));
         }
         //판매 상태로 검색
-        if(productSearchDto.getSellStatus() != null){
+        if(StringUtils.hasText(productSearchDto.getSellStatus())){
             builder.and(product.sellStatus.eq(Product.SellStatus.valueOf(productSearchDto.getSellStatus())));
         }
         //카테고리 ID로 검색
@@ -47,11 +47,11 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
             builder.and(product.category.id.eq(productSearchDto.getCategoryID()));
         }
         //등록 일자로 검색
-        if(productSearchDto.getDateType() != null && productSearchDto.getDateType().equals("등록일")){
+        if(productSearchDto.getStartDate() != null && productSearchDto.getEndDate() != null && productSearchDto.getDateType().equals("등록일")){
             builder.and(product.regTime.between(productSearchDto.getStartDate(), productSearchDto.getEndDate()));
         }
         //수정일자로 검색
-        if(productSearchDto.getDateType() != null  && productSearchDto.getDateType().equals("수정일")){
+        if(productSearchDto.getStartDate() != null && productSearchDto.getEndDate() != null && productSearchDto.getDateType().equals("수정일")){
             builder.and(product.updateTime.between(productSearchDto.getStartDate(), productSearchDto.getEndDate()));
         }
 
