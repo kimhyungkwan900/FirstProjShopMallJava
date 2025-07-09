@@ -1,5 +1,4 @@
-INSERT INTO brands (name)
-VALUES ('아라사카'),
+INSERT INTO brands (name) VALUES ('아라사카'),
        ('밀리테크'),
        ('캉 타오'),
        ('미드나이트'),
