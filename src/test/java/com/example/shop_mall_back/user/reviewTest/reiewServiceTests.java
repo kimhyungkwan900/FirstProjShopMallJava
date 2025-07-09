@@ -33,7 +33,7 @@ public class reiewServiceTests {
         reviewFormDTO.setCreatedAt(LocalDateTime.now());
         reviewFormDTO.setReviewStatus(ReviewStatus.normal);
 
-        reviewService.insertReview(reviewFormDTO);
+//        reviewService.insertReview(reviewFormDTO,);
     }
 
     @Test

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ReviewFormDTO {
-    private Long id;
+    private Long Id;
     @NotBlank(message = "별점을 선택해주세요.")
     private int score;
     private String summation;
@@ -23,14 +23,4 @@ public class ReviewFormDTO {
     private Long orderId;
     private ReviewStatus reviewStatus;
     private LocalDateTime createdAt;
-
-    private static ModelMapper  modelMapper = new ModelMapper();
-
-    public Review createReview() {
-        return modelMapper.map(this, Review.class);
-    }
-    public static ReviewDTO of(Review review) {
-        return modelMapper.map(review, ReviewDTO.class);
-    }
-
 }

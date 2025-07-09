@@ -28,6 +28,9 @@ public class ReviewDTO {
 
     private List<ReviewImgDTO> reviewImgDTOList;
 
+    private String productName;
+    private String memberName;
+
     private int likeCount;
     private int dislikeCount;
 }

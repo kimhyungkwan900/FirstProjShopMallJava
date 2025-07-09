@@ -26,8 +26,6 @@ public class ReviewController {
         return reviewService.findAllByProductId(productId, sort);
     }
 
-
-
     // 회원별 리뷰 목록 컨트롤
     @GetMapping("/mypage/reviews")
     public Page<ReviewDTO> findAllByMemberId(
@@ -45,13 +43,16 @@ public class ReviewController {
         return dto;
     }
 
-    // 리뷰 등록 이미지 등록
-    @PostMapping("/mypage/review/writer")
-    public void insertReview(@RequestBody ReviewFormDTO reviewFormDTO) {
-        reviewService.insertReview(reviewFormDTO);
+    // 리뷰 등록
+    @PostMapping(value = "/mypage/review/writer", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void insertReview(
+            @RequestPart("reviewFormDTO") ReviewFormDTO reviewFormDTO,
+            @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFile) {
+
+        reviewService.insertReview(reviewFormDTO, reviewImgFile);
     }
 
-    // 리뷰 수정 이미지 수정
+    // 리뷰 수정
     @PutMapping(value = "/mypage/review/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void updateReview(
             @RequestParam("reviewId") Long id,
@@ -66,7 +67,6 @@ public class ReviewController {
     public void deleteReview(@RequestParam("reviewId") Long id){
         reviewService.deleteReview(id);
     }
-
 
 
 
