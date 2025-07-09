@@ -59,28 +59,28 @@ INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_i
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/tshirt/10.png',true,50);
 
 -- 맨투맨
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/simplefoods/1.png',true,51);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/simplefoods/2.png',true,52);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/simplefoods/3.png',true,53);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/simplefoods/4.png',true,54);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/simplefoods/5.png',true,55);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/simplefoods/6.png',true,56);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/simplefoods/7.png',true,57);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/simplefoods/8.png',true,58);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/simplefoods/9.png',true,59);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/simplefoods/10.png',true,60);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/sweatshirt/1.png',true,51);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/sweatshirt/2.png',true,52);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/sweatshirt/3.png',true,53);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/sweatshirt/4.png',true,54);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/sweatshirt/5.png',true,55);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/sweatshirt/6.png',true,56);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/sweatshirt/7.png',true,57);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/sweatshirt/8.png',true,58);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/sweatshirt/9.png',true,59);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/sweatshirt/10.png',true,60);
 
 -- 셔츠
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/sweatshirt/1.png',true,61);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/sweatshirt/2.png',true,62);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/sweatshirt/3.png',true,63);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/sweatshirt/4.png',true,64);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/sweatshirt/5.png',true,65);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/sweatshirt/6.png',true,66);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/sweatshirt/7.png',true,67);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/sweatshirt/8.png',true,68);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/sweatshirt/9.png',true,69);
-INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/sweatshirt/10.png',true,70);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/shirt/1.png',true,61);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('2.png','2.png','/images/shirt/2.png',true,62);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('3.png','3.png','/images/shirt/3.png',true,63);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('4.png','4.png','/images/shirt/4.png',true,64);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('5.png','5.png','/images/shirt/5.png',true,65);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('6.png','6.png','/images/shirt/6.png',true,66);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('7.png','7.png','/images/shirt/7.png',true,67);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('8.png','8.png','/images/shirt/8.png',true,68);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('9.png','9.png','/images/shirt/9.png',true,69);
+INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('10.png','10.png','/images/shirt/10.png',true,70);
 
 -- 청바지
 INSERT INTO products_img (img_name, ori_img_name, img_url, is_rep_img, product_id) VALUES ('1.png','1.png','/images/jeans/1.png',true,71);
