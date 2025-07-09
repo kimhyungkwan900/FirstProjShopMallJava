@@ -65,6 +65,8 @@ public class AdminReviewService {
         adminReviewRepository.deleteByReviewId(reviewId);
     }
 
+
+    // 관리자 리뷰 필터 전체 목록 / 신고 1건 이상 있응 리뷰 목록 / 블라인드 처리한 리뷰
     public Page<AdminReviewDTO> getFilteredReviews(String filter, String searchType, String keyword, Pageable pageable) {
         Specification<Review> spec = Specification.where(null);
         if ("report".equalsIgnoreCase(filter)) {
@@ -83,7 +85,7 @@ public class AdminReviewService {
 
         }
         if (keyword != null && !keyword.isBlank()) {
-            if ("writer".equalsIgnoreCase(searchType)) {
+            if ("name".equalsIgnoreCase(searchType)) {
                 spec = spec.and((root, query, cb) ->
                         cb.like(root.get("member").get("name"), "%" + keyword + "%")
                 );
@@ -98,6 +100,7 @@ public class AdminReviewService {
             AdminReviewDTO dto = modelMapper.map(review, AdminReviewDTO.class);
             dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
             dto.setReportCount(reviewReportService.countReviewReportByReviewId(review.getId())); // 추가
+            // 블라인드 사유 가져와서  있으면 setter로 넣고 없으면 넣지 않는다.
             ReviewBlind reviewBlind = adminReviewRepository.findTopByReviewIdOrderByBlindAtDesc(review.getId());
             if (reviewBlind != null) {
                 dto.setBlindReason(reviewBlind.getReason());

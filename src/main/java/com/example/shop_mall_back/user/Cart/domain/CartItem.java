@@ -31,9 +31,6 @@ public class CartItem {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = false)
-    private String selectedOption;
-
     @Column(name = "is_selected")
     private Boolean isSelected;  // 주문을 위한 선택 여부
 

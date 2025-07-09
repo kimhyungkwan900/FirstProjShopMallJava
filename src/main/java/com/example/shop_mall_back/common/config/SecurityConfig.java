@@ -8,6 +8,7 @@ import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.oauthService.GoogleOAuthService;
 import com.example.shop_mall_back.common.service.oauthService.KakaoOAuthService;
 import com.example.shop_mall_back.common.service.oauthService.NaverOAuthService;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -51,9 +52,10 @@ public class SecurityConfig {
             TokenProvider tokenProvider,
             SessionRepository sessionRepository,
             MemberService memberService,
+            MemberProfileService memberProfileService,
             OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo
     ) {
-        return new OAuth2SuccessHandler(tokenProvider, sessionRepository, memberService, authRequestRepo);
+        return new OAuth2SuccessHandler(tokenProvider, sessionRepository, memberService, authRequestRepo, memberProfileService);
     }
 
     @Bean

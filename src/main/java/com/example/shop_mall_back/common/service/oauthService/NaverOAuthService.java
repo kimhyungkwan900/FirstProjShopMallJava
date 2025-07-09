@@ -56,7 +56,7 @@ public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, O
             );
         } catch (Exception e) {
             log.error(e);
-            throw  new OAuth2AuthenticationException("에러발생");
+            throw  new OAuth2AuthenticationException("API 로그인 에러 발생");
         }
 
     }

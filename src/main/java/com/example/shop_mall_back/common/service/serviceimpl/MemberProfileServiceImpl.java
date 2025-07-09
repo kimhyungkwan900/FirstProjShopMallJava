@@ -47,7 +47,8 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 //    </editor-fold>
 
 //    <editor-fold desc="Optional null 처리")
-    private MemberProfile findByMemberIdOrThrow(Long memberId) {
+    @Override
+    public MemberProfile findByMemberIdOrThrow(Long memberId) {
         return Optional.ofNullable(memberProfileRepository.findByMemberId(memberId))
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 프로필입니다."));
     }

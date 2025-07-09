@@ -1,6 +1,6 @@
 package com.example.shop_mall_back.admin.order.domain;
 
-import com.example.shop_mall_back.user.Order.domain.OrderReturn;
+import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

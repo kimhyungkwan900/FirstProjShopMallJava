@@ -26,23 +26,28 @@ public class GoogleOAuthService implements OAuth2UserService<OAuth2UserRequest, 
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        String providerId = (String) attributes.get("sub");
-        String profileImg = (String) attributes.get("picture");
-        String email = (String) attributes.get("email");
-        String name = (String) attributes.get("name");
+        try {
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+            String providerId = (String) attributes.get("sub");
+            String profileImg = (String) attributes.get("picture");
+            String email = (String) attributes.get("email");
+            String name = (String) attributes.get("name");
 
-        Member member = oAuthMemberService.findOrCreateMember("01012122121", "test@gmail.com", OauthProvider.GOOGLE, providerId);
+            Member member = oAuthMemberService.findOrCreateMember("01012122121", "test@gmail.com", OauthProvider.GOOGLE, providerId);
 
-        oAuthMemberService.createProfileIfNotExists(member, name, name, profileImg, null, null);
+            oAuthMemberService.createProfileIfNotExists(member, name, name, profileImg, null, null);
 
 
-        return new CustomOAuth2User(
-                attributes,
-                member.getId(),
-                member.getEmail(),
-                Role.MEMBER,
-                OauthProvider.GOOGLE
-        );
+            return new CustomOAuth2User(
+                    attributes,
+                    member.getId(),
+                    member.getEmail(),
+                    Role.MEMBER,
+                    OauthProvider.GOOGLE
+            );
+        } catch (Exception e) {
+            throw new OAuth2AuthenticationException("API 로그인 에러 발생");
+        }
+
     }
 }

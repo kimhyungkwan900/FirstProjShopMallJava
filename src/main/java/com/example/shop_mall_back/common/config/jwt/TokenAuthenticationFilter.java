@@ -1,5 +1,10 @@
 package com.example.shop_mall_back.common.config.jwt;
 
+import com.example.shop_mall_back.common.config.CustomUserPrincipal;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,12 +12,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static com.example.shop_mall_back.common.domain.member.QMember.member;
 
 @Component
 @RequiredArgsConstructor
@@ -51,6 +59,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

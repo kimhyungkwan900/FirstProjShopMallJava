@@ -129,7 +129,7 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다. id=" + id));
     }
 
-
+    // 회원 별로 리뷰 목록
     public Page<ReviewDTO> findAllByMemberId(Long memberId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Review> reviewPage = reviewRepository.findByMemberId(memberId, pageable);
