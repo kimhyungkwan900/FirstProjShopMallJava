@@ -72,8 +72,12 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = memberRepository.findByEmail(email).orElse(null);
 
-
         return member;
+    }
+
+    @Override
+    public Member findByIdOrThrow(Long id) {
+        return memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
     }
 
     @Override
@@ -136,11 +140,6 @@ public class MemberServiceImpl implements MemberService {
         if (memberRepository.findByEmail(email).isPresent()) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
-    }
-
-    @Override
-    public Member findByIdOrThrow(Long id) {
-        return memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
     }
 
     public Member authenticate(String userId, String rawPassword) {
