@@ -30,6 +30,7 @@ public class MyOrderService {
     private final OrderReturnRepository orderReturnRepository;
     private final ReviewRepository reviewRepository;
 
+    // 회원 별 주문 목록 조회
     public Page<OrderListDTO> findByMemberId(Long memberId, Pageable pageable) {
         Page<Order> ordersPage = myOrderRepository.findByMemberId(memberId, pageable);
         System.out.println("ordersPage = " + ordersPage);
