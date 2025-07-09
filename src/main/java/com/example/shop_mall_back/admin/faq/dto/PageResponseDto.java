@@ -2,6 +2,7 @@ package com.example.shop_mall_back.admin.faq.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Data
+@Getter
 public class PageResponseDto <E>{
 
     private List<E> dtoList; //현재 데이터 페이지
