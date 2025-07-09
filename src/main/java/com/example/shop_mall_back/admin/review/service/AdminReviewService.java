@@ -4,6 +4,10 @@ import com.example.shop_mall_back.admin.review.domain.ReviewBlind;
 import com.example.shop_mall_back.admin.review.dto.AdminReviewBlindDTO;
 import com.example.shop_mall_back.admin.review.dto.AdminReviewDTO;
 import com.example.shop_mall_back.admin.review.repository.AdminReviewRepository;
+import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.review.domain.Review;
 import com.example.shop_mall_back.user.review.domain.ReviewReport;
 import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
@@ -38,6 +42,8 @@ public class AdminReviewService {
     private final ModelMapper modelMapper;
     private final ReviewImgService reviewImgService;
     private final ReviewReportService reviewReportService;
+    private final ProductRepository  productRepository;
+    private final MemberRepository memberRepository;
 
     //리뷰 블라인드 처리
     @Transactional
@@ -85,20 +91,24 @@ public class AdminReviewService {
 
         }
         if (keyword != null && !keyword.isBlank()) {
-            if ("name".equalsIgnoreCase(searchType)) {
+            if ("writer".equalsIgnoreCase(searchType)) {
                 spec = spec.and((root, query, cb) ->
-                        cb.like(root.get("member").get("name"), "%" + keyword + "%")
-                );
+                        cb.like(root.get("member").get("userId"), "%" + keyword + "%"));
             } else if ("product".equalsIgnoreCase(searchType)) {
                 spec = spec.and((root, query, cb) ->
-                        cb.like(root.get("product").get("name"), "%" + keyword + "%")
-                );
+                        cb.like(root.get("product").get("name"), "%" + keyword + "%"));
             }
         }
         Page<Review> reviews = reviewRepository.findAll(spec, pageable);
         return reviews.map(review -> {
             AdminReviewDTO dto = modelMapper.map(review, AdminReviewDTO.class);
             dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
+            // 상품 명 받아와서 값 넣음
+            Product product = productRepository.findById(review.getProduct().getId()).get();
+            dto.setProductName(product.getName());
+            // 회원 id 받아오기
+            Member member = memberRepository.findById(review.getMember().getId()).get();
+            dto.setUserId(member.getUserId());
             dto.setReportCount(reviewReportService.countReviewReportByReviewId(review.getId())); // 추가
             // 블라인드 사유 가져와서  있으면 setter로 넣고 없으면 넣지 않는다.
             ReviewBlind reviewBlind = adminReviewRepository.findTopByReviewIdOrderByBlindAtDesc(review.getId());

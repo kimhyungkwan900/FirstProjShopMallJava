@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     // 여러 카테고리 ID에 속한 상품들을 페이징 처리하여 검색 (하위 카테고리 포함 등)
     Page<Product> findByCategoryIdIn(List<Long> categoryIds, Pageable pageable);
+
+    String findByid(Long id);
 }

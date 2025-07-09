@@ -1,5 +1,7 @@
 package com.example.shop_mall_back.user.review.domain;
 
+import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,10 +26,15 @@ public class Review {
     private String reviewSummation; // 리뷰 한줄 요약
     @Column(name = "review_content")
     private String reviewContent; // 리뷰 내용
-    @Column(name = "member_id")
-    private Long memberId; // FK 멤버 ID
-    @Column(name = "product_id")
-    private Long productId; // FK 상품 ID
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product; // FK 상품 ID
+
     @Column(name = "order_id")
     private Long orderId; // FK 주문 ID
     @Enumerated(EnumType.STRING)

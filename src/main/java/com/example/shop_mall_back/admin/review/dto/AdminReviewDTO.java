@@ -28,4 +28,7 @@ public class AdminReviewDTO {
     private String blindReason;
 
     private int reportCount;
+
+    private String productName;
+    private String userId;
 }

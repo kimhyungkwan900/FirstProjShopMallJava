@@ -1,6 +1,15 @@
 package com.example.shop_mall_back.user.review.service;
 
 import com.example.shop_mall_back.admin.review.dto.AdminReviewReportDTO;
+import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
+import com.example.shop_mall_back.common.dto.MemberProfileDTO;
+import com.example.shop_mall_back.common.repository.MemberProfileRepository;
+import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.serviceimpl.MemberProfileServiceImpl;
+import com.example.shop_mall_back.user.product.repository.ProductRepository;
+import com.example.shop_mall_back.user.product.service.ProductService;
 import com.example.shop_mall_back.user.review.domain.Review;
 import com.example.shop_mall_back.user.review.dto.*;
 import com.example.shop_mall_back.user.review.repository.ReviewReactionRepository;
@@ -9,6 +18,7 @@ import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.util.Members;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +40,7 @@ public class ReviewService {
     private final ReviewReactionService reviewReactionService;
     private final ReviewImgService reviewImgService;
 
+    private final ProductRepository  productRepository;
     // 리뷰 받아오기(수정)
     public ReviewDTO findByReviewId(Long id) {
         ReviewDTO dto = reviewRepository.findById(id).stream()
@@ -95,9 +106,18 @@ public class ReviewService {
 //                }).toList();
 //    }
     // 리뷰 등록
-    public void insertReview(ReviewFormDTO reviewFormDTO) {
+    public void insertReview(ReviewFormDTO reviewFormDTO, List<MultipartFile> reviewImgFile) {
+
+        reviewFormDTO.setCreatedAt(LocalDateTime.now());
+
         Review review = modelMapper.map(reviewFormDTO, Review.class);
         reviewRepository.save(review);
+
+        if(reviewImgFile != null && !reviewImgFile.isEmpty() ) {
+            for(MultipartFile file : reviewImgFile) {
+                reviewImgService.saveReviewImage(review.getId(), file);
+            }
+        }
     }
 
     // 리뷰 삭제
@@ -139,6 +159,9 @@ public class ReviewService {
             ReviewDTO dto = modelMapper.map(review, ReviewDTO.class);
             dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
             dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
+            // 상품 이름 받아오기
+            Product product = productRepository.findById(review.getProduct().getId()).get();
+            dto.setProductName(product.getName());
             dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
             return dto;
         });
