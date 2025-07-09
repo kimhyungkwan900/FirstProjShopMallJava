@@ -35,11 +35,16 @@ public class OrderReturn {
     private LocalDateTime regDate = LocalDateTime.now();
 
     public enum ReturnType {
-        CANCEL_REQUEST,    // 취소 신청
-        CANCEL_COMPLETE,   // 취소 완료
-        RETURN_REQUEST,    // 반품 신청
-        RETURN_COMPLETE,   // 반품 완료
-        EXCHANGE_REQUEST,  // 교환 신청
-        EXCHANGE_COMPLETE  // 교환 완료
+        CANCEL_REQUEST,       // 취소 신청
+        CANCEL_COMPLETE,      // 취소 완료
+        CANCEL_REJECTED,      // 취소 반려
+
+        RETURN_REQUEST,       // 반품 신청
+        RETURN_COMPLETE,      // 반품 완료
+        RETURN_REJECTED,      // 반품 반려
+
+        EXCHANGE_REQUEST,     // 교환 신청
+        EXCHANGE_COMPLETE,    // 교환 완료
+        EXCHANGE_REJECTED     // 교환 반려
     }
 }
