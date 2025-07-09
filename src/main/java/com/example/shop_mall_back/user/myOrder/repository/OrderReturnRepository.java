@@ -13,4 +13,6 @@ public interface OrderReturnRepository extends JpaRepository<OrderReturn, Intege
 
     @Query("SELECT o.returnType FROM OrderReturn o WHERE o.orderId = :orderId")
     OrderReturn.ReturnType getReturnTypeByOrderId(@Param("orderId") Long orderId);
+
+
 }

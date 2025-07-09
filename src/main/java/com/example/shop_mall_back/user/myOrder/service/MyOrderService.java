@@ -3,8 +3,10 @@ package com.example.shop_mall_back.user.myOrder.service;
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.Order.domain.OrderItem;
+import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
 import com.example.shop_mall_back.user.myOrder.dto.OrderListDTO;
 import com.example.shop_mall_back.user.myOrder.dto.OrderProductDTO;
+import com.example.shop_mall_back.user.myOrder.dto.OrderReturnDTO;
 import com.example.shop_mall_back.user.myOrder.repository.MyOrderItemRepository;
 import com.example.shop_mall_back.user.myOrder.repository.MyOrderManageRepository;
 import com.example.shop_mall_back.user.myOrder.repository.MyOrderRepository;
@@ -12,15 +14,19 @@ import com.example.shop_mall_back.user.myOrder.repository.OrderReturnRepository;
 import com.example.shop_mall_back.user.product.dto.ProductImageDto;
 import com.example.shop_mall_back.user.product.service.ProductService;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MyOrderService {
 
     private final MyOrderRepository myOrderRepository;
@@ -29,6 +35,40 @@ public class MyOrderService {
     private final MyOrderManageRepository myOrderManageRepository;
     private final OrderReturnRepository orderReturnRepository;
     private final ReviewRepository reviewRepository;
+    private final ModelMapper modelMapper;
+
+
+    public Page<OrderListDTO> findByMemberIdAndFilterNative(Long memberId,
+                                                            String keyword,
+                                                            LocalDateTime startDate,
+                                                            LocalDateTime endDate,
+                                                            Pageable pageable) {
+
+        Page<Order> ordersPage = myOrderRepository.findOrdersByFilterNative(memberId, keyword, startDate, endDate, pageable);
+
+        return ordersPage.map(order -> {
+            OrderListDTO dto = new OrderListDTO();
+            dto.setId(order.getId());
+            dto.setOrderId(order.getId());
+            dto.setMemberId(order.getMember().getId());
+            dto.setOrderDate(order.getOrderDate());
+            dto.setTotalAmount(order.getTotalAmount());
+            dto.setTotalCount(order.getTotalCount());
+            dto.setPaymentMethod(order.getPaymentMethod());
+            dto.setOrderStatus(myOrderManageRepository.findOrderStatusByOrderId(order.getId()));
+            dto.setReturnType(orderReturnRepository.getReturnTypeByOrderId(order.getId()));
+            dto.setExistsReview(reviewRepository.existsByOrderId(order.getId()));
+
+            List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
+            if (!orderItems.isEmpty()) {
+                Product product = orderItems.get(0).getProduct();
+                dto.setProduct(toOrderProductDTO(product));
+            }
+
+            return dto;
+        });
+    }
+
 
     // 회원 별 주문 목록 조회
     public Page<OrderListDTO> findByMemberId(Long memberId, Pageable pageable) {
@@ -61,6 +101,7 @@ public class MyOrderService {
         });
     }
 
+
     public OrderProductDTO toOrderProductDTO(Product product) {
         List<ProductImageDto> images = productService.getProductImages(product.getId());
 
@@ -74,5 +115,11 @@ public class MyOrderService {
             dto.setImage(null); // 없으면 null 처리
         }
         return dto;
+    }
+
+    // 반품 및 취소 신청
+    public void insertOrderReturn(OrderReturnDTO orderReturnDTO) {
+        OrderReturn orderReturn = modelMapper.map(orderReturnDTO, OrderReturn.class);
+        orderReturnRepository.save(orderReturn);
     }
 }

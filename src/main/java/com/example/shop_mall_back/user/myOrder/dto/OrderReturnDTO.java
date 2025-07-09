@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 public class OrderReturnDTO {
     private Long id;
     private Long memberId;
-    private OrderReturn.ReturnType status;
+    private Long orderId;
+    private OrderReturn.ReturnType returnType;
     private String reason;
     private String detail;
-    private LocalDateTime regDte =  LocalDateTime.now();
+    private LocalDateTime regDate =  LocalDateTime.now();
 }
