@@ -31,7 +31,7 @@ public class FaqService {
 
         return PageResponseDto.<FaqDto>withAll()
                 .dtoList(result.getContent())
-                .pageRequestDTO(requestDto)
+                .pageRequestDto(requestDto)
                 .totalCount(result.getTotalElements())
                 .build();
     }
@@ -45,7 +45,7 @@ public class FaqService {
 
         return PageResponseDto.<FaqDto>withAll()
                 .dtoList(result.getContent())
-                .pageRequestDTO(requestDto)
+                .pageRequestDto(requestDto)
                 .totalCount(result.getTotalElements())
                 .build();
     }
