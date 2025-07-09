@@ -175,8 +175,4 @@ public class CartController {
         restockAlarmService.requestRestockAlarm(memberId, itemsId); // 알림 신청 처리
         return ResponseEntity.ok("재입고 알림이 신청되었습니다.");
     }
-
-
-    // [12] 주문 연동 로직은 추후 구현 예정
-
 }
