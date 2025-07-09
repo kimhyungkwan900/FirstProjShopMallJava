@@ -66,7 +66,7 @@ public class SecurityConfig {
                 // CSRF 보호 비활성화 TODO: 개발 후 활성화
                 .csrf(AbstractHttpConfigurer::disable)
                 //
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 기본 로그인 FORM 비활성화
                 .formLogin(AbstractHttpConfigurer::disable)
                 // 경로 요청에 따른 인가 설정
