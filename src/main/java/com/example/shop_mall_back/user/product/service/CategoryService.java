@@ -37,9 +37,9 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 특정 카테고리 ID를 기준으로 본인 + 하위 카테고리의 ID 목록을 모두 반환
-     * → 필터 조건에서 '여성의류 전체'를 포함하려 할 때 유용
+    /*
+      특정 카테고리 ID를 기준으로 본인 + 하위 카테고리의 ID 목록을 모두 반환
+      → 필터 조건에서 '여성의류 전체'를 포함하려 할 때 유용
      */
     public List<Long> getAllChildCategoryIds(Long parentId) {
         List<Long> ids = new ArrayList<>();
@@ -47,10 +47,10 @@ public class CategoryService {
         return ids;
     }
 
-    /**
-     * 재귀적으로 자식 카테고리의 ID를 수집하는 헬퍼 메서드
-     * - 본인 ID 포함
-     * - 하위 자식이 있을 경우 깊이 탐색
+    /*
+      재귀적으로 자식 카테고리의 ID를 수집하는 헬퍼 메서드
+      - 본인 ID 포함
+      - 하위 자식이 있을 경우 깊이 탐색
      */
     private void collectChildCategoryIds(Long parentId, List<Long> result) {
         result.add(parentId); // 본인 카테고리 ID 추가

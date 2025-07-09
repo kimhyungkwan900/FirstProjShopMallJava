@@ -22,11 +22,11 @@ public class WishlistService {
     private final ProductRepository productRepository;
     private final WishlistItemRepository wishlistItemRepository;
 
-    /**
-     * 특정 사용자 ID에 해당하는 찜 목록(위시리스트) 조회
-     * - Repository에서 엔티티를 조회한 뒤 DTO로 변환하여 반환
-     * @param userId 사용자 ID
-     * @return 해당 사용자의 WishlistItemDto 리스트
+    /*
+      특정 사용자 ID에 해당하는 찜 목록(위시리스트) 조회
+      - Repository에서 엔티티를 조회한 뒤 DTO로 변환하여 반환
+      @param userId 사용자 ID
+      @return 해당 사용자의 WishlistItemDto 리스트
      */
     public List<WishlistItemDto> getWishlistByUserId(Long userId) {
         return wishlistItemRepository.findByUserId(userId).stream()   // 사용자 ID로 찜 목록 조회

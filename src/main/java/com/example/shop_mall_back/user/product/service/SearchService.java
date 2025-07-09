@@ -14,11 +14,11 @@ public class SearchService {
 
     private final SearchKeywordRepository searchKeywordRepository;
 
-    /**
-     * 사용자가 검색한 키워드를 기록하거나, 기존에 존재하면 count를 증가시킴
-     * - keyword가 이미 존재할 경우 → count + 1
-     * - 존재하지 않으면 → 새로 생성하여 count = 1
-     * - 저장 후 DTO로 변환하여 반환
+    /*
+      사용자가 검색한 키워드를 기록하거나, 기존에 존재하면 count를 증가시킴
+      - keyword가 이미 존재할 경우 → count + 1
+      - 존재하지 않으면 → 새로 생성하여 count = 1
+      - 저장 후 DTO로 변환하여 반환
      */
     public SearchKeywordDto recordSearch(String keyword) {
         // 키워드로 기존 검색 기록을 조회

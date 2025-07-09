@@ -14,10 +14,10 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    /**
-     * 전체 브랜드 목록을 조회합니다.
-     * GET /api/brands
-     * @return List<BrandDto> - 모든 브랜드 정보를 담은 DTO 리스트
+    /*
+      전체 브랜드 목록을 조회합니다.
+      GET /api/brands
+      @return List<BrandDto> - 모든 브랜드 정보를 담은 DTO 리스트
      */
     @GetMapping
     public List<BrandDto> getAllBrands() {

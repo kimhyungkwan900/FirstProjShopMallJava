@@ -10,10 +10,10 @@ public class WishlistItemDto {
     private Long productId;
     private String productName;
 
-    /**
-     * WishlistItem 엔티티를 WishlistItemDto로 변환하는 정적 메서드
-     * @param item 위시리스트 엔티티 객체
-     * @return 변환된 DTO 객체
+    /*
+      WishlistItem 엔티티를 WishlistItemDto로 변환하는 정적 메서드
+      @param item 위시리스트 엔티티 객체
+      @return 변환된 DTO 객체
      */
     public static WishlistItemDto from(WishlistItem item) {
         return WishlistItemDto.builder()
