@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface AdminProductImgRepository extends JpaRepository<ProductImage,Long> {
     List<ProductImage> findByProductIdOrderByIdAsc(Long productId);
-
-    ProductImage findByProductIdAndIsRepImg(Long productId, boolean isRepImg);
 }
