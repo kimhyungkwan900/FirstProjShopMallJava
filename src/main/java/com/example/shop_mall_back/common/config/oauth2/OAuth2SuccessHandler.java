@@ -7,8 +7,6 @@ import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.login.Session;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberProfile;
-import com.example.shop_mall_back.common.dto.MemberDTO;
-import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
@@ -21,7 +19,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final TokenProvider tokenProvider;
     private final SessionRepository sessionRepository;
     private final MemberService memberService;
-    private final OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo;
+//    private final OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo;
+private final AuthorizationRequestRepository<OAuth2AuthorizationRequest> authRequestRepo;
     private final MemberProfileService memberProfileService;
 
     @Override

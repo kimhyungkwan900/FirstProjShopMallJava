@@ -35,7 +35,7 @@ public class KakaoOAuthService implements OAuth2UserService<OAuth2UserRequest, O
 
             String providerId = String.valueOf(attributes.get("id"));
             String email = (String) kakaoAccount.get("email");
-            String name = (String) kakaoAccount.get("nickname");
+            String name = (String) profile.get("nickname");
             String phoneNumber = (String) kakaoAccount.get("phone_number");
             String gender = (String) kakaoAccount.get("gender");
             String ageRange = (String) kakaoAccount.get("age_range");

@@ -2,12 +2,16 @@ package com.example.shop_mall_back.common.config.jwt;
 
 import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.common.constant.Role;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
+import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
@@ -43,6 +48,7 @@ public class TokenProvider {
 
     
     private String generateToken(Long memberId, String email, Role role, Duration duration) {
+        log.debug("토큰 생성 요청: id={}, email={}, role={}", memberId, email, role);
         // 현재시간 생성 및 만료시간 추가
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + duration.toMillis());
@@ -93,22 +99,22 @@ public class TokenProvider {
 
     // token 의 claims 에서 role 정보를 가져와 인증 객체 반환
     public Authentication getAuthentication(String token) {
-        // claims 가져오기
         Claims claims = getClaims(token);
-        
-        // token의 정보 받아오기
+
         Long memberId = claims.get("memberId", Long.class);
-        String role = claims.get("role", String.class);
+        String roleName = claims.get("role", String.class);
 
-        // 커스텀 Principal 생성
-        CustomUserPrincipal principal = new CustomUserPrincipal(memberService.findByIdOrThrow(memberId), memberProfileService.findByMemberIdOrThrow(memberId));
+        // 반드시 DB에서 영속된 Member 객체를 조회
+        Member member = memberService.findByIdOrThrow(memberId);
+        MemberProfile profile = memberProfileService.findByMemberIdOrThrow(memberId);
 
-        // Security 권한 객체로 변환 Ex) ROLE_USER
-        Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+        // 도메인 정보를 담은 커스텀 principal 생성
+        CustomUserPrincipal principal = new CustomUserPrincipal(member, profile);
 
-        // 객체 반환 ( 사용자 정보 / JWT 토큰 / 권한 목록 등이 들어있음)
-        return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User
-                (claims.getSubject(),"",authorities),token,authorities);
+        Collection<? extends GrantedAuthority> authorities =
+                List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
     // claim 에서 id 반환받기

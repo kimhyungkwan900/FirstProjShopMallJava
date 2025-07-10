@@ -41,20 +41,27 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // access_token 쿠키에서 꺼내기
-        String accessToken = CookieUtils.getCookie(request, "access_token")
-                .map(Cookie::getValue)
-                .orElse(null);
+        // Authorization 헤더 확인
+        String bearerToken = request.getHeader("Authorization");
+        String accessToken = null;
 
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            accessToken = bearerToken.substring(7); // "Bearer " 이후 토큰만 추출
+        }
+
+        // 없다면 쿠키에서 찾기
+        if (accessToken == null) {
+            accessToken = CookieUtils.getCookie(request, "access_token")
+                    .map(Cookie::getValue)
+                    .orElse(null);
+        }
+        
         // 토큰 존재 & 유효성 검사
         if (accessToken != null && tokenProvider.validateToken(accessToken)) {
-
             // 이미 인증된 상태가 아니라면
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-
                 // 토큰으로부터 인증 객체 추출
                 Authentication authentication = tokenProvider.getAuthentication(accessToken);
-
                 // SecurityContext 에 등록
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
