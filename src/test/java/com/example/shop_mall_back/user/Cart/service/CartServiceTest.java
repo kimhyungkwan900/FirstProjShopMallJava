@@ -8,6 +8,7 @@ import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.Cart.domain.CartItem;
 import com.example.shop_mall_back.user.Cart.domain.DeliveryFeeRule;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
+import com.example.shop_mall_back.user.Cart.dto.DeliveryFeeRuleDto;
 import com.example.shop_mall_back.user.Cart.repository.CartItemRepository;
 import com.example.shop_mall_back.user.Cart.repository.CartRepository;
 import com.example.shop_mall_back.user.Cart.repository.DeliveryFeeRuleRepository;
@@ -437,24 +438,30 @@ class CartServiceTest {
 
     @Test
     @DisplayName("장바구니 총 금액 + 배송비 계산 - 성공")
-    public void calculateTotalWithDeliveryDetails() {
+    public void calculateTotalWithDeliveryDetails_success() {
         // given
         Long memberId = 1L;
         int itemTotal = 30000; // 선택된 상품 총액
+        int deliveryFee = 3000; // 배송비 3,000원
+        int grandTotal = itemTotal + deliveryFee; // 총 금액
+
         DeliveryFeeRule deliveryFeeRule = new DeliveryFeeRule();
-        deliveryFeeRule.setDeliveryFee(3000);         // 배송비 3,000원
-        deliveryFeeRule.setMinOrderAmount(50000);     // 배송비 무료 기준 50,000원
+        deliveryFeeRule.setDeliveryFee(deliveryFee);
+        deliveryFeeRule.setMinOrderAmount(50000); // 배송비 무료 기준 50,000원
 
         // Mock: 상품 총액과 배송비 정책 반환
         when(cartItemRepository.calculateSelectedTotalAmount(memberId)).thenReturn(itemTotal);
         when(deliveryFeeRuleRepository.findTopByOrderByIdDesc()).thenReturn(Optional.of(deliveryFeeRule));
 
         // when: 총액 계산 수행
-        int itemTotalPrice = cartService.calculateTotalWithDeliveryDetails(memberId);
+        DeliveryFeeRuleDto result = cartService.calculateTotalWithDeliveryDetails(memberId);
 
-        // then: 상품 총액 + 배송비가 계산되어 반환되는지 검증
-        assertThat(itemTotalPrice).isEqualTo(itemTotal + 3000);
+        // then: DTO의 각 필드를 검증
+        assertThat(result.getGrandTotal()).isEqualTo(grandTotal);
+        assertThat(result.getDeliveryFee()).isEqualTo(deliveryFee);
+        assertThat(result.getMinOrderAmount()).isEqualTo(deliveryFeeRule.getMinOrderAmount());
     }
+
 
     @Test
     @DisplayName("장바구니 총 금액 + 배송비 계산 - 예외 : 배송비 정책 없음")

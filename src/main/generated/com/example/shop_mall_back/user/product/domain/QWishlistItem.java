@@ -22,6 +22,8 @@ public class QWishlistItem extends EntityPathBase<WishlistItem> {
 
     public static final QWishlistItem wishlistItem = new QWishlistItem("wishlistItem");
 
+    public final QWishlistItemId id;
+
     public final com.example.shop_mall_back.common.domain.QProduct product;
 
     public final com.example.shop_mall_back.common.domain.member.QMember user;
@@ -44,6 +46,7 @@ public class QWishlistItem extends EntityPathBase<WishlistItem> {
 
     public QWishlistItem(Class<? extends WishlistItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.id = inits.isInitialized("id") ? new QWishlistItemId(forProperty("id")) : null;
         this.product = inits.isInitialized("product") ? new com.example.shop_mall_back.common.domain.QProduct(forProperty("product"), inits.get("product")) : null;
         this.user = inits.isInitialized("user") ? new com.example.shop_mall_back.common.domain.member.QMember(forProperty("user")) : null;
     }

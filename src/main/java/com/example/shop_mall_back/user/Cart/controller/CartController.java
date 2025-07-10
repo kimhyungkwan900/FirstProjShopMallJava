@@ -2,6 +2,7 @@ package com.example.shop_mall_back.user.Cart.controller;
 
 import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
+import com.example.shop_mall_back.user.Cart.dto.DeliveryFeeRuleDto;
 import com.example.shop_mall_back.user.Cart.service.CartService;
 import com.example.shop_mall_back.user.Cart.service.RestockAlarmService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -75,7 +78,7 @@ public class CartController {
     /**
      * [5] 선택 여부 토글 (선택/해제)
      */
-    @PatchMapping("/items/{itemId}/select")
+    @PutMapping("/items/{itemId}/select")
     public ResponseEntity<String> toggleSelect(@PathVariable Long itemId,
                                                @RequestParam boolean isSelected) {
         cartService.toggleCartItemSelection(getCurrentMemberId(), itemId, isSelected);
@@ -104,15 +107,15 @@ public class CartController {
      * [8] 선택된 항목 총 가격과 배송비 계산
      */
     @GetMapping("/total-with-deli")
-    public ResponseEntity<Integer> calculateTotal() {
-        int result = cartService.calculateTotalWithDeliveryDetails(getCurrentMemberId());
+    public ResponseEntity<DeliveryFeeRuleDto> calculateTotal() {
+        DeliveryFeeRuleDto result = cartService.calculateTotalWithDeliveryDetails(getCurrentMemberId());
         return ResponseEntity.ok(result);
     }
 
     /**
      * [9] 장바구니 품절 상태 자동 갱신
      */
-    @PatchMapping("/items/refresh-stock")
+    @PutMapping("/items/refresh-stock")
     public ResponseEntity<String> refreshStock() {
         cartService.updateSoldOutStatusAndUnselect(getCurrentMemberId());
         return ResponseEntity.ok("장바구니 품절 상태가 갱신되었습니다.");
@@ -139,7 +142,7 @@ public class CartController {
     /**
      * [12] 전체 선택 체크
      */
-    @PatchMapping("/items/select-all")
+    @PutMapping("/items/select-all")
     public ResponseEntity<String> toggleSelectAll(
             @RequestParam boolean isSelected) {
         Long memberId = getCurrentMemberId();
@@ -150,8 +153,11 @@ public class CartController {
     /**
      * [13] 브랜드별 전체 선택
      */
-    @PatchMapping("/items/select-brand/{brandName}")
+    @PutMapping("/items/select-brand/{brandName}")
     public ResponseEntity<String> toggleSelectBrand(@PathVariable String brandName, @RequestParam boolean isSelected) {
+        // 🔥 URL 디코딩 처리
+        String decodedBrandName = URLDecoder.decode(brandName, StandardCharsets.UTF_8);
+
         cartService.selectAllByBrand(getCurrentMemberId(), brandName, isSelected);
         return ResponseEntity.ok("브랜드 전체 선택 상태가 변경되었습니다.");
     }

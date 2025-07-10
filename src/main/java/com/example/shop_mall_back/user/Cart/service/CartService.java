@@ -7,6 +7,7 @@ import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.Cart.domain.CartItem;
 import com.example.shop_mall_back.user.Cart.domain.DeliveryFeeRule;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
+import com.example.shop_mall_back.user.Cart.dto.DeliveryFeeRuleDto;
 import com.example.shop_mall_back.user.Cart.repository.CartItemRepository;
 import com.example.shop_mall_back.user.Cart.repository.DeliveryFeeRuleRepository;
 import com.example.shop_mall_back.user.product.domain.ProductImage;
@@ -226,24 +227,25 @@ public class CartService {
      * [8] 사용자 장바구니 총 금액 + 배송비 계산
      */
     @Transactional
-    public int calculateTotalWithDeliveryDetails(Long memberId) {
-        // 1. 장바구니 선택 항목 총액 계산
-        Integer result = cartItemRepository.calculateSelectedTotalAmount(memberId);
-        int itemTotal = (result != null) ? result : 0;
+    public DeliveryFeeRuleDto calculateTotalWithDeliveryDetails(Long memberId) {
+        // 1. 선택된 장바구니 총액 계산
+        Integer selectedTotal = cartItemRepository.calculateSelectedTotalAmount(memberId);
+        int itemTotal = (selectedTotal != null) ? selectedTotal : 0;
 
-        // 2. 배송비 정책 가져오기 (정책이 하나만 있다고 가정)
+        // 2. 배송비 정책 가져오기
         DeliveryFeeRule rule = (DeliveryFeeRule) deliveryFeeRuleRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> new IllegalStateException("배송비 정책이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalStateException("배송비 정책이 없습니다."));
 
-        // 3. 배송비 적용
-        int deliveryFee = 0;
-        if (rule != null) {
-            deliveryFee = (itemTotal >= rule.getMinOrderAmount()) ? 0 : rule.getDeliveryFee();
-        }
+        // 3. 배송비 계산
+        int deliveryFee = (itemTotal >= rule.getMinOrderAmount()) ? 0 : rule.getDeliveryFee();
 
-        // 4. 총 금액 = 상품 총액 + 배송비
-        return itemTotal + deliveryFee;
+        // 4. 총액 = 상품 합계 + 배송비
+        int grandTotal = itemTotal + deliveryFee;
+
+        // 5. DTO로 반환
+        return DeliveryFeeRuleDto.from(rule, itemTotal, grandTotal);
     }
+
 
     /**
      * [9] 품절 여부 확인 및 반영 + 선택 해제

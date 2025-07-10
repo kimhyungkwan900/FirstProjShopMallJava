@@ -10,6 +10,7 @@ import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.repository.MemberAddressRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.Cart.domain.CartItem;
+import com.example.shop_mall_back.user.Cart.dto.DeliveryFeeRuleDto;
 import com.example.shop_mall_back.user.Cart.repository.CartItemRepository;
 import com.example.shop_mall_back.user.Cart.service.CartService;
 import com.example.shop_mall_back.user.Cart.service.InventoryService;
@@ -117,18 +118,28 @@ class OrderServiceTest {
         when(cartItemRepository.findByCartMemberId(1L)).thenReturn(List.of(cartItem));
         when(inventoryService.isSoldOut(1L)).thenReturn(false);
         when(inventoryService.isStockEnough(1L, 2)).thenReturn(true);
-        when(cartService.calculateTotalWithDeliveryDetails(1L)).thenReturn(22000); // 배송비 포함
+
+        // 👉 배송비 정책 DTO로 Mock 반환
+        DeliveryFeeRuleDto deliveryFeeRuleDto = DeliveryFeeRuleDto.builder()
+                .deliveryFee(2000)
+                .grandTotal(22000) // 총액 (상품합 + 배송비)
+                .minOrderAmount(50000)
+                .description("배송비 정책 설명")
+                .build();
+        when(cartService.calculateTotalWithDeliveryDetails(1L)).thenReturn(deliveryFeeRuleDto);
+
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // when: 주문 생성
         Long createdOrderId = orderService.createOrder(1L, orderDto);
 
         // then: 저장 및 삭제 호출 검증
-        verify(orderRepository, times(2)).save(any(Order.class));
+        verify(orderRepository, times(2)).save(any(Order.class)); // 주문 & 상태
         verify(orderItemRepository, times(1)).save(any());
         verify(cartItemRepository, times(1)).deleteAll(any());
         assertNotNull(createdOrderId);
     }
+
 
     @Test
     @DisplayName("주문 생성 - 실패 (회원 없음)")
