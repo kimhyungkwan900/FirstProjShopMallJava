@@ -16,6 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -94,6 +95,7 @@ public class SecurityConfig {
                 // 경로 요청에 따른 인가 설정
                 .authorizeHttpRequests(auth -> auth
                         // 비인증 접근 가능
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/api/members/signup", "/css/**", "/js/**", "/images/**","/api/**").permitAll()
                         // 그외 인증 접근
                         .anyRequest().authenticated()
@@ -121,8 +123,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));                          // 정확한 origin
 //        configuration.addAllowedMethod("*");
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));            // 명시적 메서드
-//        configuration.addAllowedHeader("*");
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));  // 명시적 헤더
+        configuration.addAllowedHeader("*");
+//        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));  // 명시적 헤더
             configuration.setAllowCredentials(true);                                                    // 쿠키 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
