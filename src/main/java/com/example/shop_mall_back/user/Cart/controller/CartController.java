@@ -139,11 +139,23 @@ public class CartController {
     /**
      * [12] 전체 선택 체크
      */
-    @PutMapping("/items/select-all")
-    public ResponseEntity<?> toggleSelectAll(@RequestParam boolean isSelected) {
-        cartService.selectAll(getCurrentMemberId(), isSelected);
-        return ResponseEntity.ok().build();
+    @PatchMapping("/items/select-all")
+    public ResponseEntity<String> toggleSelectAll(
+            @RequestParam boolean isSelected) {
+        Long memberId = getCurrentMemberId();
+        cartService.selectAll(memberId, isSelected);
+        return ResponseEntity.ok("전체 선택 상태가 변경되었습니다.");
     }
+
+    /**
+     * [13] 브랜드별 전체 선택
+     */
+    @PatchMapping("/items/select-brand/{brandName}")
+    public ResponseEntity<String> toggleSelectBrand(@PathVariable String brandName, @RequestParam boolean isSelected) {
+        cartService.selectAllByBrand(getCurrentMemberId(), brandName, isSelected);
+        return ResponseEntity.ok("브랜드 전체 선택 상태가 변경되었습니다.");
+    }
+
 
 
 

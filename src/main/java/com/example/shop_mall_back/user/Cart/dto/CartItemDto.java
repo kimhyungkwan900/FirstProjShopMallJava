@@ -17,6 +17,11 @@ public class CartItemDto {
     private boolean is_selected;    //선택 여부
     private boolean is_sold_out;    //품절 여부
 
+    private String brandName;   //브랜드 이름
+    private String imageUrl;    //상품 이미지
+    private String productTitle;    //상품 이름
+    private String productPrice;    //상품 가격
+
     public void setIs_selected(boolean isSelected) {
         this.is_selected = isSelected;
     }

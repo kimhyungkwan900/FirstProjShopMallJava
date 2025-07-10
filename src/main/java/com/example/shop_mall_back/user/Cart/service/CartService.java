@@ -9,6 +9,7 @@ import com.example.shop_mall_back.user.Cart.domain.DeliveryFeeRule;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
 import com.example.shop_mall_back.user.Cart.repository.CartItemRepository;
 import com.example.shop_mall_back.user.Cart.repository.DeliveryFeeRuleRepository;
+import com.example.shop_mall_back.user.product.domain.ProductImage;
 import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.Cart.repository.CartRepository;
 import com.example.shop_mall_back.user.product.service.WishlistService;
@@ -131,14 +132,32 @@ public class CartService {
         List<CartItem> cartItems = cartItemRepository.findByCart(cart);
 
         // Entity → DTO 변환
-        return cartItems.stream().map(items -> {
+        return cartItems.stream().map(item -> {
             CartItemDto dto = new CartItemDto();
-            dto.setId(items.getId());
-            dto.setCart_id(items.getCart().getId());
-            dto.setProduct_id(items.getProduct().getId());
-            dto.setQuantity(items.getQuantity());
-            dto.setIs_selected(items.getIsSelected() != null && items.getIsSelected());
-            dto.setIs_sold_out(items.getIsSoldOut() != null && items.getIsSoldOut());
+            dto.setId(item.getId());
+            dto.setCart_id(item.getCart().getId());
+            dto.setProduct_id(item.getProduct().getId());
+            dto.setQuantity(item.getQuantity());
+            dto.setIs_selected(Boolean.TRUE.equals(item.getIsSelected()));
+            dto.setIs_sold_out(Boolean.TRUE.equals(item.getIsSoldOut()));
+
+            // ✅ 대표 이미지 URL 세팅
+            String imageUrl = item.getProduct().getImages().stream()
+                    .filter(ProductImage::isRepImg)
+                    .findFirst()
+                    .map(ProductImage::getImgUrl)
+                    .orElse("/images/no-image.png");
+            dto.setImageUrl(imageUrl);
+
+            // ✅ 브랜드 이름 세팅
+            dto.setBrandName(item.getProduct().getBrand().getName());
+
+            // ✅ 상품 이름 세팅
+            dto.setProductTitle(item.getProduct().getName());
+
+            // ✅ 상품 가격 세팅 (원화 표시까지)
+            dto.setProductPrice(String.format("%,d", item.getProduct().getPrice()));
+
             return dto;
         }).toList();
     }
@@ -215,8 +234,12 @@ public class CartService {
         // 2. 배송비 정책 가져오기 (정책이 하나만 있다고 가정)
         DeliveryFeeRule rule = (DeliveryFeeRule) deliveryFeeRuleRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> new IllegalStateException("배송비 정책이 존재하지 않습니다."));
+
         // 3. 배송비 적용
-        int deliveryFee = (itemTotal >= rule.getMinOrderAmount()) ? 0 : rule.getDeliveryFee();
+        int deliveryFee = 0;
+        if (rule != null) {
+            deliveryFee = (itemTotal >= rule.getMinOrderAmount()) ? 0 : rule.getDeliveryFee();
+        }
 
         // 4. 총 금액 = 상품 총액 + 배송비
         return itemTotal + deliveryFee;
@@ -275,13 +298,36 @@ public class CartService {
      */
     @Transactional
     public void selectAll(Long memberId, boolean isSelected) {
-        List<CartItem> items = cartItemRepository.findByCart_Member_Id(memberId);
-        items.forEach(item -> item.setIsSelected(isSelected));
-        cartItemRepository.saveAll(items);
+        // 1. 해당 회원의 장바구니 가져오기
+        Cart cart = cartRepository.findByMember_Id(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("장바구니가 존재하지 않습니다."));
+
+        // 2. 장바구니에 담긴 모든 상품 가져오기
+        List<CartItem> cartItems = cartItemRepository.findByCart(cart);
+
+        // 3. 모든 항목의 선택 상태 일괄 업데이트
+        for (CartItem item : cartItems) {
+            item.setIsSelected(isSelected);
+        }
+
+        cartItemRepository.saveAll(cartItems);
     }
 
 
 
+    public void selectAllByBrand(Long currentMemberId, String brandName, boolean isSelected) {
+        //1, 해당 회원의 장바구니 가져오기
+        Cart cart = cartRepository.findByMember_Id((currentMemberId))
+                .orElseThrow(() -> new IllegalArgumentException("장바구니가 존재하지 않습니다."));
 
+        //2. 해당 브랜드의 모든 상품 가져오기
+        List<CartItem> brandList = cartItemRepository.findByCartAndProduct_Brand_Name(cart, brandName);
+
+        //3. 모든 항목의 선택 상태 업데이트
+        for(CartItem item : brandList) {
+            item.setIsSelected(isSelected);
+        }
+        cartItemRepository.saveAll(brandList);
+    }
 }
 
