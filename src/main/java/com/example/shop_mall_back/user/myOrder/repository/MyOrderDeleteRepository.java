@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MyOrderDeleteRepository extends JpaRepository<OrderDelete, Long> {
-    OrderDelete findByOrderId(Long orderId);
+    boolean existsByOrderId(Long orderId);
 
 }

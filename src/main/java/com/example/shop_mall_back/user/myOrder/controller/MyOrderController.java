@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -38,7 +40,9 @@ public class MyOrderController {
 
     // 회원 주문 삭제 (실제 삭제 x)
     @PostMapping("/orderDelete")
-    public void deleteOrder(@RequestParam Long orderId) {
+    public void deleteOrder(@RequestBody Map<String, Long> body) {
+        Long orderId = body.get("param");  // 클라이언트가 보내는 key와 맞춰야 함
         myOrderService.deleteOrder(orderId);
     }
+
 }

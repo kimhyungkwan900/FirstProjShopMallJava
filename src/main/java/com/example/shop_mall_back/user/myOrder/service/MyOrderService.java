@@ -42,9 +42,7 @@ public class MyOrderService {
                                                             LocalDateTime startDate,
                                                             LocalDateTime endDate,
                                                             Pageable pageable) {
-
         Page<Order> ordersPage = myOrderRepository.findOrdersByFilterNative(memberId, keyword, startDate, endDate, pageable);
-
         return ordersPage.map(order -> {
             OrderListDTO dto = new OrderListDTO();
             dto.setId(order.getId());
@@ -58,19 +56,16 @@ public class MyOrderService {
             dto.setReturnType(orderReturnRepository.getReturnTypeByOrderId(order.getId()));
             dto.setExistsReview(reviewRepository.existsByOrderId(order.getId()));
 
-            dto.setOrderDelete(myOrderDeleteRepository.deleteByOrderId(order.getId()));
+            dto.setOrderDelete(checkOrderStatus(order.getId()));
 
             List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
             if (!orderItems.isEmpty()) {
                 Product product = orderItems.get(0).getProduct();
                 dto.setProduct(toOrderProductDTO(product));
             }
-
             return dto;
         });
     }
-
-
     // 회원 별 주문 목록 조회
     public Page<OrderListDTO> findByMemberId(Long memberId, Pageable pageable) {
         Page<Order> ordersPage = myOrderRepository.findByMemberId(memberId, pageable);
@@ -122,10 +117,13 @@ public class MyOrderService {
 
     // 회원 주문 목록 삭제
     public void deleteOrder(Long orderId) {
-        OrderDelete orderDelete = modelMapper.map(orderId, OrderDelete.class);
+        OrderDelete orderDelete = new OrderDelete();
+        orderDelete.setOrderId(orderId);
         myOrderDeleteRepository.save(orderDelete);
     }
 
     // 회원 목록이 삭제인지 아닌지 확인
-    public boolean find
+    private boolean checkOrderStatus(Long orderId) {
+        return myOrderDeleteRepository.existsByOrderId(orderId);
+    }
 }
