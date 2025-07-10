@@ -48,7 +48,6 @@ public class TokenProvider {
 
     
     private String generateToken(Long memberId, String email, Role role, Duration duration) {
-        log.debug("토큰 생성 요청: id={}, email={}, role={}", memberId, email, role);
         // 현재시간 생성 및 만료시간 추가
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + duration.toMillis());
@@ -142,9 +141,5 @@ public class TokenProvider {
 
     public Duration getAccessTokenDuration() {
         return ACCESS_TOKEN_DURATION;
-    }
-
-    public Duration getRefreshTokenDuration() {
-        return REFRESH_TOKEN_DURATION;
     }
 }
