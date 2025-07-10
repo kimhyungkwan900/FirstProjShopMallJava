@@ -100,8 +100,7 @@ public class TokenProvider {
     // token 의 claims 에서 role 정보를 가져와 인증 객체 반환
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
-
-        Long memberId = claims.get("memberId", Long.class);
+        Long memberId = claims.get("id", Long.class);
         String roleName = claims.get("role", String.class);
 
         // 반드시 DB에서 영속된 Member 객체를 조회
