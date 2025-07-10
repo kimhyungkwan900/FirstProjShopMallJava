@@ -68,7 +68,11 @@ public class ReviewController {
         reviewService.deleteReview(id);
     }
 
-
+    //리뷰 별점만 받아오기
+    @GetMapping("/starRating")
+    public double getStarRating(@RequestParam("productId") Long productId) {
+        return reviewService.StarRating(productId);
+    }
 
 
 }

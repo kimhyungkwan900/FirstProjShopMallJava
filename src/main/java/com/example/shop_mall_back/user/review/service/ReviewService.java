@@ -41,6 +41,9 @@ public class ReviewService {
     private final ReviewImgService reviewImgService;
 
     private final ProductRepository  productRepository;
+    private final MemberProfileRepository memberProfileRepository;
+
+
     // 리뷰 받아오기(수정)
     public ReviewDTO findByReviewId(Long id) {
         ReviewDTO dto = reviewRepository.findById(id).stream()
@@ -75,6 +78,8 @@ public class ReviewService {
                     dto.setLikeCount(reviewReactionService.findLikeCountByReviewId(review.getId()));
                     dto.setDislikeCount(reviewReactionService.findDislikeCountByReviewId(review.getId()));
                     dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(review.getId()));
+                    MemberProfile memberProfile = memberProfileRepository.findByMemberId(review.getMember().getId());
+                    dto.setMemberNickname(memberProfile.getNickname());
                     return dto;
                 }).toList();
 
@@ -167,5 +172,13 @@ public class ReviewService {
         });
     }
 
+    // 별점 받아오기
+    public double StarRating(Long productId) {
+        Double average = reviewRepository.findAverageScoreByProductId(productId);
+        if (average == null) {
+            return 0.0;
+        }
+        return Math.round(average * 10) / 10.0; // 소수점 첫째자리 반올림
+    }
 
 }
