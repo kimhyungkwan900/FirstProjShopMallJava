@@ -11,21 +11,31 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "wishlist_items") // 이 엔티티가 매핑될 테이블 이름을 "wishlist_items"로 지정
-@IdClass(WishlistItemId.class)
-@Builder
 @AllArgsConstructor
+@Builder
+@Table(name = "wishlist_items")
 public class WishlistItem {
 
-    @Id
-    @ManyToOne // 회원과의 다대일 관계 (여러 WishlistItem → 한 Member)
-    @JoinColumn(name = "member_id") // 외래 키 컬럼명 지정 (회원 ID)
-    private Member user; // 찜한 사용자의 정보
+    @EmbeddedId
+    private WishlistItemId id;
 
-    @Id
-    @ManyToOne // 상품과의 다대일 관계 (여러 WishlistItem → 한 Product)
-    @JoinColumn(name = "product_id") // 외래 키 컬럼명 지정 (상품 ID)
-    private Product product; // 찜한 상품의 정보
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("memberId")  // WishlistItemId.memberId와 매핑
+    @JoinColumn(name = "member_id")
+    private Member user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productId")  // WishlistItemId.productId와 매핑
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    public static WishlistItem of(Member member, Product product) {
+        return WishlistItem.builder()
+                .id(new WishlistItemId(member.getId(), product.getId()))
+                .user(member)
+                .product(product)
+                .build();
+    }
 
     // 명시적으로 사용자 설정 가능하도록 set 메서드 정의
     public void setUser(Member member) {

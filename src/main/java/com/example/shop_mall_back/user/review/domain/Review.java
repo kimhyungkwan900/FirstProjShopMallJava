@@ -33,7 +33,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
-    private Product product; // FK 상품 ID
+    private Product product;
 
     @Column(name = "order_id")
     private Long orderId; // FK 주문 ID
