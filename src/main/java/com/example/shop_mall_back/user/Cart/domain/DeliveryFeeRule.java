@@ -29,4 +29,5 @@ public class DeliveryFeeRule {
     // 설명 (선택사항)
     @Column(length = 255, nullable = false)
     private String description;
+
 }

@@ -44,13 +44,15 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
      * 품절된 상품은 계산에서 제외
      */
 
-    @Query("select sum(ci.product.price * ci.quantity) " +
+    @Query("select sum(coalesce(ci.product.price, 0) * ci.quantity) " +
             "from CartItem ci " +
             "where ci.cart.member.id = :memberId and ci.isSelected = true and ci.isSoldOut = false")
     Integer calculateSelectedTotalAmount(@Param("memberId") Long memberId);
+
 
     List<CartItem> findByCartMemberId(Long memberId);
 
     List<CartItem> findByCart_Member_Id(Long id);
 
+    List<CartItem> findByCartAndProduct_Brand_Name(Cart cart, String brandName);
 }

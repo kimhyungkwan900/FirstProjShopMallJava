@@ -1,0 +1,1 @@
+insert  into delivery_fee_rule(min_order_amount, delivery_fee, description) values (50000, 3000, '5만원 이상 구매시 무료배송');
