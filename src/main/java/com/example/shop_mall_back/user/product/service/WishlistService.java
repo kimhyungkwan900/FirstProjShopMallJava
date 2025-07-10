@@ -22,31 +22,28 @@ public class WishlistService {
     private final ProductRepository productRepository;
     private final WishlistItemRepository wishlistItemRepository;
 
-    /*
-      특정 사용자 ID에 해당하는 찜 목록(위시리스트) 조회
-      - Repository에서 엔티티를 조회한 뒤 DTO로 변환하여 반환
-      @param userId 사용자 ID
-      @return 해당 사용자의 WishlistItemDto 리스트
-     */
-    public List<WishlistItemDto> getWishlistByUserId(Long userId) {
-        return wishlistItemRepository.findByUserId(userId).stream()   // 사용자 ID로 찜 목록 조회
-                .map(WishlistItemDto::from)                           // 엔티티를 DTO로 변환
-                .collect(Collectors.toList());                        // 리스트로 수집 후 반환
+    public List<WishlistItemDto> getWishlistByUserId(Long memberId) {
+        return wishlistItemRepository.findByUserId(memberId).stream()
+                .map(WishlistItemDto::from)
+                .collect(Collectors.toList());
     }
 
-    public void toggleWishlist(Long userId, Long productId) {
-        Optional<WishlistItem> existing = wishlistItemRepository.findByUserIdAndProductId(userId, productId);
+    public void toggleWishlist(Long memberId, Long productId) {
+        Optional<WishlistItem> existing = wishlistItemRepository.findByUserIdAndProductId(memberId, productId);
 
         if (existing.isPresent()) {
-            wishlistItemRepository.delete(existing.get()); // 이미 찜한 경우 제거
+            wishlistItemRepository.delete(existing.get());
         } else {
-            WishlistItem item = WishlistItem.builder()
-                    .user(Member.builder().id(userId).build()) // 더미 user 객체로 참조만
-                    .product(Product.builder().id(productId).build()) // 더미 product 객체로 참조만
-                    .build();
-            wishlistItemRepository.save(item); // 새로운 찜 추가
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("유효한 상품이 아닙니다."));
+
+            WishlistItem item = WishlistItem.of(member, product);
+            wishlistItemRepository.save(item);
         }
     }
+
 
     // --- 장바구니에 필요한 기능 ---
 
