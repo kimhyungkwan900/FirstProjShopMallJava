@@ -38,7 +38,7 @@ public class AdminProductController {
 
     //---상품 등록
     @PostMapping("/products/new")
-    public ResponseEntity<?> newProduct(@Valid @RequestBody ProductFormDto productFormDto, BindingResult bindingResult, Model model, @RequestParam("productImgFile") List<MultipartFile> productImgFileList) {
+    public ResponseEntity<?> newProduct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult, Model model, @RequestParam("productImgFile") List<MultipartFile> productImgFileList) {
 
         if(bindingResult.hasErrors()){
 //            Map<String, String> errors = bindingResult.getFieldErrors().stream()
@@ -55,9 +55,7 @@ public class AdminProductController {
         }
 
         try{
-            URI location = new URI("/api/admin/products");
-
-            return ResponseEntity.created(location).body(Map.of("id",
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",
                     adminproductService.saveProduct(productFormDto, productImgFileList)));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 등록 중 에러 발생");
@@ -66,17 +64,18 @@ public class AdminProductController {
 
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @GetMapping({"/products", "/products/{page}"})
-    public ResponseEntity<?> productManage(@ModelAttribute ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page){
+    public ResponseEntity<?> productManage(@ModelAttribute ProductSearchDto productSearchDto, @RequestParam(value="page", defaultValue = "0") int page){
 
         log.info(">>> incoming searchDto: {}", productSearchDto);
 
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
+        Pageable pageable = PageRequest.of(page,8);
         Page<ProductDto> products = adminProductService.getAdminProductPage(productSearchDto, pageable);
 
         ProductListDto productListDto = ProductListDto.builder()
                 .products(products)
                 .productSearchDto(productSearchDto)
                 .maxPage(10)
+                .totalPage(products.getTotalPages())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(productListDto);
