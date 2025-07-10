@@ -33,4 +33,6 @@ public class OrderListDTO {
     private OrderReturn.ReturnType returnType;
 
     private boolean existsReview;
+
+    private boolean orderDelete;
 }

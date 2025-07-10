@@ -9,10 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,5 +34,11 @@ public class MyOrderController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("order_date").descending());
         return myOrderService.findByMemberIdAndFilterNative(memberId, keyword, startDateTime, endDateTime, pageable);
+    }
+
+    // 회원 주문 삭제 (실제 삭제 x)
+    @PostMapping("/orderDelete")
+    public void deleteOrder(@RequestParam Long orderId) {
+        myOrderService.deleteOrder(orderId);
     }
 }
