@@ -247,7 +247,9 @@ public class CartService {
         }
     }
 
-    //[10] 위시리스트
+    /**
+     * [10] 위시리스트
+     */
 
     @Transactional
     public void addCartToWishlist(Long memberId, Long cartItemId) {
@@ -267,6 +269,10 @@ public class CartService {
             wishlistService.addToWishlist(memberId, productId);
         }
     }
+
+    /**
+     * [11] 전체 선택 체크
+     */
     @Transactional
     public void selectAll(Long memberId, boolean isSelected) {
         List<CartItem> items = cartItemRepository.findByCart_Member_Id(memberId);

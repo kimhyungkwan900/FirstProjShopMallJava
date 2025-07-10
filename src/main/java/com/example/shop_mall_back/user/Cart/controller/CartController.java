@@ -136,6 +136,9 @@ public class CartController {
         return ResponseEntity.ok("재입고 알림이 신청되었습니다.");
     }
 
+    /**
+     * [12] 전체 선택 체크
+     */
     @PutMapping("/items/select-all")
     public ResponseEntity<?> toggleSelectAll(@RequestParam boolean isSelected) {
         cartService.selectAll(getCurrentMemberId(), isSelected);
