@@ -34,7 +34,7 @@ public class CookieUtils {
 
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)     // JavaScript 에서 접근불가 설정
-                .secure(false)       // HTTPS 환경에서만 쿠키 전송 HTTP 로 전송하지 않아 MITM 방지 가능 TODO: 빌드전에 true 로 변환할 것
+                .secure(true)       // HTTPS 환경에서만 쿠키 전송 HTTP 로 전송하지 않아 MITM 방지 가능
                 .sameSite("None")   // 다른 도메인에서도 쿠키를 전송할 수 있도록 설정 ( API 로그인 작동이 되지않아 추가 TODO: 보안상 추가 검토 필요 )
                 .path("/")          // 쿠키 유효 경로
                 .maxAge(Duration.ofSeconds(maxAge))
