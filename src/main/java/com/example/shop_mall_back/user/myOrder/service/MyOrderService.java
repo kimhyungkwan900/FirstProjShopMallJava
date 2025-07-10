@@ -3,14 +3,12 @@ package com.example.shop_mall_back.user.myOrder.service;
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.Order.domain.OrderItem;
+import com.example.shop_mall_back.user.myOrder.domain.OrderDelete;
 import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
 import com.example.shop_mall_back.user.myOrder.dto.OrderListDTO;
 import com.example.shop_mall_back.user.myOrder.dto.OrderProductDTO;
 import com.example.shop_mall_back.user.myOrder.dto.OrderReturnDTO;
-import com.example.shop_mall_back.user.myOrder.repository.MyOrderItemRepository;
-import com.example.shop_mall_back.user.myOrder.repository.MyOrderManageRepository;
-import com.example.shop_mall_back.user.myOrder.repository.MyOrderRepository;
-import com.example.shop_mall_back.user.myOrder.repository.OrderReturnRepository;
+import com.example.shop_mall_back.user.myOrder.repository.*;
 import com.example.shop_mall_back.user.product.dto.ProductImageDto;
 import com.example.shop_mall_back.user.product.service.ProductService;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
@@ -36,16 +34,15 @@ public class MyOrderService {
     private final OrderReturnRepository orderReturnRepository;
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
+    private final MyOrderDeleteRepository myOrderDeleteRepository;
 
-
+    // 회원 별 주문 목록 (네이티브 쿼리로 필터)
     public Page<OrderListDTO> findByMemberIdAndFilterNative(Long memberId,
                                                             String keyword,
                                                             LocalDateTime startDate,
                                                             LocalDateTime endDate,
                                                             Pageable pageable) {
-
         Page<Order> ordersPage = myOrderRepository.findOrdersByFilterNative(memberId, keyword, startDate, endDate, pageable);
-
         return ordersPage.map(order -> {
             OrderListDTO dto = new OrderListDTO();
             dto.setId(order.getId());
@@ -59,17 +56,16 @@ public class MyOrderService {
             dto.setReturnType(orderReturnRepository.getReturnTypeByOrderId(order.getId()));
             dto.setExistsReview(reviewRepository.existsByOrderId(order.getId()));
 
+            dto.setOrderDelete(checkOrderStatus(order.getId()));
+
             List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
             if (!orderItems.isEmpty()) {
                 Product product = orderItems.get(0).getProduct();
                 dto.setProduct(toOrderProductDTO(product));
             }
-
             return dto;
         });
     }
-
-
     // 회원 별 주문 목록 조회
     public Page<OrderListDTO> findByMemberId(Long memberId, Pageable pageable) {
         Page<Order> ordersPage = myOrderRepository.findByMemberId(memberId, pageable);
@@ -77,7 +73,6 @@ public class MyOrderService {
 
         return ordersPage.map(order -> {
             OrderListDTO dto = new OrderListDTO();
-
             dto.setId(order.getId());
             dto.setOrderId(order.getId());
             dto.setMemberId(order.getMember().getId());
@@ -86,11 +81,8 @@ public class MyOrderService {
             dto.setTotalCount(order.getTotalCount());
             dto.setPaymentMethod(order.getPaymentMethod());
             dto.setOrderStatus(myOrderManageRepository.findOrderStatusByOrderId(order.getId()));
-
             dto.setReturnType(orderReturnRepository.getReturnTypeByOrderId(order.getId()));
-
             dto.setExistsReview(reviewRepository.existsByOrderId(order.getId()));
-
             List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
             if (!orderItems.isEmpty()) {
                 Product product = orderItems.get(0).getProduct();
@@ -121,5 +113,17 @@ public class MyOrderService {
     public void insertOrderReturn(OrderReturnDTO orderReturnDTO) {
         OrderReturn orderReturn = modelMapper.map(orderReturnDTO, OrderReturn.class);
         orderReturnRepository.save(orderReturn);
+    }
+
+    // 회원 주문 목록 삭제
+    public void deleteOrder(Long orderId) {
+        OrderDelete orderDelete = new OrderDelete();
+        orderDelete.setOrderId(orderId);
+        myOrderDeleteRepository.save(orderDelete);
+    }
+
+    // 회원 목록이 삭제인지 아닌지 확인
+    private boolean checkOrderStatus(Long orderId) {
+        return myOrderDeleteRepository.existsByOrderId(orderId);
     }
 }
