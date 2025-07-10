@@ -13,6 +13,7 @@ import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberWithProfileDTO;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import io.jsonwebtoken.Claims;
@@ -23,11 +24,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,6 +47,7 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final SessionRepository sessionRepository;
     private final LoginHistoryService loginHistoryService;
+    private final MemberProfileService memberProfileService;
 
     // 현재 로그인 중인 사용자 정보 반환
     @GetMapping("/me")
@@ -74,8 +81,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletResponse response, HttpServletRequest request){
 
-        log.info("로그인 시도");
-
         //로그인 시도
         try {
             // 사용자 인증
@@ -107,10 +112,19 @@ public class AuthController {
                     LoginType.NORMAL
             );
 
+            CustomUserPrincipal principal = new CustomUserPrincipal(member, memberProfileService.findByMemberIdOrThrow(member.getId()));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null,
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role.name())));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             // 쿠키 저장
             saveTokenCookies(response, accessToken, refreshToken);
 
-            return ResponseEntity.ok(Map.of("message", "로그인 성공"));
+            return ResponseEntity.ok(Map.of(
+                    "message", "로그인 성공",
+                    "accessToken", accessToken,
+                    "refreshToken", refreshToken
+            ));
         }
         catch (IllegalArgumentException e) { // 실패
 

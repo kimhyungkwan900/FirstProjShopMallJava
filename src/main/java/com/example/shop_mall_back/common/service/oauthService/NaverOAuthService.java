@@ -19,7 +19,6 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final OAuthMemberService oAuthMemberService;
@@ -55,7 +54,6 @@ public class NaverOAuthService implements OAuth2UserService<OAuth2UserRequest, O
                     OauthProvider.NAVER
             );
         } catch (Exception e) {
-            log.error(e);
             throw  new OAuth2AuthenticationException("API 로그인 에러 발생");
         }
 
