@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor  //JSON 객체 변환시 기본생성자 필요한 경우 대비
 @AllArgsConstructor
 @Getter
-@ToString
+@ToString(exclude = "userPassword")
 public class MemberFormDTO {
 
     private Long id;

@@ -56,9 +56,8 @@ public class MemberProfile {
     @Column(name = "deliv_address")
     private String delivAddress;
 
-    public void updateProfile(String nickname, String profileImgUrl, String address) {
+    public void updateProfile(String nickname, String profileImgUrl) {
         this.nickname = nickname;
         this.profileImgUrl = profileImgUrl;
-        this.delivAddress = address;
     }
 }

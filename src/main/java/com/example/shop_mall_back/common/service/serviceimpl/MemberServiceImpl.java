@@ -8,6 +8,7 @@ import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
+import com.example.shop_mall_back.common.dto.PasswordChangeDTO;
 import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
@@ -107,12 +108,12 @@ public class MemberServiceImpl implements MemberService {
 
 //    <editor-fold desc="비밀번호 재설정">
     @Override
-    public void memberFormUpdate(MemberFormDTO memberFormDTO, PasswordEncoder passwordEncoder) {
+    public void passWordUpdate(PasswordChangeDTO passwordChangeDTO, PasswordEncoder passwordEncoder) {
         // Update 할 member 객체 검색
-        Member member = findByIdOrThrow(memberFormDTO.getId());
+        Member member = findByIdOrThrow(passwordChangeDTO.getId());
 
         // 새로 입력받은 password 를 newPass 에 저장
-        String newPass = passwordEncoder.encode(memberFormDTO.getUserPassword());
+        String newPass = passwordEncoder.encode(passwordChangeDTO.getUserPassword());
 
         // password 변경
         member.changePassword(newPass);
