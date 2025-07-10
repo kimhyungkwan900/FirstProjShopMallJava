@@ -70,7 +70,7 @@ public class AdminProductController {
 
         log.info(">>> incoming searchDto: {}", productSearchDto);
 
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
         Page<ProductDto> products = adminProductService.getAdminProductPage(productSearchDto, pageable);
 
         ProductListDto productListDto = ProductListDto.builder()
