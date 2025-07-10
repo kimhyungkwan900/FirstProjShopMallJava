@@ -40,6 +40,7 @@ public class FaqService {
     @Transactional(readOnly = true)
     public PageResponseDto<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, PageRequestDto requestDto) {
         Pageable pageable = requestDto.toPageable();
+
         Page<FaqDto> result = faqRepository.searchFaqs(faqSearchDto, (PageRequestDto) pageable)
                 .map(FaqDto::new);
 
