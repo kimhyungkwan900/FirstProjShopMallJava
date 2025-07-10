@@ -63,7 +63,6 @@ public class MyOrderChangeService {
 
     public OrderProductDTO toOrderProductDTO(Product product) {
         List<ProductImageDto> images = productService.getProductImages(product.getId());
-
         OrderProductDTO dto = new OrderProductDTO();
         dto.setId(product.getId());
         dto.setName(product.getName());
