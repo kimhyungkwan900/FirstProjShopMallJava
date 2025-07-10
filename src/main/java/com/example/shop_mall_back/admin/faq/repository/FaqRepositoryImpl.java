@@ -29,9 +29,10 @@ public class FaqRepositoryImpl implements FaqRepositoryCustom {
 
         //검색시에 카테고리 반드시 존재해야함
         if (!StringUtils.hasText(faqSearchDto.getCategory())) {
-            return Page.empty();
+            //return Page.empty();
+            builder.and(faq.category.eq(faqSearchDto.getCategory()));
         }
-        builder.and(faq.category.eq(faqSearchDto.getCategory()));
+
 
         //키워드가 있으면 제목이나 답변에 포함되었는지 검색함
         if (StringUtils.hasText(faqSearchDto.getKeyWord())) {
