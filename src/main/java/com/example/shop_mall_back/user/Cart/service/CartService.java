@@ -267,6 +267,15 @@ public class CartService {
             wishlistService.addToWishlist(memberId, productId);
         }
     }
+    @Transactional
+    public void selectAll(Long memberId, boolean isSelected) {
+        List<CartItem> items = cartItemRepository.findByCart_Member_Id(memberId);
+        items.forEach(item -> item.setIsSelected(isSelected));
+        cartItemRepository.saveAll(items);
+    }
+
+
+
 
 }
 

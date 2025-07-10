@@ -135,4 +135,13 @@ public class CartController {
         restockAlarmService.requestRestockAlarm(getCurrentMemberId(), itemsId);
         return ResponseEntity.ok("재입고 알림이 신청되었습니다.");
     }
+
+    @PutMapping("/items/select-all")
+    public ResponseEntity<?> toggleSelectAll(@RequestParam boolean isSelected) {
+        cartService.selectAll(getCurrentMemberId(), isSelected);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }
