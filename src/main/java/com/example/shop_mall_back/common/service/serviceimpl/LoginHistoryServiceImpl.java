@@ -8,24 +8,28 @@ import com.example.shop_mall_back.common.repository.LoginHistoryRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LoginHistoryServiceImpl implements LoginHistoryService {
 
     private final LoginHistoryRepository loginHistoryRepository;
 
     @Override
     public void recordLogin(Member member, String ip, String userAgent, LoginResult result, LoginType type) {
-        // 로그인 history 생성
         LoginHistory history = LoginHistory.builder()
                 .member(member)
                 .ipAddress(ip)
                 .userAgent(userAgent)
                 .loginResult(result)
                 .loginType(type)
+                .loginTime(LocalDateTime.now())
                 .build();
-        
+
         loginHistoryRepository.save(history);
     }
 
