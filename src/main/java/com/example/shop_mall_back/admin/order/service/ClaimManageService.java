@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.shop_mall_back.user.myOrder.domain.OrderReturn.ReturnType;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -39,7 +41,29 @@ public class ClaimManageService {
         ClaimManage claimManage = claimManageRepository.findById(claimManageDto.getClaimId())
                 .orElseThrow(EntityNotFoundException::new);
 
-        claimManage.setIsApproved(claimManageDto.getIsApproved() == true);
-    }
+        String returnType = String.valueOf(claimManage.getOrderReturn().getReturnType());
 
+        switch (returnType){
+            case "CANCEL_REQUEST":
+                if(claimManageDto.getIsApproved())
+                    claimManage.getOrderReturn().setReturnType(ReturnType.CANCEL_COMPLETE);
+                else
+                    claimManage.getOrderReturn().setReturnType(ReturnType.CANCEL_REJECTED);
+                break;
+            case "RETURN_REQUEST":
+                if(claimManageDto.getIsApproved())
+                    claimManage.getOrderReturn().setReturnType(ReturnType.RETURN_COMPLETE);
+                else
+                    claimManage.getOrderReturn().setReturnType(ReturnType.RETURN_REJECTED);
+                break;
+            case "EXCHANGE_REQUEST":
+                if(claimManageDto.getIsApproved())
+                    claimManage.getOrderReturn().setReturnType(ReturnType.EXCHANGE_COMPLETE);
+                else
+                    claimManage.getOrderReturn().setReturnType(ReturnType.EXCHANGE_REJECTED);
+                break;
+        }
+
+        claimManageRepository.save(claimManage);
+    }
 }
