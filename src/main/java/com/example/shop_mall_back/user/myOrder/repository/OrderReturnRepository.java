@@ -17,10 +17,21 @@ public interface OrderReturnRepository extends JpaRepository<OrderReturn, Intege
     @Query("SELECT o.returnType FROM OrderReturn o WHERE o.orderId = :orderId")
     OrderReturn.ReturnType getReturnTypeByOrderId(@Param("orderId") Long orderId);
 
-    // 전체 목록
-    Page<OrderReturn> findByMemberId(Long memberId, Pageable pageable);
+//    Page<OrderReturn> findByMemberId(Long memberId, Pageable pageable);
+//
+//    Page<OrderReturn> findByMemberIdAndReturnType(Long memberId, OrderReturn.ReturnType returnType, Pageable pageable);
 
-    // 필터 조건 포함 페이징
-    Page<OrderReturn> findByMemberIdAndReturnType(Long memberId, OrderReturn.ReturnType returnType, Pageable pageable);
-
+    @Query("""
+    select o from OrderReturn o 
+    where o.memberId = :memberId
+    and (:returnTypes is null or o.returnType in :returnTypes)
+    and not exists(
+        select 1 from OrderDelete od where od.orderId = o.orderId
+    )
+    order by o.regDate desc 
+""")
+    Page<OrderReturn> findNonDeleteReturnsByMemberId(
+            @Param("memberId") Long memberId,
+            @Param("returnTypes") List<OrderReturn.ReturnType> returnTypes,
+            Pageable pageable);
 }
