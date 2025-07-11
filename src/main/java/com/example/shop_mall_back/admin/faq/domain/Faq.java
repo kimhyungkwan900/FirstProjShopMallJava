@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +15,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Faq {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) //자동으로 숫자 up
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //자동으로 숫자 up
     private Long id;
 
     @Column(nullable = false, length = 50)
@@ -26,16 +30,13 @@ public class Faq {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answer;
 
-    private LocalDateTime createdAt; //등록일
-    private LocalDateTime updatedAt; //수정일
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 등록일
 
-    @PrePersist //데이터가 저장되기 전에 실행
-    protected void onCreate(){
-        this.createdAt = LocalDateTime.now();
-    }
-    @PreUpdate //데이터가 수정되기 전에 실행
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    @LastModifiedDate
+    private LocalDateTime updatedAt; // 수정일
+
+
 
 }

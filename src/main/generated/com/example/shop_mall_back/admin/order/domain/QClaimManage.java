@@ -26,7 +26,7 @@ public class QClaimManage extends EntityPathBase<ClaimManage> {
 
     public final BooleanPath isApproved = createBoolean("isApproved");
 
-    public final com.example.shop_mall_back.user.Order.domain.QOrderReturn orderReturn;
+    public final com.example.shop_mall_back.user.myOrder.domain.QOrderReturn orderReturn;
 
     public QClaimManage(String variable) {
         this(ClaimManage.class, forVariable(variable), INITS);
@@ -46,7 +46,7 @@ public class QClaimManage extends EntityPathBase<ClaimManage> {
 
     public QClaimManage(Class<? extends ClaimManage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.orderReturn = inits.isInitialized("orderReturn") ? new com.example.shop_mall_back.user.Order.domain.QOrderReturn(forProperty("orderReturn")) : null;
+        this.orderReturn = inits.isInitialized("orderReturn") ? new com.example.shop_mall_back.user.myOrder.domain.QOrderReturn(forProperty("orderReturn")) : null;
     }
 
 }

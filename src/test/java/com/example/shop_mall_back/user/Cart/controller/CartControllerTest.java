@@ -2,6 +2,7 @@ package com.example.shop_mall_back.user.Cart.controller;
 
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
+import com.example.shop_mall_back.user.Cart.dto.DeliveryFeeRuleDto;
 import com.example.shop_mall_back.user.Cart.service.CartService;
 import com.example.shop_mall_back.user.Cart.service.RestockAlarmService;
 import org.junit.jupiter.api.DisplayName;
@@ -153,16 +154,30 @@ class CartControllerTest {
 
     @Test
     @DisplayName("[8] 총액 + 배송비 계산 - 성공")
-    void calculateTotal_success() throws Exception{
+    void calculateTotal_success() throws Exception {
+        // given
+        DeliveryFeeRuleDto dto = DeliveryFeeRuleDto.builder()
+                .id(1L)
+                .minOrderAmount(50000)
+                .deliveryFee(3000)
+                .description("기본 배송비")
+                .totalProductPrice(40000)
+                .grandTotal(43000)
+                .build();
 
-        when(cartService.calculateTotalWithDeliveryDetails(1L)).thenReturn(50000);
+        when(cartService.calculateTotalWithDeliveryDetails(1L)).thenReturn(dto);
 
+        // when & then
         mockMvc.perform(get("/api/cart/total-with-deli")
-                .param("memberId", "1"))
-                .andExpect(status().isOk());
+                        .param("memberId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalProductPrice").value(40000))
+                .andExpect(jsonPath("$.deliveryFee").value(3000))
+                .andExpect(jsonPath("$.grandTotal").value(43000));
 
         verify(cartService).calculateTotalWithDeliveryDetails(1L);
     }
+
 
     @Test
     @DisplayName("[9] 장바구니 품절 상태 갱신 - 성공")

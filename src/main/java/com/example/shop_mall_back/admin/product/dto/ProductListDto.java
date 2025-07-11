@@ -12,4 +12,5 @@ public class ProductListDto {
     private Page<ProductDto> products;
     private ProductSearchDto productSearchDto;
     private Integer maxPage;
+    private Integer totalPage;
 }

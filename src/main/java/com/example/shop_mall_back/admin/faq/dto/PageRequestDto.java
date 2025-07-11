@@ -21,7 +21,8 @@ public class PageRequestDto {
     private int size = 10;
 
     public Pageable toPageable() {
-        return PageRequest.of(this.page - 1, this.size, Sort.by("id").descending());
+
+        return PageRequest.of(this.page - 1, this.size,  Sort.by(Sort.Direction.DESC, "id"));
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.shop_mall_back.user.Order.domain;
+package com.example.shop_mall_back.user.myOrder.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QOrderReturn extends EntityPathBase<OrderReturn> {
 
-    private static final long serialVersionUID = -322249053L;
+    private static final long serialVersionUID = 968024207L;
 
     public static final QOrderReturn orderReturn = new QOrderReturn("orderReturn");
 
