@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.Order.controller;
 
 import com.example.shop_mall_back.user.Order.dto.OrderDto;
+import com.example.shop_mall_back.user.Order.dto.OrderSummaryDto;
 import com.example.shop_mall_back.user.Order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,9 @@ public class OrderController {
      * @return 생성된 주문 ID 반환
      */
     @PostMapping("/{memberId}")
-    public ResponseEntity<Long> createOrder(@PathVariable Long memberId, @RequestBody OrderDto orderDto) {
-        Long orderId = orderService.createOrder(memberId, orderDto);
-        return ResponseEntity.ok(orderId);
+    public ResponseEntity<OrderSummaryDto> createOrder(@PathVariable Long memberId, @RequestBody OrderDto orderDto) {
+        OrderSummaryDto orderSummaryDto = orderService.createOrder(memberId, orderDto);
+        return ResponseEntity.ok(orderSummaryDto);
     }
 
     /**
@@ -70,18 +71,18 @@ public class OrderController {
      * 요청사항 유효성 검증 및 저장 처리
      */
     @PostMapping("/deliveryRequest")
-    public ResponseEntity<Long> deliveryRequest(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<OrderSummaryDto> deliveryRequest(@RequestBody OrderDto orderDto) {
         // 1. 주문 생성
-        Long orderId = orderService.createOrder(orderDto.getMember_id(), orderDto);
+        OrderSummaryDto orderSummaryDto = orderService.createOrder(orderDto.getMember_id(), orderDto);
 
         // 2. 배송 요청사항 저장
-        orderService.saveDeliveryRequestNote(orderId, orderDto);
+        orderService.saveDeliveryRequestNote(orderSummaryDto.getOrderId(), orderDto);
 
-        return ResponseEntity.ok(orderId);
+        return ResponseEntity.ok(orderSummaryDto);
     }
 
     /**
-     * 결제 처리
+     * [5] 결제 처리
      * POST /api/orders/{orderId}/pay
      *
      * @param orderId 결제할 주문의 ID (PathVariable로 전달됨)

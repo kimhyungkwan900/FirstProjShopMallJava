@@ -18,4 +18,10 @@ public class OrderItemDto {
     private int price;            // 가격
     private String selected_option; // 선택 옵션
 
+    private String brandName;   //브랜드 이름
+    private String imageUrl;    //상품 이미지
+    private String productTitle;    //상품 이름
+    private String productPrice;    //상품 가격
+
+
 }

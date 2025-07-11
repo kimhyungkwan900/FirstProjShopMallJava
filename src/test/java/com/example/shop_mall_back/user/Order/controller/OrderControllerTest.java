@@ -2,6 +2,8 @@ package com.example.shop_mall_back.user.Order.controller;
 
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.user.Order.dto.OrderDto;
+import com.example.shop_mall_back.user.Order.dto.OrderItemDto;
+import com.example.shop_mall_back.user.Order.dto.OrderSummaryDto;
 import com.example.shop_mall_back.user.Order.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -49,17 +53,40 @@ class OrderControllerTest {
         orderDto.setPayment_method("CREDIT_CARD");
         orderDto.setDelivery_request("문 앞에 두세요");
 
-        // when: 서비스가 주문 ID 반환하도록 Mock 설정
+        // ✅ Mock: 서비스가 OrderSummaryDto 반환하도록 설정
+        OrderSummaryDto mockSummary = OrderSummaryDto.builder()
+                .orderId(100L)
+                .memberName("홍길동")
+                .deliveryAddress("서울 강남구 테헤란로 123")
+                .paymentMethod("CREDIT_CARD")
+                .totalAmount(20000)
+                .deliveryFee(3000)
+                .orderDate(orderDto.getOrder_date())
+                .orderItems(List.of(
+                        OrderItemDto.builder()
+                                .id(1L)
+                                .orderId(100L)
+                                .productId(101L)
+                                .quantity(2)
+                                .price(10000)
+                                .productTitle("테스트 상품")
+                                .build()
+                ))
+                .build();
         Mockito.when(orderService.createOrder(eq(1L), any(OrderDto.class)))
-                .thenReturn(100L);
+                .thenReturn(mockSummary);
 
-        // then: POST 요청 결과 검증
+        // when & then: POST 요청 결과 검증
         mockMvc.perform(post("/api/orders/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("100"));
+                .andExpect(jsonPath("$.orderId").value(100))
+                .andExpect(jsonPath("$.memberName").value("홍길동"))
+                .andExpect(jsonPath("$.totalAmount").value(20000))
+                .andExpect(jsonPath("$.orderItems[0].productTitle").value("테스트 상품"));
     }
+
 
     @Test
     @DisplayName("결제 성공 처리")
@@ -99,9 +126,21 @@ class OrderControllerTest {
                 .delivery_request("부재 시 경비실에 맡겨주세요")
                 .build();
 
-        // 서비스 동작 Mock 설정
+        // ✅ Mock: 서비스가 OrderSummaryDto 반환하도록 설정
+        OrderSummaryDto mockSummary = OrderSummaryDto.builder()
+                .orderId(101L)
+                .memberName("홍길동")
+                .deliveryAddress("서울 강남구 테헤란로 123")
+                .paymentMethod("CREDIT_CARD")
+                .totalAmount(20000)
+                .deliveryFee(3000)
+                .orderDate(orderDto.getOrder_date())
+                .orderItems(List.of())
+                .build();
         Mockito.when(orderService.createOrder(eq(1L), any(OrderDto.class)))
-                .thenReturn(101L);
+                .thenReturn(mockSummary);
+
+        // ✅ Mock: 배송 요청사항 저장은 아무것도 반환하지 않음
         doNothing().when(orderService).saveDeliveryRequestNote(eq(101L), any(OrderDto.class));
 
         // when & then: POST 요청 결과 검증
@@ -109,8 +148,11 @@ class OrderControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("101"));
+                .andExpect(jsonPath("$.orderId").value(101))
+                .andExpect(jsonPath("$.deliveryAddress").value("서울 강남구 테헤란로 123"))
+                .andExpect(jsonPath("$.deliveryFee").value(3000));
     }
+
 
     @Test
     @DisplayName("결제 처리 - 성공")

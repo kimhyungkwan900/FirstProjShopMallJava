@@ -16,6 +16,8 @@ import com.example.shop_mall_back.user.Cart.service.CartService;
 import com.example.shop_mall_back.user.Cart.service.InventoryService;
 import com.example.shop_mall_back.user.Order.constant.PaymentStatus;
 import com.example.shop_mall_back.user.Order.dto.OrderDto;
+import com.example.shop_mall_back.user.Order.dto.OrderItemDto;
+import com.example.shop_mall_back.user.Order.dto.OrderSummaryDto;
 import com.example.shop_mall_back.user.Order.repository.OrderItemRepository;
 import com.example.shop_mall_back.user.Order.repository.OrderRepository;
 
@@ -130,14 +132,42 @@ class OrderServiceTest {
 
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        // 👉 Mock: OrderSummaryDto 반환
+        OrderSummaryDto mockSummary = OrderSummaryDto.builder()
+                .orderId(123L)
+                .memberName("홍길동")
+                .deliveryAddress("서울특별시 강남구")
+                .paymentMethod("CREDIT_CARD")
+                .totalAmount(22000)
+                .deliveryFee(2000)
+                .orderItems(List.of(
+                        OrderItemDto.builder()
+                                .id(1L)
+                                .orderId(123L)
+                                .productId(101L)
+                                .quantity(2)
+                                .price(10000)
+                                .productTitle("테스트 상품")
+                                .build()
+                ))
+                .build();
+
+        when(orderService.createOrder(eq(1L), any(OrderDto.class))).thenReturn(mockSummary);
+
         // when: 주문 생성
-        Long createdOrderId = orderService.createOrder(1L, orderDto);
+        OrderSummaryDto createdOrder = orderService.createOrder(1L, orderDto);
 
         // then: 저장 및 삭제 호출 검증
         verify(orderRepository, times(2)).save(any(Order.class)); // 주문 & 상태
         verify(orderItemRepository, times(1)).save(any());
         verify(cartItemRepository, times(1)).deleteAll(any());
-        assertNotNull(createdOrderId);
+
+        // 👉 반환값 검증
+        assertNotNull(createdOrder);
+        assertEquals(123L, createdOrder.getOrderId());
+        assertEquals(22000, createdOrder.getTotalAmount());
+        assertEquals("홍길동", createdOrder.getMemberName());
+        assertEquals(1, createdOrder.getOrderItems().size());
     }
 
 

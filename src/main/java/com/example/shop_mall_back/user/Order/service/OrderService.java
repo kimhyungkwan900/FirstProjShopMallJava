@@ -6,7 +6,9 @@ import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
+import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.repository.MemberAddressRepository;
+import com.example.shop_mall_back.common.repository.MemberProfileRepository;
 import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.Cart.domain.CartItem;
 import com.example.shop_mall_back.user.Cart.domain.DeliveryFeeRule;
@@ -16,14 +18,19 @@ import com.example.shop_mall_back.user.Cart.service.CartService;
 import com.example.shop_mall_back.user.Cart.service.InventoryService;
 import com.example.shop_mall_back.user.Order.domain.OrderItem;
 import com.example.shop_mall_back.user.Order.dto.OrderDto;
+import com.example.shop_mall_back.user.Order.dto.OrderItemDto;
+import com.example.shop_mall_back.user.Order.dto.OrderSummaryDto;
 import com.example.shop_mall_back.user.Order.repository.OrderItemRepository;
 import com.example.shop_mall_back.user.Order.repository.OrderRepository;
+import com.example.shop_mall_back.user.product.domain.ProductImage;
+import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.shop_mall_back.user.Order.constant.PaymentStatus;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +53,8 @@ public class OrderService {
     private final InventoryService inventoryService;
     private final OrderManageRepository orderManageRepository;
     private final DeliveryFeeRuleRepository deliveryFeeRuleRepository;
+    private final ProductRepository productRepository;
+    private final MemberProfileRepository memberProfileRepository;
 
     /**
      * 주문 생성 메서드
@@ -55,7 +64,7 @@ public class OrderService {
      * @return 생성된 주문 ID
      */
     @Transactional
-    public Long createOrder(Long memberId, OrderDto orderDto) {
+    public OrderSummaryDto createOrder(Long memberId, OrderDto orderDto) {
         // 1. 회원 조회
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
@@ -82,7 +91,7 @@ public class OrderService {
         order.setDeliveryRequest(orderDto.getDelivery_request());
         order.setIsGuest(false);  // 비회원 주문 아님
         order.setPaymentStatus(PaymentStatus.PENDING);
-        order = orderRepository.save(order);  // 저장 후 ID 생성
+        orderRepository.save(order);  // 저장 후 ID 생성
 
         // 5. 주문 관리 엔티티 생성
         OrderManage orderManage = new OrderManage();
@@ -92,6 +101,9 @@ public class OrderService {
 
         int totalAmount = 0;
         int totalCount = 0;
+
+        // ✅ 주문 항목 DTO 리스트
+        List<OrderItemDto> orderItemDtoList = new ArrayList<>();
 
         // 6. 각 장바구니 항목 → 주문 항목으로 전환
         for (CartItem cartItem : cartItemList) {
@@ -119,6 +131,27 @@ public class OrderService {
 
             // 6-4. 재고 차감
             product.setStock(product.getStock() - cartItem.getQuantity());
+            productRepository.save(product);
+
+            //dto로 변경
+            OrderItemDto orderItemDto = new OrderItemDto();
+            orderItemDto.setId(orderItem.getId());
+            orderItemDto.setOrderId(order.getId());
+            orderItemDto.setProductId(product.getId());
+            orderItemDto.setQuantity(cartItem.getQuantity());
+            orderItemDto.setPrice(product.getPrice());
+            orderItemDto.setBrandName(cartItem.getProduct().getBrand().getName());
+            orderItemDto.setProductTitle(cartItem.getProduct().getName());
+            orderItemDto.setProductPrice(String.format("%,d", cartItem.getProduct().getPrice() * cartItem.getQuantity()));
+
+            String imageUrl = cartItem.getProduct().getImages().stream()
+                    .filter(ProductImage::isRepImg)
+                    .findFirst()
+                    .map(ProductImage::getImgUrl)
+                    .orElse("/images/no-image.png");
+            orderItemDto.setImageUrl(imageUrl);
+
+            orderItemDtoList.add(orderItemDto);
         }
 
         // 7. 배송비 계산 및 총액 반영
@@ -135,7 +168,19 @@ public class OrderService {
         // 9. 장바구니 항목 삭제 (주문 완료 후 비움)
         cartItemRepository.deleteAll(cartItemList);
 
-        return order.getId();
+
+        MemberProfile memberProfile = memberProfileRepository.findByMemberId(memberId);
+
+        return OrderSummaryDto.builder()
+                .orderId(order.getId())
+                .memberName(memberProfile.getName())
+                .deliveryAddress(memberAddress.getAddress())
+                .paymentMethod(order.getPaymentMethod())
+                .totalAmount(totalAmount)
+                .deliveryFee(deliveryFee)
+                .orderDate(order.getOrderDate())
+                .orderItems(orderItemDtoList)
+                .build();
     }
 
 

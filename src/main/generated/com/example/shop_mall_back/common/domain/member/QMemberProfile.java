@@ -24,8 +24,6 @@ public class QMemberProfile extends EntityPathBase<MemberProfile> {
 
     public final EnumPath<com.example.shop_mall_back.common.constant.Age> age = createEnum("age", com.example.shop_mall_back.common.constant.Age.class);
 
-    public final StringPath delivAddress = createString("delivAddress");
-
     public final EnumPath<com.example.shop_mall_back.common.constant.Gender> gender = createEnum("gender", com.example.shop_mall_back.common.constant.Gender.class);
 
     public final EnumPath<com.example.shop_mall_back.common.constant.Grade> grade = createEnum("grade", com.example.shop_mall_back.common.constant.Grade.class);

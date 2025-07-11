@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class OrderDto {
     private Long id;    //주문 id
     private Long member_id; //주문자 회원 id
-    private Long delivery_address_id;
-    private String delivery_address;    //배송지 id
+    private Long delivery_address_id; //배송지 id
+    private String delivery_address;
     private LocalDateTime order_date;   //주문 일시
     private int total_amount;   //총 주문 결제 금액
     private int total_count;    //총 주문 개수

@@ -31,10 +31,10 @@ public class CartItem {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(name = "is_selected")
-    private Boolean isSelected;  // 주문을 위한 선택 여부
+    @Column(name = "is_selected", nullable = false)
+    private Boolean isSelected = false;  // 주문을 위한 선택 여부
 
-    @Column(name = "is_sold_out")
-    private Boolean isSoldOut;  // 품절 여부
+    @Column(name = "is_sold_out",  nullable = false)
+    private Boolean isSoldOut = false;  // 품절 여부
 
 }
