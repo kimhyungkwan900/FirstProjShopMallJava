@@ -157,7 +157,7 @@ public class CartService {
             dto.setProductTitle(item.getProduct().getName());
 
             // ✅ 상품 가격 세팅 (원화 표시까지)
-            dto.setProductPrice(String.format("%,d", item.getProduct().getPrice()));
+            dto.setProductPrice(String.format("%,d", item.getProduct().getPrice()* item.getQuantity()));
 
             return dto;
         }).toList();
@@ -241,6 +241,8 @@ public class CartService {
 
         // 4. 총액 = 상품 합계 + 배송비
         int grandTotal = itemTotal + deliveryFee;
+
+
 
         // 5. DTO로 반환
         return DeliveryFeeRuleDto.from(rule, itemTotal, grandTotal);
