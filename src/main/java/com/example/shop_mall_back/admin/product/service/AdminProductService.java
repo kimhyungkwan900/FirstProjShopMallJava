@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,7 +163,8 @@ public class AdminProductService {
     }
 
     //---상품 삭제
-    public void deleteProduct(Long productId){
-        adminProductRepository.deleteById(productId);
+    public void deleteProducts(List<Long> productIds){
+//        adminProductRepository.deleteById(productId);
+        adminProductRepository.deleteAllById(productIds);
     }
 }
