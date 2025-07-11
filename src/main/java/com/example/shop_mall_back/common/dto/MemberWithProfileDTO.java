@@ -22,5 +22,4 @@ public class MemberWithProfileDTO {
     private Gender gender;
     private Age age;
     private String profileImgUrl;
-    private String delivAddress;
 }

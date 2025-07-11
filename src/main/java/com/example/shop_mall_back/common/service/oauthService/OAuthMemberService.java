@@ -47,7 +47,6 @@ public class OAuthMemberService {
                     .role(Role.MEMBER)
                     .grade(Grade.NORMAL)
                     .isMembership(false)
-                    .delivAddress(null)
                     .build();
 
             memberProfileRepository.save(memberProfile);

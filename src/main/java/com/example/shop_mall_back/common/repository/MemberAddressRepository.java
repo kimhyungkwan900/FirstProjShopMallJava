@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.common.repository;
 
+import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -35,4 +36,5 @@ public interface MemberAddressRepository extends JpaRepository<MemberAddress, Lo
      */
     MemberAddress findByMemberIdAndIsDefaultTrue(Long memberId);
 
+    List<MemberAddress> findByMember(Member member);
 }

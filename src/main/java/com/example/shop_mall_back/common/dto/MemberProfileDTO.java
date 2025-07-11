@@ -30,17 +30,13 @@ public class MemberProfileDTO {
     @Builder.Default
     private Age age = Age.UNKNOWN;
 
-
     @NotBlank
     @Length(min = 3, max = 20)
     private String name;
 
     private String nickname;
 
-    @JsonProperty("deliv_address") //JSON 응답개체에서 DB 컬럼명과 같은 이름을 가지도록 미리 설정
-    private String delivAddress;
-
-    @JsonProperty("profile_img_url")
+    @JsonProperty("profile_img_url")    //JSON 응답개체에서 DB 컬럼명과 같은 이름을 가지도록 미리 설정
     private String profileImgUrl;
 
     private boolean isMembership;

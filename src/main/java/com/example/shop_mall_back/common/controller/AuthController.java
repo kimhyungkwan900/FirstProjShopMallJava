@@ -71,8 +71,7 @@ public class AuthController {
                 profile.getGrade(),
                 profile.getGender(),
                 profile.getAge(),
-                profile.getProfileImgUrl(),
-                profile.getDelivAddress()
+                profile.getProfileImgUrl()
         );
 
         return ResponseEntity.ok(dto);
