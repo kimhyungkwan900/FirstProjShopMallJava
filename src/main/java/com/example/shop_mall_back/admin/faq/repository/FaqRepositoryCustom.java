@@ -7,5 +7,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface FaqRepositoryCustom {
-    Page<Faq> searchFaqs(FaqSearchDto  faqSearchDto, PageRequestDto pageRequestDto);
+    Page<Faq> searchFaqs(FaqSearchDto  faqSearchDto, Pageable pageable);
 }
