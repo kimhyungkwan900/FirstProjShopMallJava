@@ -38,17 +38,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
-@Log4j2
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final MemberProfileService memberProfileService;
-    private final MemberAddressService memberAddressService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid MemberFormDTO memberFormDTO){
-        log.info("회원가입 요청 도착: {}", memberFormDTO);
         memberService.signUp(memberFormDTO, passwordEncoder);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

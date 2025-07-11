@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(MemberOrderAddressController.class)
+//@WebMvcTest(MemberOrderAddressController.class)
 @AutoConfigureMockMvc(addFilters = false)
 class MemberOrderAddressControllerTest {
 
@@ -143,7 +143,8 @@ class MemberOrderAddressControllerTest {
         MemberAddressDTO memberAddressDTO = MemberAddressDTO.fromEntity(memberAddress);
 
         // 🔥 서비스 메서드 void 반환이라 doNothing 사용
-        doNothing().when(memberAddressServiceImpl).memberAddressUpdate(memberAddressDTO);
+//        doNothing().when(memberAddressServiceImpl).memberAddressUpdate(memberAddressDTO);
+        doNothing().when(memberAddressServiceImpl).memberAddressUpdate(memberAddressDTO,1L);
 
         // ✅ PUT 요청 및 상태 검증
         mockMvc.perform(put("/api/order/addresses/{addressId}/update", "3")
@@ -162,7 +163,9 @@ class MemberOrderAddressControllerTest {
         Long addressId = 3L;
 
         // 🔥 서비스 메서드 void 반환이라 doNothing 사용
-        doNothing().when(memberAddressServiceImpl).memberAddressDelete(addressId);
+//        doNothing().when(memberAddressServiceImpl).memberAddressDelete(addressId);
+
+        doNothing().when(memberAddressServiceImpl).memberAddressDelete(addressId, 1L);
 
         // ✅ DELETE 요청 및 상태 검증
         mockMvc.perform(delete("/api/order/addresses/{addressId}/delete", addressId))

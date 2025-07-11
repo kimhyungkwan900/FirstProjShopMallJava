@@ -25,7 +25,6 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Log4j2
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -58,9 +57,6 @@ public class MemberServiceImpl implements MemberService {
         // 저장 / member 의 경우 생략가능
         memberRepository.save(member);
         memberProfileRepository.save(memberProfile);
-
-        log.info("member 저장 완료 - ID: {}", member.getId());
-        log.info("memberProfile 저장 완료 - ID: {}", memberProfile.getId());
 
         // 저장된 member 객체 id 반환
         return member.getId();
