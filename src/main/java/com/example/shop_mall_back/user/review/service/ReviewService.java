@@ -11,7 +11,9 @@ import com.example.shop_mall_back.common.service.serviceimpl.MemberProfileServic
 import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.product.service.ProductService;
 import com.example.shop_mall_back.user.review.domain.Review;
+import com.example.shop_mall_back.user.review.domain.ReviewImg;
 import com.example.shop_mall_back.user.review.dto.*;
+import com.example.shop_mall_back.user.review.repository.ReviewImgRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewReactionRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewReportRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
@@ -39,9 +41,10 @@ public class ReviewService {
     private final ModelMapper modelMapper;
     private final ReviewReactionService reviewReactionService;
     private final ReviewImgService reviewImgService;
-
     private final ProductRepository  productRepository;
     private final MemberProfileRepository memberProfileRepository;
+    private final ReviewImgRepository reviewImgRepository;
+    private final ReviewFileService reviewFileService;
 
 
     // 리뷰 받아오기(수정)
@@ -131,23 +134,44 @@ public class ReviewService {
     }
 
     // 리뷰 수정
-    public void updateReview(Long id, ReviewUpdateDTO reviewUpdateDTO,  List<MultipartFile> reviewImgFile) {
+    public void updateReview(Long id, ReviewUpdateDTO reviewUpdateDTO,
+                             List<MultipartFile> reviewImgFile,
+                             List<Long> keepImageIds) {
+
         Review review = reviewRepository.findById(id)
-                .orElseThrow( () -> new InvalidParameterException("리뷰를 찾을 수 없습니다."));
+                .orElseThrow(() -> new InvalidParameterException("리뷰를 찾을 수 없습니다."));
+
         review.setReviewScore(reviewUpdateDTO.getScore());
         review.setReviewContent(reviewUpdateDTO.getReviewContent());
         review.setReviewSummation(reviewUpdateDTO.getSummation());
         review.setUpdatedAt(LocalDateTime.now());
+
         reviewRepository.save(review);
 
+        // 모든 기존 이미지 가져오기
+        List<ReviewImg> reviewImages = reviewImgRepository.findByReviewId(review.getId());
 
-        reviewImgService.deleteReviewImage(review.getId());
-        if(reviewImgFile != null && !reviewImgFile.isEmpty() ) {
-            for(MultipartFile file : reviewImgFile) {
+        for (ReviewImg img : reviewImages) {
+            // keepImageIds에 없는 이미지는 삭제
+            if (keepImageIds == null || !keepImageIds.contains(img.getId())) {
+                try {
+                    reviewFileService.deleteFile(img.getFilePath());
+                    reviewImgRepository.deleteById(img.getId());
+                } catch (Exception e) {
+                    System.out.println("삭제 실패: " + e.getMessage());
+                }
+            }
+        }
+
+        // 새 이미지 파일 저장
+        if (reviewImgFile != null && !reviewImgFile.isEmpty()) {
+            for (MultipartFile file : reviewImgFile) {
                 reviewImgService.saveReviewImage(id, file);
             }
         }
     }
+
+
 
     public Review findEntityById(Long id) {
         return reviewRepository.findById(id)

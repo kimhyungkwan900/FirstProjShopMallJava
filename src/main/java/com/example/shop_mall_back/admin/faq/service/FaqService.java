@@ -38,18 +38,28 @@ public class FaqService {
 
     // 검색 + 페이징
     @Transactional(readOnly = true)
-    public PageResponseDto<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, PageRequestDto requestDto) {
-        Pageable pageable = requestDto.toPageable();
+    public PageResponseDto<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, Pageable pageable) {
 
-        Page<FaqDto> result = faqRepository.searchFaqs(faqSearchDto, (PageRequestDto) pageable)
+        Page<FaqDto> result = faqRepository.searchFaqs(faqSearchDto,pageable)
                 .map(FaqDto::new);
 
-        return PageResponseDto.<FaqDto>withAll()
-                .dtoList(result.getContent())
-                .pageRequestDto(requestDto)
-                .totalCount(result.getTotalElements())
-                .build();
-    }
+        System.out.println("검색 결과 수: " + result.getTotalElements());
+        result.forEach(dto -> System.out.println("FAQ 제목: " + dto.getQuestion()));
+
+//        return PageResponseDto.<FaqDto>withAll()
+//                .dtoList(result.getContent())
+//                .pageRequestDto(requestDto)
+//                .totalCount(result.getTotalElements())
+//                .build();
+//    }
+
+    return PageResponseDto.<FaqDto>withAll()
+        .dtoList(result.getContent())
+            .pageRequestDto(
+            new PageRequestDto(pageable.getPageNumber() + 1, pageable.getPageSize()))
+            .totalCount(result.getTotalElements())
+            .build();
+}
 
     // 등록
     public Long createFaq(FaqDto faqDto) {
