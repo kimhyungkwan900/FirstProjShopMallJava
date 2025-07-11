@@ -52,7 +52,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     List<CartItem> findByCartMemberId(Long memberId);
 
-    List<CartItem> findByCart_Member_Id(Long id);
+    List<CartItem> findByCart_Member_IdAndIsSelectedTrue(Long memberId);
 
     List<CartItem> findByCartAndProduct_Brand_Name(Cart cart, String brandName);
 }

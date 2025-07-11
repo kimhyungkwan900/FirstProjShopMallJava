@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.Cart.service;
 
 import com.example.shop_mall_back.common.domain.Cart;
+import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.common.repository.MemberRepository;
@@ -318,7 +319,9 @@ public class CartService {
     }
 
 
-
+    /**
+     * [12] 브랜드별 전체 선택 체크
+     */
     public void selectAllByBrand(Long currentMemberId, String brandName, boolean isSelected) {
         //1, 해당 회원의 장바구니 가져오기
         Cart cart = cartRepository.findByMember_Id((currentMemberId))
