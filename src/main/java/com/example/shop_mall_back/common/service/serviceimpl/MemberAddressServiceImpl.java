@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -48,12 +51,15 @@ public class MemberAddressServiceImpl implements MemberAddressService {
 
     //<editor-fold desc="멤버 주소 검색">
     @Override
-    public MemberAddressDTO getMemberAddress(Long id) {
-        // member ID 검색
-        MemberAddress memberAddress = memberAddressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저의 주소가 존재하지 않습니다."));
+    public List<MemberAddressDTO> getMemberAddressList(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
-        // DTO 로 변환 해서 Return
-        return entityToDTO(memberAddress);
+        List<MemberAddress> addressList = memberAddressRepository.findByMember(member);
+
+        return addressList.stream()
+                .map(MemberAddressDTO::fromEntity)
+                .collect(Collectors.toList());
     }
     //</editor-fold>
 
