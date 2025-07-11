@@ -31,8 +31,14 @@ public class ProductDto {
 
     private LocalDateTime updateTime;
 
+    private String created_by;
+
+    private String modified_by;
+
     //외래키
     private BrandDto brand;
 
     private CategoryDto category;
+
+    private DeliveryInfoDto deliveryInfo;
 }

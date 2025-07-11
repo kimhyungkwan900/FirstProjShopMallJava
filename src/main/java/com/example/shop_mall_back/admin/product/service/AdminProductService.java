@@ -85,6 +85,7 @@ public class AdminProductService {
                 ProductDto.builder()
                         .id(product.getId())
                         .name(product.getName())
+                        .description(product.getDescription())
                         .price(product.getPrice())
                         .stock(product.getStock())
                         .viewCount(product.getViewCount())
@@ -107,8 +108,20 @@ public class AdminProductService {
                                         .build()
                                         : null
                         )
+                        .deliveryInfo(
+                                product.getDeliveryInfo() != null
+                                ? DeliveryInfoDto.builder()
+                                        .id(product.getDeliveryInfo().getId())
+                                        .delivery_yn(product.getDeliveryInfo().getDelivery_yn())
+                                        .deliveryCom(product.getDeliveryInfo().getDeliveryCom())
+                                        .deliveryPrice(product.getDeliveryInfo().getDeliveryPrice())
+                                        .build()
+                                        : null
+                        )
                         .regTime(product.getRegTime())
                         .updateTime(product.getUpdateTime())
+                        .created_by(product.getCreatedBy())
+                        .modified_by(product.getModifiedBy())
                         .build()
         );
     }
