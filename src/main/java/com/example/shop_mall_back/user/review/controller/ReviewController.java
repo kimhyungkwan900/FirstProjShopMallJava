@@ -57,9 +57,11 @@ public class ReviewController {
     public void updateReview(
             @RequestParam("reviewId") Long id,
             @RequestPart("review") ReviewUpdateDTO reviewUpdateDTO,
-            @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFile
+            @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFile,
+            @RequestParam(value = "keepImageIds", required = false) List<Long> keepImageIds // ✅ 이거 꼭 추가
     ) {
-        reviewService.updateReview(id, reviewUpdateDTO, reviewImgFile);
+        reviewService.updateReview(id, reviewUpdateDTO, reviewImgFile, keepImageIds);
+
     }
 
     // 리뷰 삭제

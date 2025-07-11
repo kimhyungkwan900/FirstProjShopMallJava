@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -24,10 +26,9 @@ public class MyOrderChangeController {
     @GetMapping("/mypage/order/changeList")
     public Page<OrderChangeHistoryDTO> getOrderChangeHistory(
             @RequestParam Long memberId,
-            @RequestParam(required = false) OrderReturn.ReturnType returnType,
-            @PageableDefault(size = 5, direction = Sort.Direction.DESC) Pageable pageable
+            @RequestParam(required = false , name = "returnTypes") List<OrderReturn.ReturnType> returnTypes,
+            Pageable pageable
     ) {
-        Page<OrderChangeHistoryDTO> page = myOrderChangeService.getOrderChangeHistory(memberId, returnType, pageable);
-        return page;
+        return myOrderChangeService.getOrderChangeHistory(memberId, returnTypes, pageable);
     }
 }

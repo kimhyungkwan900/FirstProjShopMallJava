@@ -22,23 +22,26 @@ public interface MyOrderRepository extends JpaRepository<Order, Integer> {
     FROM orders o
     JOIN order_item oi ON o.id = oi.order_id
     JOIN products p ON oi.product_id = p.id
+    LEFT JOIN order_delete od ON od.order_id = o.id
     WHERE o.member_id = :memberId
       AND (:keyword IS NULL OR p.name LIKE CONCAT('%', :keyword, '%'))
       AND (:startDate IS NULL OR o.order_date >= :startDate)
       AND (:endDate IS NULL OR o.order_date <= :endDate)
+      AND od.order_id IS NULL
     ORDER BY o.order_date DESC
-    """,
-            countQuery = """
+    """, countQuery = """
     SELECT COUNT(DISTINCT o.id)
     FROM orders o
     JOIN order_item oi ON o.id = oi.order_id
     JOIN products p ON oi.product_id = p.id
+    LEFT JOIN order_delete od ON od.order_id = o.id
     WHERE o.member_id = :memberId
       AND (:keyword IS NULL OR p.name LIKE CONCAT('%', :keyword, '%'))
       AND (:startDate IS NULL OR o.order_date >= :startDate)
       AND (:endDate IS NULL OR o.order_date <= :endDate)
-    """,
-            nativeQuery = true)
+      AND od.order_id IS NULL
+    ORDER BY o.order_date DESC
+    """, nativeQuery = true)
     Page<Order> findOrdersByFilterNative(
             @Param("memberId") Long memberId,
             @Param("keyword") String keyword,

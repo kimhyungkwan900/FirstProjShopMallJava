@@ -21,8 +21,8 @@ public class FaqRepositoryImpl implements FaqRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Faq> searchFaqs(FaqSearchDto faqSearchDto, PageRequestDto pageRequestDto) {
-        Pageable pageable = pageRequestDto.toPageable();
+    public Page<Faq> searchFaqs(FaqSearchDto faqSearchDto, Pageable pageable) {
+
         QFaq faq = QFaq.faq; //QueryDSL이 자동으로 만든 FAQ도메인
 
         //검색 조건을 담을 객체
@@ -43,12 +43,15 @@ public class FaqRepositoryImpl implements FaqRepositoryCustom {
             );
         }
 
+
+
         // PageRequestDto → Pageable 변환
         //Pageable pageable = PageRequest.of(pageRequestDto.getPage() - 1, pageRequestDto.getSize());
 
         //실제 faq 목록 검색해오기
         List<Faq> faqList = queryFactory
                 .select(faq) //faq 테이블에서
+                .from(faq)
                 .where(builder) //위에서 만든 조건들로 필터링해서
                 .offset(pageable.getOffset()) //페이징 처리
                 .limit(pageable.getPageSize()) //힌번에 몇개 보여줄지

@@ -43,6 +43,7 @@ public class MyOrderService {
                                                             LocalDateTime endDate,
                                                             Pageable pageable) {
         Page<Order> ordersPage = myOrderRepository.findOrdersByFilterNative(memberId, keyword, startDate, endDate, pageable);
+
         return ordersPage.map(order -> {
             OrderListDTO dto = new OrderListDTO();
             dto.setId(order.getId());
@@ -66,32 +67,34 @@ public class MyOrderService {
             return dto;
         });
     }
+
+
     // 회원 별 주문 목록 조회
-    public Page<OrderListDTO> findByMemberId(Long memberId, Pageable pageable) {
-        Page<Order> ordersPage = myOrderRepository.findByMemberId(memberId, pageable);
-        System.out.println("ordersPage = " + ordersPage);
-
-        return ordersPage.map(order -> {
-            OrderListDTO dto = new OrderListDTO();
-            dto.setId(order.getId());
-            dto.setOrderId(order.getId());
-            dto.setMemberId(order.getMember().getId());
-            dto.setOrderDate(order.getOrderDate());
-            dto.setTotalAmount(order.getTotalAmount());
-            dto.setTotalCount(order.getTotalCount());
-            dto.setPaymentMethod(order.getPaymentMethod());
-            dto.setOrderStatus(myOrderManageRepository.findOrderStatusByOrderId(order.getId()));
-            dto.setReturnType(orderReturnRepository.getReturnTypeByOrderId(order.getId()));
-            dto.setExistsReview(reviewRepository.existsByOrderId(order.getId()));
-            List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
-            if (!orderItems.isEmpty()) {
-                Product product = orderItems.get(0).getProduct();
-                dto.setProduct(toOrderProductDTO(product));
-            }
-
-            return dto;
-        });
-    }
+//    public Page<OrderListDTO> findByMemberId(Long memberId, Pageable pageable) {
+//        Page<Order> ordersPage = myOrderRepository.findByMemberId(memberId, pageable);
+//        System.out.println("ordersPage = " + ordersPage);
+//
+//        return ordersPage.map(order -> {
+//            OrderListDTO dto = new OrderListDTO();
+//            dto.setId(order.getId());
+//            dto.setOrderId(order.getId());
+//            dto.setMemberId(order.getMember().getId());
+//            dto.setOrderDate(order.getOrderDate());
+//            dto.setTotalAmount(order.getTotalAmount());
+//            dto.setTotalCount(order.getTotalCount());
+//            dto.setPaymentMethod(order.getPaymentMethod());
+//            dto.setOrderStatus(myOrderManageRepository.findOrderStatusByOrderId(order.getId()));
+//            dto.setReturnType(orderReturnRepository.getReturnTypeByOrderId(order.getId()));
+//            dto.setExistsReview(reviewRepository.existsByOrderId(order.getId()));
+//            List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
+//            if (!orderItems.isEmpty()) {
+//                Product product = orderItems.get(0).getProduct();
+//                dto.setProduct(toOrderProductDTO(product));
+//            }
+//
+//            return dto;
+//        });
+//    }
 
 
     public OrderProductDTO toOrderProductDTO(Product product) {

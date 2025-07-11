@@ -31,4 +31,6 @@ public class OrderChangeHistoryDTO {
     private String detail;
 
     private LocalDateTime regDate;
+
+    private boolean orderDelete;
 }
