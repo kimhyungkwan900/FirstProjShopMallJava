@@ -4,11 +4,13 @@ import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberAddress;
 import com.example.shop_mall_back.common.dto.MemberAddressDTO;
 
+import java.util.List;
+
 public interface MemberAddressService {
 
     Long addMemberAddress(MemberAddressDTO memberAddressDTO, Long id);
 
-    MemberAddressDTO getMemberAddress(Long id);
+    List<MemberAddressDTO> getMemberAddressList(Long memberId);
 
     void memberAddressUpdate(MemberAddressDTO memberAddressDTO);
 

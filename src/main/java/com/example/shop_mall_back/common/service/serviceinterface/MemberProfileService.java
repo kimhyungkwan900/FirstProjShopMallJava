@@ -1,14 +1,18 @@
 package com.example.shop_mall_back.common.service.serviceinterface;
 
+import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberProfileDTO;
+import com.example.shop_mall_back.common.dto.MemberProfileUpdateDTO;
 
 public interface MemberProfileService {
 
     MemberProfileDTO getMemberProfile(Long memberId);
 
-    void memberProfileUpdate(MemberProfileDTO memberProfileDTO);
+    Role getMemberProfileRole(Long memberId);
+
+    void memberProfileUpdate(MemberProfileUpdateDTO memberProfileUpdateDTO);
 
     MemberProfile findByMemberIdOrThrow(Long memberId);
 
@@ -24,7 +28,6 @@ public interface MemberProfileService {
                 .profileImgUrl(memberProfile.getProfileImgUrl())
                 .gender(memberProfile.getGender())
                 .age(memberProfile.getAge())
-                .delivAddress(memberProfile.getDelivAddress())
                 .build();
     }
 
@@ -40,7 +43,6 @@ public interface MemberProfileService {
                 .profileImgUrl(memberProfileDTO.getProfileImgUrl())
                 .gender(memberProfileDTO.getGender())
                 .age(memberProfileDTO.getAge())
-                .delivAddress(memberProfileDTO.getDelivAddress())
                 .build();
     }
 }

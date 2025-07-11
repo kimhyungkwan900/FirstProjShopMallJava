@@ -5,6 +5,7 @@ import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberFormDTO;
+import com.example.shop_mall_back.common.dto.PasswordChangeDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public interface MemberService {
 
     Member findByIdOrThrow(Long id);
 
-    void memberFormUpdate(MemberFormDTO memberFormDTO,PasswordEncoder passwordEncoder);
+    void passWordUpdate(PasswordChangeDTO passwordChangeDTO, PasswordEncoder passwordEncoder);
 
     void deActivateMember(Long id);
 

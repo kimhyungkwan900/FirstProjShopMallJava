@@ -2,8 +2,14 @@ package com.example.shop_mall_back.common.controller;
 
 
 import com.example.shop_mall_back.common.config.CustomUserPrincipal;
-import com.example.shop_mall_back.common.dto.MemberFormDTO;
-import com.example.shop_mall_back.common.dto.MemberProfileDTO;
+import com.example.shop_mall_back.common.config.jwt.TokenProvider;
+import com.example.shop_mall_back.common.constant.Role;
+import com.example.shop_mall_back.common.domain.member.Member;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
+import com.example.shop_mall_back.common.dto.*;
+import com.example.shop_mall_back.common.repository.MemberAddressRepository;
+import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberAddressService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import jakarta.validation.Valid;
@@ -12,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +28,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
@@ -32,7 +42,9 @@ import java.util.UUID;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
     private final MemberProfileService memberProfileService;
+    private final MemberAddressService memberAddressService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid MemberFormDTO memberFormDTO){
@@ -57,22 +69,27 @@ public class MemberController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<Void> updateProfile(@RequestBody MemberProfileDTO memberProfileDTO,
+    public ResponseEntity<?> updateProfile(@RequestBody MemberProfileUpdateDTO memberProfileUpdateDTO,
                                               @AuthenticationPrincipal CustomUserPrincipal principal) {
-        if (!memberProfileDTO.getMemberId().equals(principal.getMember().getId())) {
+        if (!memberProfileUpdateDTO.getMemberId().equals(principal.getMember().getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        memberProfileService.memberProfileUpdate(memberProfileDTO);
-        return ResponseEntity.ok().build();
+        memberProfileService.memberProfileUpdate(memberProfileUpdateDTO);
+
+        Member updatedMember = memberService.findByIdOrThrow(memberProfileUpdateDTO.getMemberId());
+        Role role = memberProfileService.getMemberProfileRole(updatedMember.getId());
+        String newAccessToken = tokenProvider.generateAccessToken(updatedMember.getId(), updatedMember.getEmail(), role);
+
+        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
     }
 
 
     @PutMapping("/password")
-    public ResponseEntity<Void> updatePassword(@RequestBody MemberFormDTO memberFormDTO, @AuthenticationPrincipal CustomUserPrincipal principal) {
-        if (!memberFormDTO.getId().equals(principal.getMember().getId())) {
+    public ResponseEntity<Void> updatePassword(@RequestBody PasswordChangeDTO passwordChangeDTO, @AuthenticationPrincipal CustomUserPrincipal principal) {
+        if (!passwordChangeDTO.getId().equals(principal.getMember().getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        memberService.memberFormUpdate(memberFormDTO, passwordEncoder);
+        memberService.passWordUpdate(passwordChangeDTO, passwordEncoder);
         return ResponseEntity.ok().build();
     }
 
