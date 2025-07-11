@@ -124,7 +124,7 @@ public class AdminProductController {
 
     //---상품 삭제
     @DeleteMapping("/products")
-    public ResponseEntity<?> deleteProducts(@RequestParam("productId") List<Long> productIds){
+    public ResponseEntity<?> deleteProducts(@RequestBody List<Long> productIds){
         try {
             adminProductService.deleteProducts(productIds);
             return ResponseEntity.ok("상품이 삭제되었습니다.");
