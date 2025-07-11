@@ -12,9 +12,9 @@ public interface MemberAddressService {
 
     List<MemberAddressDTO> getMemberAddressList(Long memberId);
 
-    void memberAddressUpdate(MemberAddressDTO memberAddressDTO);
+    void memberAddressUpdate(MemberAddressDTO memberAddressDTO, Long memberId);
 
-    void memberAddressDelete(Long id);
+    void memberAddressDelete(Long id, Long memberId);
 
     default MemberAddressDTO entityToDTO(MemberAddress memberAddress) {
         return MemberAddressDTO.builder()

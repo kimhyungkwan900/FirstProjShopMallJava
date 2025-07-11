@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberAddressRepository extends JpaRepository<MemberAddress, Long> {
@@ -24,6 +25,9 @@ public interface MemberAddressRepository extends JpaRepository<MemberAddress, Lo
     // 회원 ID로 해당 사용자의 모든 배송지를 조회하는 메서드
     List<MemberAddress> findAllByMemberId(Long memberId);
 
+    // 가지고있는 주소중 가장 Order 넘버가 높은 주소
+    Optional<MemberAddress> findTopByMemberIdOrderByIdDesc(Long memberId);
+    
     /**
      * 특정 회원의 특정 배송지 ID를 기준으로 배송지 1건을 조회하는 메서드
      * - 주로 배송지 삭제나 수정 시 본인 확인용으로 사용
