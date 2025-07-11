@@ -17,12 +17,10 @@ public class MemberFormDTO {
 
     @NotBlank
     @Length(min = 6, max = 20)
-    @JsonProperty("user_id")
     private String userId;
 
     @NotBlank
     @Length(min = 6, max = 20)
-    @JsonProperty("user_password")
     private String userPassword;
 
     @NotBlank
@@ -32,6 +30,5 @@ public class MemberFormDTO {
 
     @NotBlank
     @Length(max = 15)
-    @JsonProperty("phone_number")
     private String phoneNumber;
 }

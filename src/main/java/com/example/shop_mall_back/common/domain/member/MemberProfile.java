@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "member_profile")
 @Builder
 @Getter
-@ToString(exclude = {"nickname", "profileImgUrl", "delivAddress", "name", "member"})
+@ToString(exclude = {"nickname", "profileImgUrl", "name", "member"})
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,9 +52,6 @@ public class MemberProfile {
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private Age age;
-
-    @Column(name = "deliv_address")
-    private String delivAddress;
 
     public void updateProfile(String nickname, String profileImgUrl) {
         this.nickname = nickname;

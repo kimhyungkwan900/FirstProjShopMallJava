@@ -14,6 +14,7 @@ import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,6 @@ public class MemberServiceImpl implements MemberService {
                 .nickname(null)
                 .isMembership(false)
                 .profileImgUrl(null)
-                .delivAddress(null)
                 .build();
 
         // 저장 / member 의 경우 생략가능
@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
     }
 //</editor-fold>
 
-//    <editor-fold desc="회원 정보 검색">
+    //    <editor-fold desc="회원 정보 검색">
     @Override
     public Optional<Member> findByUserId(String userId) {
         return memberRepository.findByUserId(userId);
@@ -83,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findByIdOrThrow(Long id) {
-        return memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+        return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
     }
 
     @Override
@@ -106,24 +106,25 @@ public class MemberServiceImpl implements MemberService {
     }
 //</editor-fold>
 
-//    <editor-fold desc="비밀번호 재설정">
+    //    <editor-fold desc="비밀번호 재설정">
     @Override
     public void passWordUpdate(PasswordChangeDTO passwordChangeDTO, PasswordEncoder passwordEncoder) {
-        // Update 할 member 객체 검색
+        // 대상 회원 조회
         Member member = findByIdOrThrow(passwordChangeDTO.getId());
 
-        // 새로 입력받은 password 를 newPass 에 저장
-        String newPass = passwordEncoder.encode(passwordChangeDTO.getUserPassword());
+        // 현재 비밀번호 일치 여부 확인
+        if (!passwordEncoder.matches(passwordChangeDTO.getCurrentPassword(), member.getUserPassword())) {
+            throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+        }
 
-        // password 변경
+        // 새 비밀번호 암호화 및 저장
+        String newPass = passwordEncoder.encode(passwordChangeDTO.getNewPassword());
         member.changePassword(newPass);
-
-        // 변경사항 저장
         memberRepository.save(member);
     }
 //    </editor-fold>
 
-//<editor-fold desc="계정 활성화 비활성화">
+    //<editor-fold desc="계정 활성화 비활성화">
 // 맴버의 가입과 탈퇴 boolean 값으로 관리
     @Override
     public void deActivateMember(Long id) {
@@ -140,7 +141,7 @@ public class MemberServiceImpl implements MemberService {
     }
 //</editor-fold>
 
-//    <editor-fold desc="기타 편의성 메서드">
+    //    <editor-fold desc="기타 편의성 메서드">
     // 중복 검사
     private void validateDuplicateMember(String email) {
         if (memberRepository.findByEmail(email).isPresent()) {

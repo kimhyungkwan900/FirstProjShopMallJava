@@ -5,10 +5,11 @@ import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.common.constant.Role;
 import com.example.shop_mall_back.common.domain.member.Member;
-import com.example.shop_mall_back.common.dto.MemberFormDTO;
-import com.example.shop_mall_back.common.dto.MemberProfileDTO;
-import com.example.shop_mall_back.common.dto.MemberProfileUpdateDTO;
-import com.example.shop_mall_back.common.dto.PasswordChangeDTO;
+import com.example.shop_mall_back.common.domain.member.MemberAddress;
+import com.example.shop_mall_back.common.dto.*;
+import com.example.shop_mall_back.common.repository.MemberAddressRepository;
+import com.example.shop_mall_back.common.repository.MemberRepository;
+import com.example.shop_mall_back.common.service.serviceinterface.MemberAddressService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
 import jakarta.validation.Valid;
@@ -17,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
@@ -38,8 +42,9 @@ import java.util.UUID;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-    private final MemberProfileService memberProfileService;
     private final TokenProvider tokenProvider;
+    private final MemberProfileService memberProfileService;
+    private final MemberAddressService memberAddressService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid MemberFormDTO memberFormDTO){

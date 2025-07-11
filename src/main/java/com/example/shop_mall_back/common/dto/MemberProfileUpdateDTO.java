@@ -11,6 +11,5 @@ public class MemberProfileUpdateDTO {
     private Long memberId;
     private String nickname;
 
-    @JsonProperty("profile_img_url")
     private String profileImgUrl;
 }
