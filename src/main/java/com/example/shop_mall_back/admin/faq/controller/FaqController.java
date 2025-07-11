@@ -25,16 +25,17 @@ public class FaqController {
 
     //조회
     @GetMapping("/list")
-    public PageResponseDto<FaqDto> getFaqList(PageRequestDto pageRequestDto) {
+    public PageResponseDto<FaqDto> getFaqList(@ModelAttribute PageRequestDto pageRequestDto) {
         log.info("Faq 목록 요청: page={}, size={}", pageRequestDto.getPage(), pageRequestDto.getSize());
         return faqService.findAll(pageRequestDto);
     }
 
     //검색
     @GetMapping("/search")
-    public PageResponseDto<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, PageRequestDto pageRequestDto) {
+    public PageResponseDto<FaqDto> searchFaqs(
+            @ModelAttribute FaqSearchDto faqSearchDto, Pageable pageable) {
         log.info("FAQ 검색 요청: category={}, keyword={}", faqSearchDto.getCategory(), faqSearchDto.getKeyWord());
-        return faqService.searchFaqs(faqSearchDto, pageRequestDto);
+        return faqService.searchFaqs(faqSearchDto, pageable);
     }
 
     //등록

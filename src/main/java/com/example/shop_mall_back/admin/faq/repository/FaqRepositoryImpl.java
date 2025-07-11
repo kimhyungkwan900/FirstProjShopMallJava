@@ -21,8 +21,8 @@ public class FaqRepositoryImpl implements FaqRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Faq> searchFaqs(FaqSearchDto faqSearchDto, PageRequestDto pageRequestDto) {
-        Pageable pageable = pageRequestDto.toPageable();
+    public Page<Faq> searchFaqs(FaqSearchDto faqSearchDto, Pageable pageable) {
+
         QFaq faq = QFaq.faq; //QueryDSL이 자동으로 만든 FAQ도메인
 
         //검색 조건을 담을 객체
