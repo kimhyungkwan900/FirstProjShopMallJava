@@ -41,7 +41,16 @@ public class MemberAddressController {
         CustomUserPrincipal principal = (CustomUserPrincipal) auth.getPrincipal();
         Long memberId = principal.getMember().getId();
 
-        memberAddressService.memberAddressUpdate(memberAddressDTO);
+        memberAddressService.memberAddressUpdate(memberAddressDTO, memberId);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/addresses/{id}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id, Authentication auth) {
+        CustomUserPrincipal principal = (CustomUserPrincipal) auth.getPrincipal();
+        Long memberId = principal.getMember().getId();
+
+        memberAddressService.memberAddressDelete(id, memberId);
+        return ResponseEntity.noContent().build();
     }
 }

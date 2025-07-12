@@ -16,11 +16,11 @@ public class MemberFormDTO {
     private Long id;
 
     @NotBlank
-    @Length(min = 6, max = 20)
+    @Length(min = 6, max = 16)
     private String userId;
 
     @NotBlank
-    @Length(min = 6, max = 20)
+    @Length(min = 8, max = 20)
     private String userPassword;
 
     @NotBlank

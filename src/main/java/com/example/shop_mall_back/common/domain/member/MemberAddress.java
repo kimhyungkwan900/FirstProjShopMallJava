@@ -48,11 +48,28 @@ public class MemberAddress {
                 .build();
     }
 
-    public void updateAddress(String zipcode, String address, String addressDetail, boolean isDefault, String note) {
+    public void updateAddress(String zipcode, String address, String detail, boolean isDefault, String note) {
         this.zipcode = zipcode;
         this.address = address;
-        this.addressDetail = addressDetail;
-        this.isDefault = isDefault;
+        this.addressDetail = detail;
         this.note = note;
+
+        if (isDefault) {
+            markAsDefault();
+        } else {
+            unmarkAsDefault();
+        }
+    }
+
+    public void markAsDefault() {
+        if (!this.isDefault) {
+            this.isDefault = true;
+        }
+    }
+
+    public void unmarkAsDefault() {
+        if (this.isDefault) {
+            this.isDefault = false;
+        }
     }
 }
