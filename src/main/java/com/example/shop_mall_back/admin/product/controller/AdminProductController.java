@@ -55,8 +55,9 @@ public class AdminProductController {
         }
 
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",
-                    adminproductService.saveProduct(productFormDto, productImgFileList)));
+//            return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",
+//                    adminproductService.saveProduct(productFormDto, productImgFileList)));
+            return ResponseEntity.ok().build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 등록 중 에러 발생");
         }

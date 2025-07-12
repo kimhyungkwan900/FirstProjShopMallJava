@@ -1,5 +1,7 @@
 package com.example.shop_mall_back.user.myOrder.service;
 
+import com.example.shop_mall_back.admin.order.domain.ClaimManage;
+import com.example.shop_mall_back.admin.order.repository.ClaimManageRepository;
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.Order.domain.OrderItem;
@@ -35,6 +37,7 @@ public class MyOrderService {
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
     private final MyOrderDeleteRepository myOrderDeleteRepository;
+    private final ClaimManageRepository claimManageRepository;
 
     // 회원 별 주문 목록 (네이티브 쿼리로 필터)
     public Page<OrderListDTO> findByMemberIdAndFilterNative(Long memberId,
@@ -116,6 +119,11 @@ public class MyOrderService {
     public void insertOrderReturn(OrderReturnDTO orderReturnDTO) {
         OrderReturn orderReturn = modelMapper.map(orderReturnDTO, OrderReturn.class);
         orderReturnRepository.save(orderReturn);
+
+        //반품/취소 관리 엔티티 생성
+        ClaimManage claimManage = new ClaimManage();
+        claimManage.setOrderReturn(orderReturn);
+        claimManageRepository.save(claimManage);
     }
 
     // 회원 주문 목록 삭제

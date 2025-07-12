@@ -19,10 +19,6 @@ public class ClaimManage {
     @JoinColumn(name = "return_id", foreignKey = @ForeignKey(name = "fk_return_id"))
     private OrderReturn orderReturn;
 
-    @Setter
-    @Column
-    private Boolean isApproved;
-
     //isApproved 없애고 상태를 교환요청, 취소요청, 환불 요청, 교환승인, 취소승인, 환불승인
     //교환거부, 취소거부, 환불거부 등 9가지 상태로 바꾸기, 건호님 작업 완료되면 수정
 }
