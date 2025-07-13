@@ -63,22 +63,13 @@ public class OrderController {
 
     /**
      * [4] 배송 요청사항 저장
-     * POST /api/orders/deliveryRequest
-     *
-     * @param orderDto 주문 정보 (요청사항 포함)
-     * @return 생성된 주문 ID 반환
-     *
-     * 요청사항 유효성 검증 및 저장 처리
      */
-    @PostMapping("/deliveryRequest")
-    public ResponseEntity<OrderSummaryDto> deliveryRequest(@RequestBody OrderDto orderDto) {
-        // 1. 주문 생성
-        OrderSummaryDto orderSummaryDto = orderService.createOrder(orderDto.getMember_id(), orderDto);
-
-        // 2. 배송 요청사항 저장
-        orderService.saveDeliveryRequestNote(orderSummaryDto.getOrderId(), orderDto);
-
-        return ResponseEntity.ok(orderSummaryDto);
+    @PostMapping("/orders/{orderId}/deliveryRequest")
+    public ResponseEntity<Void> saveDeliveryRequest(
+            @PathVariable Long orderId,
+            @RequestBody OrderDto dto) {
+        orderService.saveDeliveryRequestNote(orderId, dto);
+        return ResponseEntity.ok().build();
     }
 
     /**

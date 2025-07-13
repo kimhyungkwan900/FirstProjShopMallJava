@@ -57,18 +57,10 @@ public class Order {
     @Column(name = "delivery_request")
     private String deliveryRequest;
 
-    //비회원 여부
-    @Column(name = "is_guest")
-    private Boolean isGuest;
 
     //주문 상태 및 처리 이력
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private OrderManage orderManage;
-
-    // 배송 요청사항
-    @Column(length = 100)
-    private String deliveryRequestNote;
-
 
 
 }

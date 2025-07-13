@@ -37,10 +37,4 @@ public class OrderItem {
     @Column(nullable = false)
     private int price;
 
-    // 선택 옵션 정보 (예: 색상, 사이즈 등)
-    @Column(name = "selected_option")
-    private String selectedOption;
-
-
-
 }
