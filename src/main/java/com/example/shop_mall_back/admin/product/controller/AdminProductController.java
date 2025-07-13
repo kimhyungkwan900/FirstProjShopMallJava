@@ -56,7 +56,7 @@ public class AdminProductController {
 
         try{
 //            return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",
-//                    adminproductService.saveProduct(productFormDto, productImgFileList)));
+                adminproductService.saveProduct(productFormDto, productImgFileList);
             return ResponseEntity.ok().build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 등록 중 에러 발생");
@@ -66,8 +66,6 @@ public class AdminProductController {
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @GetMapping({"/products", "/products/{page}"})
     public ResponseEntity<?> productManage(@ModelAttribute ProductSearchDto productSearchDto, @RequestParam(value="page", defaultValue = "0") int page){
-
-        log.info(">>> incoming searchDto: {}", productSearchDto);
 
         Pageable pageable = PageRequest.of(page,8);
         Page<ProductDto> products = adminProductService.getAdminProductPage(productSearchDto, pageable);
@@ -92,8 +90,8 @@ public class AdminProductController {
     }
 
     //---상품 수정
-    @PatchMapping("/products/{productId}")
-    public ResponseEntity<?> updateProudct(@Valid @RequestBody ProductFormDto productFormDto, BindingResult bindingResult, @RequestParam("productImgFile") List<MultipartFile> productImgFileList){
+    @PutMapping("/products/update")
+    public ResponseEntity<?> updateProudct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult, @RequestParam("productImgFile") List<MultipartFile> productImgFileList){
 
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 수정 실패");
@@ -104,10 +102,8 @@ public class AdminProductController {
         }
 
         try {
-            URI location = new URI("/api/admin/products");
-
-            return ResponseEntity.created(location).body(Map.of("id",
-                    adminProductService.updateProduct(productFormDto, productImgFileList)));
+            adminProductService.updateProduct(productFormDto, productImgFileList);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e) {
             log.error("잘못된 입력값으로 인한 오류", e);

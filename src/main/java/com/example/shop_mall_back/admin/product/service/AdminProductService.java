@@ -61,7 +61,7 @@ public class AdminProductService {
         //이미지 등록
         for(int i=0;i<productImgFileList.size();i++){
             ProductImage productImage;
-
+            System.out.println("이미지파일" + productImgFileList.get(i));
             if(i == 0)
                 productImage = new ProductImage(product, true);
             else
@@ -76,8 +76,6 @@ public class AdminProductService {
     //---조회 조건과 페이지 정보를 받아서 상품 데이터 조회
     @Transactional(readOnly = true)
     public Page<ProductDto> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable){
-        //나중에 삭제
-        log.info("▶▶ getProductPageByCondition, incoming DTO = {}", productSearchDto);
 
         Page<Product> productPage = adminProductRepository.getProductPageByCondition(productSearchDto, pageable);
 
@@ -155,6 +153,9 @@ public class AdminProductService {
         Brand brand = brandRepository.findById(productFormDto.getBrandId())
                 .orElseThrow(EntityNotFoundException::new);
 
+        DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(productFormDto.getDeliveryInfoId())
+                .orElseThrow(EntityNotFoundException::new);
+
         //상품 등록 화면으로부터 받은 상품 아이디를 이용하여 상품 엔티티를 조회
         Product product = adminProductRepository.findById(productFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -163,11 +164,32 @@ public class AdminProductService {
         product.updateProduct(productFormDto);
         product.changeCategory(category);
         product.changeBrand(brand);
+        product.changeDeliveryInfo(deliveryInfo);
+
+        System.out.println(product.getName());
+        System.out.println(product.getPrice());
+        System.out.println(product.getDescription());
+        System.out.println(product.getStock());
+        System.out.println(product.getBrand().getName());
+        System.out.println(product.getDeliveryInfo().getDeliveryCom());
+        System.out.println(product.getSellStatus());
 
         //상품 이미지 아이디 리스트 조회
-        List<Long> productImgIds = productFormDto.getProductImgIds();
+//        List<Long> productImgIds = productFormDto.getProductImgIds();
+
+        List<ProductImage> productImgs = adminProductImgRepository.findByProductIdOrderByIdAsc(productFormDto.getId());
+        List<Long> productImgIds = new ArrayList<>();
+        for (ProductImage productImg : productImgs) {
+            System.out.println("이미지아이디: " + productImg.getId());
+            productImgIds.add(productImg.getId());
+
+        }
+
 
         //이미지 수정
+//        for(int i=0;i<productImgFileList.size();i++){
+//            productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
+//        }
         for(int i=0;i<productImgFileList.size();i++){
             productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
         }
