@@ -12,4 +12,5 @@ public class OrderManageListDto {
     private Page<OrderManageDto> orders;
     private OrderSearchDto orderSearchDto;
     private Integer maxPage;
+    private Integer totalPage;
 }

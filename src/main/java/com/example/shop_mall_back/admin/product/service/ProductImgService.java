@@ -27,6 +27,9 @@ public class ProductImgService {
     public void saveProductImg(ProductImage productImage, MultipartFile productImgFile) throws Exception{
 
         String oriImgName = productImgFile.getOriginalFilename();
+
+        System.out.println("이미지 원래 이름: " + oriImgName);
+
         String imgName = "";
         String imgUrl = "";
         //oriImgName : 업로드했던 상품 이미지의 원래 이름
@@ -36,9 +39,11 @@ public class ProductImgService {
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
             imgName = adminFileService.uploadFile(productImgLocation, oriImgName, productImgFile.getBytes());
+            System.out.println("저장될 이미지 이름: " + imgName);
 
             //저장한 상품 이미지를 불러올 경로 설정
-            imgUrl = "/images/item/" + imgName;
+//            imgUrl = "/images/item/" + imgName;
+            imgUrl = productImgLocation + "/" + imgName;
         }
 
         //상품 이미지 정보 저장
@@ -63,7 +68,7 @@ public class ProductImgService {
 
             String imgName = adminFileService.uploadFile(productImgLocation, oriImagename, productImgFile.getBytes());
 
-            String imgUrl = "/images/item/" + imgName;
+            String imgUrl = productImgLocation + "/" + imgName;
 
             savedProductImg.updateProductImg(oriImagename, imgName, imgUrl);
         }
