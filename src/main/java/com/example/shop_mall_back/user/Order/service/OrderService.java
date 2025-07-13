@@ -89,7 +89,6 @@ public class OrderService {
         order.setOrderDate(orderDto.getOrder_date());
         order.setPaymentMethod(orderDto.getPayment_method());
         order.setDeliveryRequest(orderDto.getDelivery_request());
-        order.setIsGuest(false);  // 비회원 주문 아님
         order.setPaymentStatus(PaymentStatus.PENDING);
         orderRepository.save(order);  // 저장 후 ID 생성
 
