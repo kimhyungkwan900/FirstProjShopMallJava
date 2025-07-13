@@ -4,6 +4,7 @@ import com.example.shop_mall_back.admin.order.domain.OrderManage;
 import com.example.shop_mall_back.admin.order.dto.OrderManageDto;
 import com.example.shop_mall_back.admin.order.dto.OrderSearchDto;
 import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
+import com.example.shop_mall_back.user.Order.dto.OrderDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,8 +25,29 @@ public class OrderManageService {
     //admin/orders, admin/orders{page}
     @Transactional(readOnly = true)
     public Page<OrderManageDto> getOrderInfoPage(OrderSearchDto orderSearchDto, Pageable pageable) {
-        return orderManageRepository.getOrderPageByCondition(orderSearchDto, pageable)
-                .map(orderManage->modelMapper.map(orderManage, OrderManageDto.class));
+
+        Page<OrderManage> orderInfoPage = orderManageRepository.getOrderPageByCondition(orderSearchDto, pageable);
+
+        return orderInfoPage.map(orderManage ->
+                OrderManageDto.builder()
+                        .orderManageId(orderManage.getId())
+                        .orderStatus(orderManage.getOrderStatus())
+                        .order(
+                                OrderDto.builder()
+                                        .id(orderManage.getOrder().getId())
+                                        .member_id(orderManage.getOrder().getMember().getId())
+                                        .delivery_address_id(orderManage.getOrder().getMemberAddress().getId())
+                                        .delivery_address(orderManage.getOrder().getMemberAddress().getAddress())
+                                        .order_date(orderManage.getOrder().getOrderDate())
+                                        .total_amount(orderManage.getOrder().getTotalAmount())
+                                        .total_count(orderManage.getOrder().getTotalCount())
+                                        .payment_method(orderManage.getOrder().getPaymentMethod())
+                                        .delivery_request(orderManage.getOrder().getDeliveryRequest())
+                                        .is_guest(orderManage.getOrder().getIsGuest())
+                                        .deliveryRequestNote(orderManage.getOrder().getDeliveryRequestNote())
+                                        .build()
+                        )
+                        .build());
     }
 
     //고객 주문상태 처리

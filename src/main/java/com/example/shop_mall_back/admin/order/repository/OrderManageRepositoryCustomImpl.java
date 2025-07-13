@@ -31,10 +31,6 @@ public class OrderManageRepositoryCustomImpl implements OrderManageRepositoryCus
                 //주문 아이디로 검색
                 case "주문 ID" -> builder.and(orderManage.order.id.eq(Long.valueOf(orderSearchDto.getSearchContent())));
 
-                //주문자 연락처로 검색
-                case "주문자 연락처" -> {
-                    builder.and(orderManage.order.member.phoneNumber.eq(orderSearchDto.getSearchContent()));
-                }
                 //주문자 ID
                 case "주문자 ID" -> {
                     builder.and(orderManage.order.member.id.eq(Long.valueOf(orderSearchDto.getSearchContent())));
