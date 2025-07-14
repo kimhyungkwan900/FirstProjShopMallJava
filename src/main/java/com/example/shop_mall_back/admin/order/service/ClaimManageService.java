@@ -3,6 +3,7 @@ package com.example.shop_mall_back.admin.order.service;
 import com.example.shop_mall_back.admin.order.domain.ClaimManage;
 import com.example.shop_mall_back.admin.order.dto.ClaimManageDto;
 import com.example.shop_mall_back.admin.order.dto.ClaimSearchDto;
+import com.example.shop_mall_back.admin.order.dto.OrderReturnDto;
 import com.example.shop_mall_back.admin.order.repository.ClaimManageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,24 @@ public class ClaimManageService {
     @Transactional(readOnly = true)
     public Page<ClaimManageDto> getClaimInfoPage(ClaimSearchDto claimSearchDto, Pageable pageable) {
 
+        System.out.println("서비스 객체 안에 들어옴: " + claimSearchDto);
+
         Page<ClaimManage> claimInfoPage = claimManageRepository.getClaimPageByCondition(claimSearchDto, pageable);
 
         return claimInfoPage.map(claimManage ->
                 ClaimManageDto.builder()
                         .claimId(claimManage.getId())
-                        .orderReturn(claimManage.getOrderReturn())
+                        .orderReturn(
+                                OrderReturnDto.builder()
+                                        .id(claimManage.getOrderReturn().getId())
+                                        .orderId(claimManage.getOrderReturn().getOrderId())
+                                        .memberId(claimManage.getOrderReturn().getMemberId())
+                                        .returnType(claimManage.getOrderReturn().getReturnType())
+                                        .reason(claimManage.getOrderReturn().getReason())
+                                        .detail(claimManage.getOrderReturn().getDetail())
+                                        .build()
+                        )
+                        .isApproved(null)
                         .build());
     }
 

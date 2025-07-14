@@ -7,14 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ClaimManageDto {
-
-    private Long claimId;
-
-    private OrderReturnDto orderReturn;
-
-    private Boolean isApproved;
+public class OrderReturnDto {
+    private Long id;
+    private Long orderId;
+    private Long memberId;
+    private OrderReturn.ReturnType returnType;
+    private String reason;
+    private String detail;
 }
