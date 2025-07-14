@@ -40,11 +40,11 @@ public class FaqService {
     @Transactional(readOnly = true)
     public PageResponseDto<FaqDto> searchFaqs(FaqSearchDto faqSearchDto, Pageable pageable) {
 
-        Page<FaqDto> result = faqRepository.searchFaqs(faqSearchDto,pageable)
+        Page<FaqDto> result = faqRepository.searchFaqs(faqSearchDto, pageable)
                 .map(FaqDto::new);
 
         System.out.println("검색 결과 수: " + result.getTotalElements());
-        result.forEach(dto -> System.out.println("FAQ 제목: " + dto.getQuestion()));
+        result.getContent().forEach(dto -> System.out.println("FAQ 제목: " + dto.getQuestion()));
 
 //        return PageResponseDto.<FaqDto>withAll()
 //                .dtoList(result.getContent())
@@ -53,13 +53,21 @@ public class FaqService {
 //                .build();
 //    }
 
-    return PageResponseDto.<FaqDto>withAll()
-        .dtoList(result.getContent())
-            .pageRequestDto(
-            new PageRequestDto(pageable.getPageNumber() + 1, pageable.getPageSize()))
-            .totalCount(result.getTotalElements())
-            .build();
-}
+        System.out.println("✅ pageable.getPageNumber(): " + pageable.getPageNumber());
+        System.out.println("✅ pageable.getOffset(): " + pageable.getOffset());
+        System.out.println("✅ result.getContent().size(): " + result.getContent().size());
+
+        return PageResponseDto.<FaqDto>withAll()
+                .dtoList(result.getContent())
+                .pageRequestDto(
+                        new PageRequestDto(pageable.getPageNumber(), pageable.getPageSize()))
+                .totalCount(result.getTotalElements())
+                .build();
+
+
+    }
+
+
 
     // 등록
     public Long createFaq(FaqDto faqDto) {
