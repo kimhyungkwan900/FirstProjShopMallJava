@@ -35,7 +35,7 @@ public class OrderManageService {
                         .order(
                                 OrderDto.builder()
                                         .id(orderManage.getOrder().getId())
-                                        .member_id(orderManage.getOrder().getMember().getId())
+                                        .member_id(orderManage.getOrder().getMember().getUserId())
                                         .delivery_address_id(orderManage.getOrder().getMemberAddress().getId())
                                         .delivery_address(orderManage.getOrder().getMemberAddress().getAddress())
                                         .order_date(orderManage.getOrder().getOrderDate())
