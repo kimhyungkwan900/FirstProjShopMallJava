@@ -26,15 +26,16 @@ public class OrderManageController {
 
     //---조회 조건과 페이지 정보를 받아서 주문 데이터 조회
     @GetMapping({"/orders", "/orders/{page}"})
-    public ResponseEntity<?> ordersManage(OrderSearchDto orderSearchDto, @PathVariable("page") Optional<Integer> page){
+    public ResponseEntity<?> ordersManage(@ModelAttribute OrderSearchDto orderSearchDto, @RequestParam(value="page", defaultValue = "0") int page){
 
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Pageable pageable = PageRequest.of(page, 8);
         Page<OrderManageDto> orders = orderManageService.getOrderInfoPage(orderSearchDto, pageable);
 
         OrderManageListDto orderManageListDto = OrderManageListDto.builder()
                 .orders(orders)
                 .orderSearchDto(orderSearchDto)
                 .maxPage(10)
+                .totalPage(orders.getTotalPages())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(orderManageListDto);
@@ -42,7 +43,7 @@ public class OrderManageController {
 
     //---고객 주문상태 처리
     @PatchMapping("/orders/status")
-    public ResponseEntity<?> updateOrderStatus(@RequestBody List<OrderManageDto> statusList){
+    public ResponseEntity<?> updateOrderStatus(@ModelAttribute List<OrderManageDto> statusList){
         for(OrderManageDto orderManageDto : statusList){
             orderManageService.updateOrderStatus(orderManageDto);
         }

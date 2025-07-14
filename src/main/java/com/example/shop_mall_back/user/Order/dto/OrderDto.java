@@ -22,6 +22,4 @@ public class OrderDto {
     private int total_count;    //총 주문 개수
     private String payment_method;  //결제 수단
     private String delivery_request;    //배송 요청 사항
-    private boolean is_guest;   //비회원 주문 여부
-    private String deliveryRequestNote; // 배송요청사항
 }

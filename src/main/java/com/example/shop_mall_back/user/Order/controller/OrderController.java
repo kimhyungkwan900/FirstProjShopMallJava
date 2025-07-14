@@ -63,47 +63,13 @@ public class OrderController {
 
     /**
      * [4] 배송 요청사항 저장
-     * POST /api/orders/deliveryRequest
-     *
-     * @param orderDto 주문 정보 (요청사항 포함)
-     * @return 생성된 주문 ID 반환
-     *
-     * 요청사항 유효성 검증 및 저장 처리
      */
-    @PostMapping("/deliveryRequest")
-    public ResponseEntity<OrderSummaryDto> deliveryRequest(@RequestBody OrderDto orderDto) {
-        // 1. 주문 생성
-        OrderSummaryDto orderSummaryDto = orderService.createOrder(orderDto.getMember_id(), orderDto);
-
-        // 2. 배송 요청사항 저장
-        orderService.saveDeliveryRequestNote(orderSummaryDto.getOrderId(), orderDto);
-
-        return ResponseEntity.ok(orderSummaryDto);
-    }
-
-    /**
-     * [5] 결제 처리
-     * POST /api/orders/{orderId}/pay
-     *
-     * @param orderId 결제할 주문의 ID (PathVariable로 전달됨)
-     * @param paymentToken 결제 인증 토큰 (RequestParam으로 전달됨)
-     * @return 결제 결과에 따른 HTTP 응답
-     *         - 성공 시: 200 OK와 메시지 반환
-     *         - 실패 시: 400 Bad Request 또는 401 Unauthorized 반환
-     */
-    @PostMapping("/{orderId}/pay")
-    public ResponseEntity<String> pay(@PathVariable Long orderId, @RequestParam String paymentToken) {
-        try {
-            // 주문 결제 처리 서비스 호출
-            orderService.handlePayment(orderId, paymentToken);
-            return ResponseEntity.ok("결제가 성공적으로 처리되었습니다.");
-        } catch (IllegalStateException e) {
-            // 주문 상태나 결제 로직 문제로 발생한 예외 처리
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (SecurityException e) {
-            // 결제 인증 실패 시 처리
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 결제 요청입니다.");
-        }
+    @PostMapping("/orders/{orderId}/deliveryRequest")
+    public ResponseEntity<Void> saveDeliveryRequest(
+            @PathVariable Long orderId,
+            @RequestBody OrderDto dto) {
+        orderService.saveDeliveryRequestNote(orderId, dto);
+        return ResponseEntity.ok().build();
     }
 
 }

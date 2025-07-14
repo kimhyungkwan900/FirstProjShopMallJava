@@ -15,6 +15,7 @@ import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
+import com.example.shop_mall_back.common.utils.CookieConstants;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
@@ -171,8 +172,8 @@ public class AuthController {
         }
 
         // 쿠키 삭제
-        CookieUtils.deleteCookie(request, response, "access_token");
-        CookieUtils.deleteCookie(request, response, "refresh_token");
+        CookieUtils.deleteCookie(request, response, CookieConstants.ACCESS_TOKEN);
+        CookieUtils.deleteCookie(request, response, CookieConstants.REFRESH_TOKEN);
 
         return ResponseEntity.ok(Map.of("message", "로그아웃 완료"));
     }
