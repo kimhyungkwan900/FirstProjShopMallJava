@@ -25,14 +25,14 @@ public class ClaimManageService {
     //검색 조건에 따라 고객 요청 조회
     @Transactional(readOnly = true)
     public Page<ClaimManageDto> getClaimInfoPage(ClaimSearchDto claimSearchDto, Pageable pageable) {
-        return claimManageRepository.getClaimPageByCondition(claimSearchDto, pageable)
-                .map(claimManage -> modelMapper.map(claimManage, ClaimManageDto.class));
-    }
 
-    //고객 요청 상세 조회
-    @Transactional
-    public ClaimManageDto getClaimDetail(Long claimId){
-        return modelMapper.map(claimManageRepository.findById(claimId), ClaimManageDto.class);
+        Page<ClaimManage> claimInfoPage = claimManageRepository.getClaimPageByCondition(claimSearchDto, pageable);
+
+        return claimInfoPage.map(claimManage ->
+                ClaimManageDto.builder()
+                        .claimId(claimManage.getId())
+                        .orderReturn(claimManage.getOrderReturn())
+                        .build());
     }
 
     //고객 요청 승인여부 수정

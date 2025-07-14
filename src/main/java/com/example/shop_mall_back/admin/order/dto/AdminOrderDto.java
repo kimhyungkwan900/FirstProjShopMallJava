@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class AdminOrderDto {
     private Long id;    //주문 id
-    private Member member; //주문자 회원 id
+    private String member_id; //주문자 회원 id
     private Long delivery_address_id; //배송지 id
     private String delivery_address;
     private LocalDateTime order_date;   //주문 일시

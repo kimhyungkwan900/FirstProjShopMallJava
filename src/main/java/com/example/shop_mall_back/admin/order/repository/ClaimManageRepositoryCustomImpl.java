@@ -29,7 +29,7 @@ public class ClaimManageRepositoryCustomImpl implements ClaimManageRepositoryCus
                 case "주문 ID" -> builder.and(claimManage.orderReturn.orderId.eq(Long.valueOf(claimSearchDto.getSearchContent())));
 
                 //요청자 ID로 검색
-                case "요청자 ID" -> {
+                case "고객 ID" -> {
                     builder.and(claimManage.orderReturn.memberId.eq(Long.valueOf(claimSearchDto.getSearchContent())));
                 }
             }

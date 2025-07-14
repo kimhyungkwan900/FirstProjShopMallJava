@@ -18,5 +18,5 @@ public class OrderManageDto {
 
     private OrderManage.OrderStatus orderStatus;
 
-    private OrderDto order;
+    private AdminOrderDto order;
 }
