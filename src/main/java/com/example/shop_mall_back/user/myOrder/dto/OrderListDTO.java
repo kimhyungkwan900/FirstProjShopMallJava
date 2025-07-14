@@ -1,9 +1,8 @@
 package com.example.shop_mall_back.user.myOrder.dto;
 
 import com.example.shop_mall_back.admin.order.domain.OrderManage;
-import com.example.shop_mall_back.common.domain.Product;
-import com.example.shop_mall_back.user.Order.constant.PaymentStatus;
 import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
+import com.example.shop_mall_back.admin.tracking.domain.TrackingInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,4 +34,6 @@ public class OrderListDTO {
     private boolean existsReview;
 
     private boolean orderDelete;
+
+    private TrackingInfo trackingInfo;
 }

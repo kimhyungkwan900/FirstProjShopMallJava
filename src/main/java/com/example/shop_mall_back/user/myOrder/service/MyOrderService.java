@@ -2,11 +2,13 @@ package com.example.shop_mall_back.user.myOrder.service;
 
 import com.example.shop_mall_back.admin.order.domain.ClaimManage;
 import com.example.shop_mall_back.admin.order.repository.ClaimManageRepository;
+import com.example.shop_mall_back.admin.tracking.repository.TrackingInfoRepository;
 import com.example.shop_mall_back.common.domain.Order;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.Order.domain.OrderItem;
 import com.example.shop_mall_back.user.myOrder.domain.OrderDelete;
 import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
+import com.example.shop_mall_back.admin.tracking.domain.TrackingInfo;
 import com.example.shop_mall_back.user.myOrder.dto.OrderListDTO;
 import com.example.shop_mall_back.user.myOrder.dto.OrderProductDTO;
 import com.example.shop_mall_back.user.myOrder.dto.OrderReturnDTO;
@@ -39,6 +41,8 @@ public class MyOrderService {
     private final MyOrderDeleteRepository myOrderDeleteRepository;
     private final ClaimManageRepository claimManageRepository;
 
+    private final TrackingInfoRepository trackingInfoRepository;
+
     // 회원 별 주문 목록 (네이티브 쿼리로 필터)
     public Page<OrderListDTO> findByMemberIdAndFilterNative(Long memberId,
                                                             String keyword,
@@ -62,11 +66,18 @@ public class MyOrderService {
 
             dto.setOrderDelete(checkOrderStatus(order.getId()));
 
+
             List<OrderItem> orderItems = myOrderItemRepository.findByOrderId(order.getId());
             if (!orderItems.isEmpty()) {
                 Product product = orderItems.get(0).getProduct();
                 dto.setProduct(toOrderProductDTO(product));
             }
+
+            TrackingInfo trackingInfo = trackingInfoRepository.findByOrderId(order.getId());
+            if(trackingInfo != null) {
+                dto.setTrackingInfo(trackingInfo);
+            }
+
             return dto;
         });
     }
@@ -107,6 +118,7 @@ public class MyOrderService {
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
+        dto.setSellStatus(product.getSellStatus());
         if (images != null && !images.isEmpty()) {
             dto.setImage(images.get(0));
         } else {
