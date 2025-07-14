@@ -72,29 +72,4 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * [5] 결제 처리
-     * POST /api/orders/{orderId}/pay
-     *
-     * @param orderId 결제할 주문의 ID (PathVariable로 전달됨)
-     * @param paymentToken 결제 인증 토큰 (RequestParam으로 전달됨)
-     * @return 결제 결과에 따른 HTTP 응답
-     *         - 성공 시: 200 OK와 메시지 반환
-     *         - 실패 시: 400 Bad Request 또는 401 Unauthorized 반환
-     */
-    @PostMapping("/{orderId}/pay")
-    public ResponseEntity<String> pay(@PathVariable Long orderId, @RequestParam String paymentToken) {
-        try {
-            // 주문 결제 처리 서비스 호출
-            orderService.handlePayment(orderId, paymentToken);
-            return ResponseEntity.ok("결제가 성공적으로 처리되었습니다.");
-        } catch (IllegalStateException e) {
-            // 주문 상태나 결제 로직 문제로 발생한 예외 처리
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (SecurityException e) {
-            // 결제 인증 실패 시 처리
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 결제 요청입니다.");
-        }
-    }
-
 }
