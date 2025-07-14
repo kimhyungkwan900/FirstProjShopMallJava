@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.admin.order.service;
 
 import com.example.shop_mall_back.admin.order.domain.OrderManage;
+import com.example.shop_mall_back.admin.order.dto.AdminOrderDto;
 import com.example.shop_mall_back.admin.order.dto.OrderManageDto;
 import com.example.shop_mall_back.admin.order.dto.OrderSearchDto;
 import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
@@ -33,9 +34,9 @@ public class OrderManageService {
                         .orderManageId(orderManage.getId())
                         .orderStatus(orderManage.getOrderStatus())
                         .order(
-                                OrderDto.builder()
+                                AdminOrderDto.builder()
                                         .id(orderManage.getOrder().getId())
-                                        .member_id(orderManage.getOrder().getMember().getId())
+                                        .member_id(orderManage.getOrder().getMember().getUserId())
                                         .delivery_address_id(orderManage.getOrder().getMemberAddress().getId())
                                         .delivery_address(orderManage.getOrder().getMemberAddress().getAddress())
                                         .order_date(orderManage.getOrder().getOrderDate())

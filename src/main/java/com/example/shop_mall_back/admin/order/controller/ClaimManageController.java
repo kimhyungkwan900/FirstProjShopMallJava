@@ -23,32 +23,29 @@ public class ClaimManageController {
 
     //---조회 조건과 페이지 정보를 받아서 고객요청 데이터 조회
     @GetMapping({"/claims", "/claims/{page}"})
-    public ResponseEntity<?> claimsManage(ClaimSearchDto claimSearchDto, @PathVariable("page") Optional<Integer> page){
+    public ResponseEntity<?> claimsManage(@ModelAttribute ClaimSearchDto claimSearchDto, @RequestParam(value="page", defaultValue = "0") int page){
 
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        System.out.println("검색조건: " + claimSearchDto);
+
+        Pageable pageable = PageRequest.of(page, 8);
         Page<ClaimManageDto> claims = claimManageService.getClaimInfoPage(claimSearchDto, pageable);
+
+        System.out.println("서비스 객체에서 나왔음");
 
         ClaimManageListDto claimManageListDto = ClaimManageListDto.builder()
                 .claims(claims)
                 .claimSearchDto(claimSearchDto)
                 .maxPage(10)
+                .totalPage(claims.getTotalPages())
                 .build();
 
+        System.out.println("claims: " + claims);
         return ResponseEntity.status(HttpStatus.OK).body(claimManageListDto);
     }
 
-    //---고객 요청 상세 조회
-    @GetMapping("/claims/{claimId}")
-    public ResponseEntity<ClaimManageDto> claimDetail(@PathVariable("claimId") Long claimId) {
-
-        ClaimManageDto claimManageDto = claimManageService.getClaimDetail(claimId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(claimManageDto);
-    }
-
     //---고객 요청 승인여부 수정
-    @PatchMapping("/claims/approval")
-    public ResponseEntity<?> approvalClaims(@RequestBody List<ClaimManageDto> claimList){
+    @PatchMapping("/claims/status")
+    public ResponseEntity<?> approvalClaims(@ModelAttribute List<ClaimManageDto> claimList){
         for(ClaimManageDto claimManageDto : claimList){
             claimManageService.updateClaimApproval(claimManageDto);
         }
