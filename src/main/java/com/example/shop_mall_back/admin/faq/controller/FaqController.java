@@ -33,7 +33,11 @@ public class FaqController {
     //검색
     @GetMapping("/search")
     public PageResponseDto<FaqDto> searchFaqs(
-            @ModelAttribute FaqSearchDto faqSearchDto, Pageable pageable) {
+            @ModelAttribute FaqSearchDto faqSearchDto,
+            @ModelAttribute PageRequestDto pageRequestDto) {
+
+        Pageable pageable = pageRequestDto.toPageable();
+
         log.info("FAQ 검색 요청: category={}, keyWord={}", faqSearchDto.getCategory(), faqSearchDto.getKeyWord());
         return faqService.searchFaqs(faqSearchDto, pageable);
     }
