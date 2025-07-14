@@ -24,8 +24,6 @@ public class QClaimManage extends EntityPathBase<ClaimManage> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final BooleanPath isApproved = createBoolean("isApproved");
-
     public final com.example.shop_mall_back.user.myOrder.domain.QOrderReturn orderReturn;
 
     public QClaimManage(String variable) {

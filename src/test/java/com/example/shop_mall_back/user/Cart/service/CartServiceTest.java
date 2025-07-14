@@ -53,8 +53,6 @@ class CartServiceTest {
     @Mock private WishlistService wishlistService;              // 위시리스트 서비스
     @Mock private InventoryService inventoryService;            // 재고 서비스
     @Mock private RestockAlarmService restockAlarmService;      // 재입고 알림 서비스
-    @Mock private RestockAlarmRepository recoveryAlarmRepository;   //재입고 알림 저장소
-
 
     @Test
     @DisplayName("장바구니 상품 추가 테스트")
@@ -63,7 +61,6 @@ class CartServiceTest {
         Long memberId = 1L;
         Long productId = 2L;
         int quantity = 3;
-        String selectedOption = "option1";
 
         // 상품 Mock 데이터
         Product product = Product.builder()
