@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +19,5 @@ public class OrderReturnDto {
     private OrderReturn.ReturnType returnType;
     private String reason;
     private String detail;
+    private LocalDateTime regDate;
 }

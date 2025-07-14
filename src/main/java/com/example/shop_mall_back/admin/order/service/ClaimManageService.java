@@ -42,6 +42,7 @@ public class ClaimManageService {
                                         .returnType(claimManage.getOrderReturn().getReturnType())
                                         .reason(claimManage.getOrderReturn().getReason())
                                         .detail(claimManage.getOrderReturn().getDetail())
+                                        .regDate(claimManage.getOrderReturn().getRegDate())
                                         .build()
                         )
                         .isApproved(null)

@@ -37,7 +37,7 @@ public class ClaimManageRepositoryCustomImpl implements ClaimManageRepositoryCus
 
         //고객 요청 유형으로 검색
         if(claimSearchDto.getReturnType() != null){
-            builder.and(claimManage.orderReturn.returnType.eq(OrderReturn.ReturnType.valueOf(claimSearchDto.getReturnType())));
+            builder.and(claimManage.orderReturn.returnType.eq(claimSearchDto.getReturnType()));
         }
 
         //요청 일자로 검색

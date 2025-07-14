@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.admin.order.dto;
 
+import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public class ClaimSearchDto {
 
     private String searchContent;
 
-    private String returnType;
+    private OrderReturn.ReturnType returnType;
 
     private String dateType;
 
