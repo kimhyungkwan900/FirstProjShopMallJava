@@ -43,11 +43,6 @@ public class FaqRepositoryImpl implements FaqRepositoryCustom {
             );
         }
 
-
-
-        // PageRequestDto → Pageable 변환
-        //Pageable pageable = PageRequest.of(pageRequestDto.getPage() - 1, pageRequestDto.getSize());
-
         //실제 faq 목록 검색해오기
         List<Faq> faqList = queryFactory
                 .select(faq) //faq 테이블에서
