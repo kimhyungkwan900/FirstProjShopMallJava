@@ -1,0 +1,1 @@
+alter table order_manage modify order_status varchar(20) not null;
