@@ -46,28 +46,13 @@ public class FaqService {
         System.out.println("검색 결과 수: " + result.getTotalElements());
         result.getContent().forEach(dto -> System.out.println("FAQ 제목: " + dto.getQuestion()));
 
-//        return PageResponseDto.<FaqDto>withAll()
-//                .dtoList(result.getContent())
-//                .pageRequestDto(requestDto)
-//                .totalCount(result.getTotalElements())
-//                .build();
-//    }
-
-        System.out.println("✅ pageable.getPageNumber(): " + pageable.getPageNumber());
-        System.out.println("✅ pageable.getOffset(): " + pageable.getOffset());
-        System.out.println("✅ result.getContent().size(): " + result.getContent().size());
-
         return PageResponseDto.<FaqDto>withAll()
                 .dtoList(result.getContent())
                 .pageRequestDto(
                         new PageRequestDto(pageable.getPageNumber(), pageable.getPageSize()))
                 .totalCount(result.getTotalElements())
                 .build();
-
-
     }
-
-
 
     // 등록
     public Long createFaq(FaqDto faqDto) {
