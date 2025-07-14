@@ -1,5 +1,6 @@
 package com.example.shop_mall_back.user.myOrder.dto;
 
+import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.user.product.dto.ProductImageDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,4 +13,5 @@ public class OrderProductDTO {
     private String name;
     private ProductImageDto image;
     private Integer price;
+    private Product.SellStatus sellStatus;
 }

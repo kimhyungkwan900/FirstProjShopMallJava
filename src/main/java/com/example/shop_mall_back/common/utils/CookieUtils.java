@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
@@ -44,20 +45,21 @@ public class CookieUtils {
 
     }
 
-    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return;
         }
 
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(name)) {
-                cookie.setValue("");
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
-        }
+        ResponseCookie expiredCookie = ResponseCookie.from(cookieName, "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) // 즉시 만료
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
     }
 
     public static String serialize(Object obj) {

@@ -32,8 +32,6 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public final NumberPath<Integer> quantity = createNumber("quantity", Integer.class);
 
-    public final StringPath selectedOption = createString("selectedOption");
-
     public QOrderItem(String variable) {
         this(OrderItem.class, forVariable(variable), INITS);
     }
