@@ -43,7 +43,6 @@ public class OrderManageService {
                                         .total_count(orderManage.getOrder().getTotalCount())
                                         .payment_method(orderManage.getOrder().getPaymentMethod())
                                         .delivery_request(orderManage.getOrder().getDeliveryRequest())
-
                                         .build()
                         )
                         .build());
