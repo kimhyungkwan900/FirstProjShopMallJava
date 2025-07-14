@@ -24,8 +24,6 @@ class InventoryServiceImplTest {
     @Mock
     private ProductRepository productRepository;   // ProductRepository Mock 객체
 
-    @Mock
-    private RestockAlarmService restockAlarmService; // RestockAlarmService Mock 객체
 
     /**
      * 재고가 0인 경우 품절로 처리되는지 검증

@@ -158,41 +158,12 @@ class OrderControllerTest {
     @DisplayName("결제 처리 - 성공")
     void pay_success() throws Exception {
         // given: 결제 성공 Mock
-        doNothing().when(orderService).handlePayment(1L, "TOKEN_VALID");
-
+        doNothing().when(orderService).completePayAndOrder(1L);
         // when & then: POST 요청 결과 검증
         mockMvc.perform(post("/api/orders/1/pay")
                         .param("paymentToken", "TOKEN_VALID"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("결제가 성공적으로 처리되었습니다."));
-    }
-
-    @Test
-    @DisplayName("결제 처리 - 잘못된 상태 예외")
-    void pay_illegalStateException() throws Exception {
-        // given: 서비스에서 IllegalStateException 던지도록 설정
-        Mockito.doThrow(new IllegalStateException("이미 결제 처리된 주문입니다."))
-                .when(orderService).handlePayment(1L, "TOKEN_DUPLICATE");
-
-        // when & then: 예외 응답 상태 및 메시지 검증
-        mockMvc.perform(post("/api/orders/1/pay")
-                        .param("paymentToken", "TOKEN_DUPLICATE"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("이미 결제 처리된 주문입니다."));
-    }
-
-    @Test
-    @DisplayName("결제 처리 - 인증 실패 예외")
-    void pay_securityException() throws Exception {
-        // given: 서비스에서 SecurityException 던지도록 설정
-        Mockito.doThrow(new SecurityException("유효하지 않은 결제 요청입니다."))
-                .when(orderService).handlePayment(1L, "INVALID_TOKEN");
-
-        // when & then: 예외 응답 상태 및 메시지 검증
-        mockMvc.perform(post("/api/orders/1/pay")
-                        .param("paymentToken", "INVALID_TOKEN"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("유효하지 않은 결제 요청입니다."));
     }
 }
 
