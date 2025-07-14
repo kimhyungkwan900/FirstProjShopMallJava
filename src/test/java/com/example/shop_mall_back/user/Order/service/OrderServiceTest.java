@@ -126,7 +126,6 @@ class OrderServiceTest {
                 .deliveryFee(2000)
                 .grandTotal(22000) // 총액 (상품합 + 배송비)
                 .minOrderAmount(50000)
-                .description("배송비 정책 설명")
                 .build();
         when(cartService.calculateTotalWithDeliveryDetails(1L)).thenReturn(deliveryFeeRuleDto);
 

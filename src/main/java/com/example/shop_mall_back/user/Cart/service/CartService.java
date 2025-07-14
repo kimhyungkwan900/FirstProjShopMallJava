@@ -243,7 +243,7 @@ public class CartService {
         // 4. 총액 = 상품 합계 + 배송비
         int grandTotal = itemTotal + deliveryFee;
 
-        
+
         // 5. DTO로 반환
         return DeliveryFeeRuleDto.from(rule, itemTotal, grandTotal);
     }
@@ -336,4 +336,3 @@ public class CartService {
         cartItemRepository.saveAll(brandList);
     }
 }
-
