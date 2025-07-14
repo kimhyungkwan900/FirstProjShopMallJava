@@ -18,7 +18,7 @@ public class TrackingController {
 
     @PostMapping("/order/trackingInput")
     public ResponseEntity<String> trackingInput(@RequestBody TrackingInfoDTO trackingInfoDTO) {
-            trackingInfoService.addTrackingInfo(trackingInfoDTO);
-            return ResponseEntity.ok().build();
+        trackingInfoService.addTrackingInfo(trackingInfoDTO);
+        return ResponseEntity.ok().build();
     }
 }

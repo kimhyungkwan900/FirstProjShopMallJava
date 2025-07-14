@@ -26,7 +26,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
@@ -37,9 +36,7 @@ public class TokenProvider {
     private static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(7);
 
     // 사용자 ID 와 email 을 받아 AccessToken 생성
-    public String generateAccessToken(Long memberId, String email, Role role) {
-        return generateToken(memberId, email, role, ACCESS_TOKEN_DURATION);
-    }
+    public String generateAccessToken(Long memberId, String email, Role role) {return generateToken(memberId, email, role, ACCESS_TOKEN_DURATION);}
 
     // 사용자 정보가없는 RefreshToken 생성
     public String generateRefreshToken(){
