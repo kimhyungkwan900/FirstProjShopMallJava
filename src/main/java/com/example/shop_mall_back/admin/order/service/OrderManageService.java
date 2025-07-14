@@ -27,6 +27,13 @@ public class OrderManageService {
     @Transactional(readOnly = true)
     public Page<OrderManageDto> getOrderInfoPage(OrderSearchDto orderSearchDto, Pageable pageable) {
 
+        System.out.println("검색유형" + orderSearchDto.getSearchType());
+        System.out.println("검색어" + orderSearchDto.getSearchContent());
+        System.out.println("주문상태" + orderSearchDto.getOrderStatus());
+        System.out.println("시작일" +orderSearchDto.getStartDate());
+        System.out.println("종료일" + orderSearchDto.getEndDate());
+//        System.out.println(orderSearchDto.get);
+
         Page<OrderManage> orderInfoPage = orderManageRepository.getOrderPageByCondition(orderSearchDto, pageable);
 
         return orderInfoPage.map(orderManage ->
