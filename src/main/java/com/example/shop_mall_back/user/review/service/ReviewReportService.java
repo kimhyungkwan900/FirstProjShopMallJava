@@ -1,6 +1,7 @@
 package com.example.shop_mall_back.user.review.service;
 
 import com.example.shop_mall_back.admin.review.dto.AdminReviewReportDTO;
+import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.user.review.domain.ReviewReport;
 import com.example.shop_mall_back.user.review.dto.ReviewReportFormDTO;
 import com.example.shop_mall_back.user.review.repository.ReviewReportRepository;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewReportService {
     private final ReviewReportRepository reviewReportRepository;
+    private final MemberRepository memberRepository;
+
     private final ModelMapper modelMapper;
     // 신고 등록
     public void insertReviewReport(ReviewReportFormDTO reviewReportFormDTO){
@@ -31,16 +34,16 @@ public class ReviewReportService {
 
     // 신고 리스트 가져오기
     public List<AdminReviewReportDTO> findReviewReportByReviewId(Long reviewId) {
-        // 1) 엔티티 리스트 조회
         List<ReviewReport> reviewReportList = reviewReportRepository.findAllByReviewId(reviewId);
 
-        // 2) 엔티티 리스트 -> DTO 리스트 변환
-        List<AdminReviewReportDTO> dtoList = reviewReportList.stream()
-                .map(reviewReport -> modelMapper.map(reviewReport, AdminReviewReportDTO.class))
-                .collect(Collectors.toList());
+        return reviewReportList.stream().map(reviewReport -> {
+            AdminReviewReportDTO dto = modelMapper.map(reviewReport, AdminReviewReportDTO.class);
 
-        // 3) 변환된 DTO 리스트 반환
-        return dtoList;
+            memberRepository.findById(reviewReport.getMemberId())
+                    .ifPresent(member -> dto.setUserId(member.getUserId()));
+
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     //
