@@ -26,6 +26,8 @@ public class QRestockAlarm extends EntityPathBase<RestockAlarm> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final BooleanPath isRequest = createBoolean("isRequest");
+
     public final com.example.shop_mall_back.common.domain.member.QMember member;
 
     public final BooleanPath notified = createBoolean("notified");

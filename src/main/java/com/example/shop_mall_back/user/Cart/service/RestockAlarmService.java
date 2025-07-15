@@ -21,7 +21,6 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class RestockAlarmService {
 
     private final RestockAlarmRepository restockAlarmRepository; // 재입고 알림 저장소
@@ -56,12 +55,19 @@ public class RestockAlarmService {
     /**
      * 재입고 알림 취소 처리
      */
-
+    @Transactional
     public void cancelRestockAlarm(Long memberId, Long productId) {
         if (!restockAlarmRepository.existsByMember_IdAndProduct_Id(memberId, productId)) {
             throw new IllegalStateException("신청된 알람이 없습니다.");
         }
         restockAlarmRepository.deleteByMember_IdAndProduct_Id(memberId, productId);
+    }
+
+    /**
+     * 재입고 알림 상태 확인
+     */
+    public boolean IsRequestRestockAlarm(Long memberId, Long productId) {
+        return restockAlarmRepository.existsByMember_IdAndProduct_Id(memberId, productId);
     }
 
     /**

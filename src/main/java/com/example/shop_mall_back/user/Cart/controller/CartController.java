@@ -158,9 +158,18 @@ public class CartController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * [14] 재입고 알림 상태 확인
+     */
+    @GetMapping("/items/{productId}/restockAlarm/status")
+    public ResponseEntity<Boolean> IsRequestRestockAlarm(@PathVariable Long productId) {
+        Boolean isRequest = restockAlarmService.IsRequestRestockAlarm(getCurrentMemberId(), productId);
+        return ResponseEntity.ok(isRequest);
+    }
+
 
     /**
-     * [14] 전체 선택 체크
+     * [15] 전체 선택 체크
      */
     @PutMapping("/items/select-all")
     public ResponseEntity<String> toggleSelectAll(
@@ -171,7 +180,7 @@ public class CartController {
     }
 
     /**
-     * [15] 브랜드별 전체 선택
+     * [16] 브랜드별 전체 선택
      */
     @PutMapping("/items/select-brand/{brandName}")
     public ResponseEntity<String> toggleSelectBrand(@PathVariable String brandName, @RequestParam boolean isSelected) {
