@@ -51,10 +51,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo() {
-//        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
-//    }
     @Bean
     public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authRequestRepo() {
         return new HttpSessionOAuth2AuthorizationRequestRepository();
@@ -66,7 +62,6 @@ public class SecurityConfig {
             SessionRepository sessionRepository,
             MemberService memberService,
             MemberProfileService memberProfileService,
-//            OAuth2AuthorizationRequestBasedOnCookieRepository authRequestRepo
             AuthorizationRequestRepository<OAuth2AuthorizationRequest> authRequestRepo
     ) {
         return new OAuth2SuccessHandler(tokenProvider, sessionRepository, memberService, authRequestRepo, memberProfileService);
