@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -49,6 +50,21 @@ private final AuthorizationRequestRepository<OAuth2AuthorizationRequest> authReq
         Role role = oAuth2User.getRole();
 
         Member member = memberService.findByEmail(email);
+
+        if (!member.isActive()) {
+            SecurityContextHolder.clearContext();
+            log.warn("비활성화 계정 OAuth 로그인 시도: {}", email);
+
+            // error 파라미터와 함께 리다이렉트
+            String redirectUrl = UriComponentsBuilder
+                    .fromUriString("http://localhost:5173/login")
+                    .queryParam("error", "inactive_account")
+                    .build()
+                    .toUriString();
+
+            response.sendRedirect(redirectUrl);
+            return;
+        }
         MemberProfile profile = memberProfileService.findByMemberIdOrThrow(memberId);
 
         // provider와 attributes 가져오기
@@ -100,6 +116,13 @@ private final AuthorizationRequestRepository<OAuth2AuthorizationRequest> authReq
 
 
         // 리다이렉트
-        response.sendRedirect("http://localhost:5173/oauth2/success?accessToken=" + accessToken);
+        String redirectUrl = UriComponentsBuilder
+                .fromUriString("http://localhost:5173/oauth2/success")
+                .queryParam("userId", member.getUserId())
+                .queryParam("role", role.name())
+                .build()
+                .toUriString();
+
+        response.sendRedirect(redirectUrl);
     }
 }
