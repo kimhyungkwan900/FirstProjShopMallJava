@@ -122,7 +122,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));                          // 정확한 origin
 //        configuration.addAllowedMethod("*");
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));            // 명시적 메서드
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "FETCH"));            // 명시적 메서드
         configuration.addAllowedHeader("*");
 //        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));  // 명시적 헤더
             configuration.setAllowCredentials(true);                                                    // 쿠키 허용
