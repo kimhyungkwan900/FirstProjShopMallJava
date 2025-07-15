@@ -119,7 +119,7 @@ public class AuthController {
             saveTokenCookies(response, accessToken, refreshToken);
 
             return ResponseEntity.ok(Map.of(
-                    "userId", member.getUserId(),
+                    "userId", member.getId(),
                     "role", role.name()
             ));
         }

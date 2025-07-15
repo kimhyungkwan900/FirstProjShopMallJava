@@ -10,6 +10,7 @@ import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
+import com.example.shop_mall_back.common.utils.CookieConstants;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -111,14 +112,14 @@ private final AuthorizationRequestRepository<OAuth2AuthorizationRequest> authReq
         authRequestRepo.removeAuthorizationRequest(request, response);
 
         // 쿠키에 토큰 저장
-        CookieUtils.addCookie(response,"access_token",accessToken,tokenProvider.getAccessTokenExpirySeconds());
-        CookieUtils.addCookie(response,"refresh_token",refreshToken,tokenProvider.getRefreshTokenExpirySeconds());
+        CookieUtils.addCookie(response, CookieConstants.ACCESS_TOKEN,accessToken,tokenProvider.getAccessTokenExpirySeconds());
+        CookieUtils.addCookie(response,CookieConstants.REFRESH_TOKEN,refreshToken,tokenProvider.getRefreshTokenExpirySeconds());
 
 
         // 리다이렉트
         String redirectUrl = UriComponentsBuilder
                 .fromUriString("http://localhost:5173/oauth2/success")
-                .queryParam("userId", member.getUserId())
+                .queryParam("userId", member.getId())
                 .queryParam("role", role.name())
                 .build()
                 .toUriString();
