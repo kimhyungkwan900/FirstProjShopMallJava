@@ -22,6 +22,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///" + itemImgLocation.replace("\\", "/") + "/");
 
         // ✅ 기존 정적 더미 이미지 경로들 (카테고리별)
+        registry.addResourceHandler("/images/brands/**")
+                .addResourceLocations(uploadPath + "brands/");
+
+        registry.addResourceHandler("/images/footer/**")
+                .addResourceLocations(uploadPath + "footer/");
+
         registry.addResourceHandler("/images/banners/**")
                 .addResourceLocations(uploadPath + "banners/");
 

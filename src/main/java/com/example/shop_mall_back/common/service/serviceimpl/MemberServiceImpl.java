@@ -1,5 +1,8 @@
 package com.example.shop_mall_back.common.service.serviceimpl;
 
+import com.example.shop_mall_back.common.Exception.InactiveAccountException;
+import com.example.shop_mall_back.common.Exception.InvalidPasswordException;
+import com.example.shop_mall_back.common.Exception.MemberNotFoundException;
 import com.example.shop_mall_back.common.constant.Age;
 import com.example.shop_mall_back.common.constant.Gender;
 import com.example.shop_mall_back.common.constant.Grade;
@@ -146,10 +149,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public Member authenticate(String userId, String rawPassword) {
-        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("ID 혹은 비밀번호를 다시 확인해주세요"));
+        Member member = memberRepository.findByUserId(userId).orElseThrow(MemberNotFoundException::new);
+
+        if (!member.isActive()) {
+            throw new InactiveAccountException();
+        }
 
         if (!passwordEncoder.matches(rawPassword, member.getUserPassword())) {
-            throw new IllegalArgumentException("ID 혹은 비밀번호를 다시 확인해주세요");
+            throw new InvalidPasswordException();
         }
 
         return member;
