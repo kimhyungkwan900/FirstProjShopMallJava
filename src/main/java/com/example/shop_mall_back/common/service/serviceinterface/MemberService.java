@@ -32,16 +32,6 @@ public interface MemberService {
 
     void activateMember(Long id);
 
-    default MemberFormDTO entityToDTOMemberForm(Member member) {
-        return MemberFormDTO.builder()
-                .id(member.getId())
-                .userId(member.getUserId())
-                .userPassword(member.getUserPassword())
-                .email(member.getEmail())
-                .phoneNumber(member.getPhoneNumber())
-                .build();
-    }
-
     // Member -> MemberDTO
     default MemberDTO entityToDTOMember(Member member){
         return MemberDTO.builder()
@@ -54,16 +44,6 @@ public interface MemberService {
                 .oauthProvider(member.getOauthProvider())
                 .isActive(member.isActive())
                 .createdAt(member.getCreatedAt())
-                .build();
-    }
-
-    default Member dtoToEntity(MemberFormDTO memberFormDTO) {
-        return Member.builder()
-                .id(memberFormDTO.getId())
-                .userId(memberFormDTO.getUserId())
-                .userPassword(memberFormDTO.getUserPassword())
-                .email(memberFormDTO.getEmail())
-                .phoneNumber(memberFormDTO.getPhoneNumber())
                 .build();
     }
 }

@@ -1,5 +1,8 @@
 package com.example.shop_mall_back.common.controller;
 
+import com.example.shop_mall_back.common.Exception.InactiveAccountException;
+import com.example.shop_mall_back.common.Exception.InvalidPasswordException;
+import com.example.shop_mall_back.common.Exception.MemberNotFoundException;
 import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.common.constant.LoginResult;
@@ -9,7 +12,6 @@ import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.login.Session;
 import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.dto.LoginRequestDTO;
-import com.example.shop_mall_back.common.dto.MemberDTO;
 import com.example.shop_mall_back.common.dto.MemberWithProfileDTO;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
@@ -22,7 +24,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +33,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -119,9 +119,8 @@ public class AuthController {
             saveTokenCookies(response, accessToken, refreshToken);
 
             return ResponseEntity.ok(Map.of(
-                    "message", "로그인 성공",
-                    CookieConstants.ACCESS_TOKEN, accessToken,
-                    CookieConstants.REFRESH_TOKEN, refreshToken
+                    "userId", member.getUserId(),
+                    "role", role.name()
             ));
         }
         catch (IllegalArgumentException e) { // 실패
@@ -137,11 +136,19 @@ public class AuthController {
             );
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ID 또는 비밀번호를 확인해주세요");
         }
+        catch (InactiveAccountException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("비활성화된 계정입니다.");
+        }
+        catch (InvalidPasswordException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다.");
+        }
+        catch (MemberNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 사용자입니다.");
+        }
         catch (Exception e) {
             // 예기치 않은 오류 (서버 오류)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
         }
-
     }
 
     // logout 시 쿠키에서 토큰 삭제

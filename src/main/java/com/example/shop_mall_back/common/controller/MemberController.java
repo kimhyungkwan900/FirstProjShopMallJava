@@ -12,6 +12,9 @@ import com.example.shop_mall_back.common.repository.MemberRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberAddressService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
+import com.example.shop_mall_back.common.utils.CookieConstants;
+import com.example.shop_mall_back.common.utils.CookieUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -66,18 +69,22 @@ public class MemberController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody MemberProfileUpdateDTO memberProfileUpdateDTO,
-                                              @AuthenticationPrincipal CustomUserPrincipal principal) {
-        if (!memberProfileUpdateDTO.getMemberId().equals(principal.getMember().getId())) {
+    public ResponseEntity<?> updateProfile(@RequestBody MemberProfileUpdateDTO dto,
+                                           @AuthenticationPrincipal CustomUserPrincipal principal,
+                                           HttpServletResponse response) {
+        if (!dto.getMemberId().equals(principal.getMember().getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        memberProfileService.memberProfileUpdate(memberProfileUpdateDTO);
 
-        Member updatedMember = memberService.findByIdOrThrow(memberProfileUpdateDTO.getMemberId());
+        memberProfileService.memberProfileUpdate(dto);
+
+        Member updatedMember = memberService.findByIdOrThrow(dto.getMemberId());
         Role role = memberProfileService.getMemberProfileRole(updatedMember.getId());
         String newAccessToken = tokenProvider.generateAccessToken(updatedMember.getId(), updatedMember.getEmail(), role);
 
-        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+        CookieUtils.addCookie(response, CookieConstants.ACCESS_TOKEN, newAccessToken, tokenProvider.getAccessTokenExpirySeconds());
+
+        return ResponseEntity.ok(Map.of("message", "프로필이 수정되었습니다."));
     }
 
 
