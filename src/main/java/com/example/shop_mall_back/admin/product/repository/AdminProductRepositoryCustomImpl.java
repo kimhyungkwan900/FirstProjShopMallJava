@@ -3,6 +3,7 @@ package com.example.shop_mall_back.admin.product.repository;
 import com.example.shop_mall_back.admin.product.dto.ProductSearchDto;
 import com.example.shop_mall_back.common.domain.Product;
 import com.example.shop_mall_back.common.domain.QProduct;
+import com.example.shop_mall_back.user.product.domain.QCategory;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +19,21 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
     private final JPAQueryFactory queryFactory;
 
     //검색조건 입력: 상품번호 , 상품명, 브랜드명
-    //검색조건 선택: 판매상태, 카테고리 대분류(category), 중분류, 소분류, 등록일자
+    //검색조건 선택: 판매상태, 카테고리, 등록일자
 
     @Override
     public Page<Product> getProductPageByCondition(ProductSearchDto productSearchDto, Pageable pageable) {
         QProduct product = QProduct.product;    //자동 생성된 Q클래스
 
+        QCategory category = QCategory.category;
+        QCategory parent = new QCategory("parent");
+        QCategory grandparent = new QCategory("grandpa");
+
         //동적 where 절 조립
         //상품 아이디로 검색
         BooleanBuilder builder = new BooleanBuilder();
+
+
         if(productSearchDto.getProductId() != null){
             builder.and(product.id.eq(productSearchDto.getProductId()));
         }
@@ -43,8 +50,13 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
             builder.and(product.sellStatus.eq(Product.SellStatus.valueOf(productSearchDto.getSellStatus())));
         }
         //카테고리 ID로 검색
-        if(productSearchDto.getCategoryID() != null){
-            builder.and(product.category.id.eq(productSearchDto.getCategoryID()));
+        if(productSearchDto.getCategoryId() != null){
+            BooleanBuilder categoryOr = new BooleanBuilder()
+                .or(category.id.eq(productSearchDto.getCategoryId()))
+                .or(parent.id.eq(productSearchDto.getCategoryId()))
+                .or(grandparent.id.eq(productSearchDto.getCategoryId()));
+
+            builder.and(categoryOr);
         }
         //등록 일자로 검색
         if(productSearchDto.getStartDate() != null && productSearchDto.getEndDate() != null && productSearchDto.getDateType().equals("등록일")){
@@ -58,6 +70,9 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
         //쿼리 실행
         List<Product> searchResult = queryFactory
                 .selectFrom(product)
+                .leftJoin(product.category, category)
+                .leftJoin(category.parent, parent)
+                .leftJoin(parent.parent, grandparent)
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -66,6 +81,9 @@ public class AdminProductRepositoryCustomImpl implements AdminProductRepositoryC
         Long total = queryFactory
                 .select(product.count())
                 .from(product)
+                .leftJoin(product.category, category)
+                .leftJoin(category.parent, parent)
+                .leftJoin(parent.parent, grandparent)
                 .where(builder)
                 .fetchOne();
 

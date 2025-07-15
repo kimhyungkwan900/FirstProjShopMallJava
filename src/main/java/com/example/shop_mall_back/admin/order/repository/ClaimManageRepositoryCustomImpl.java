@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -23,10 +24,12 @@ public class ClaimManageRepositoryCustomImpl implements ClaimManageRepositoryCus
 
         //동적 where 절 조립
         BooleanBuilder builder = new BooleanBuilder();
-        if(claimSearchDto.getSearchType() != null){
+        if(StringUtils.hasText(claimSearchDto.getSearchType())){
             switch (claimSearchDto.getSearchType()) {
                 //주문 ID로 검색
-                case "주문 ID" -> builder.and(claimManage.orderReturn.orderId.eq(Long.valueOf(claimSearchDto.getSearchContent())));
+                case "주문 ID" -> {
+                    builder.and(claimManage.orderReturn.orderId.eq(Long.valueOf(claimSearchDto.getSearchContent())));
+                }
 
                 //요청자 ID로 검색
                 case "고객 ID" -> {
