@@ -15,6 +15,7 @@ import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.serviceinterface.LoginHistoryService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
+import com.example.shop_mall_back.common.utils.CookieConstants;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
@@ -40,7 +41,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Log4j2
 public class AuthController {
 
     private final MemberService memberService;
@@ -79,7 +79,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletResponse response, HttpServletRequest request){
-
         //로그인 시도
         try {
             // 사용자 인증
@@ -121,8 +120,8 @@ public class AuthController {
 
             return ResponseEntity.ok(Map.of(
                     "message", "로그인 성공",
-                    "accessToken", accessToken,
-                    "refreshToken", refreshToken
+                    CookieConstants.ACCESS_TOKEN, accessToken,
+                    CookieConstants.REFRESH_TOKEN, refreshToken
             ));
         }
         catch (IllegalArgumentException e) { // 실패
@@ -130,13 +129,12 @@ public class AuthController {
             Member member = memberService.findByUserId(loginRequestDTO.getUserId()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
             loginHistoryService.recordLogin(
-                    member, // 또는 memberService.findByUserId(...)로 식별 가능한 경우
+                    member,
                     getClientIp(request),
                     request.getHeader("User-Agent"),
                     LoginResult.FAIL,
                     LoginType.NORMAL
             );
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ID 또는 비밀번호를 확인해주세요");
         }
         catch (Exception e) {
@@ -146,13 +144,11 @@ public class AuthController {
 
     }
 
-
-
     // logout 시 쿠키에서 토큰 삭제
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response){
         // 쿠키에서 refresh_token 꺼내기
-        String refreshToken = CookieUtils.getCookie(request, "refresh_token")
+        String refreshToken = CookieUtils.getCookie(request, CookieConstants.REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse(null);
 
@@ -171,8 +167,8 @@ public class AuthController {
         }
 
         // 쿠키 삭제
-        CookieUtils.deleteCookie(request, response, "access_token");
-        CookieUtils.deleteCookie(request, response, "refresh_token");
+        CookieUtils.deleteCookie(request, response, CookieConstants.ACCESS_TOKEN);
+        CookieUtils.deleteCookie(request, response, CookieConstants.REFRESH_TOKEN);
 
         return ResponseEntity.ok(Map.of("message", "로그아웃 완료"));
     }
@@ -180,7 +176,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response){
         // 요청들어온 refresh_token 쿠키 조회
-        String refreshToken = CookieUtils.getCookie(request, "refresh_token")
+        String refreshToken = CookieUtils.getCookie(request, CookieConstants.REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse(null);
 
@@ -203,9 +199,46 @@ public class AuthController {
         String newAccessToken = tokenProvider.generateAccessToken(memberId, email, role);
 
         // 새로운 accessToken 을 쿠키에 넣어 응답
-        CookieUtils.addCookie(response, "access_token", newAccessToken, tokenProvider.getAccessTokenExpirySeconds());
+        CookieUtils.addCookie(response, CookieConstants.ACCESS_TOKEN, newAccessToken, tokenProvider.getAccessTokenExpirySeconds());
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/deactivate")
+    public ResponseEntity<?> deactivateAccount(@AuthenticationPrincipal CustomUserPrincipal principal,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) {
+
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        Member member = principal.getMember();
+
+        if (!member.isActive()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 탈퇴된 계정입니다.");
+        }
+
+        // 회원 비활성화
+        memberService.deActivateMember(member.getId());
+
+        // 로그인 기록 logoutTime 갱신
+        loginHistoryService.recordLogout(member);
+
+        // 세션 제거
+        String refreshToken = CookieUtils.getCookie(request, CookieConstants.REFRESH_TOKEN)
+                .map(Cookie::getValue)
+                .orElse(null);
+
+        if (refreshToken != null) {
+            sessionRepository.findByRefreshToken(refreshToken).ifPresent(sessionRepository::delete);
+        }
+
+        // 쿠키 삭제
+        CookieUtils.deleteCookie(request, response, CookieConstants.ACCESS_TOKEN);
+        CookieUtils.deleteCookie(request, response, CookieConstants.REFRESH_TOKEN);
+
+        return ResponseEntity.ok(Map.of("message", "회원 탈퇴(비활성화) 완료"));
     }
 
     // <editor-fold desc="편의성 private 메서드">
@@ -225,8 +258,8 @@ public class AuthController {
     }
 
     private void saveTokenCookies(HttpServletResponse response, String accessToken, String refreshToken) {
-        CookieUtils.addCookie(response, "access_token", accessToken, tokenProvider.getAccessTokenExpirySeconds());
-        CookieUtils.addCookie(response, "refresh_token", refreshToken, tokenProvider.getRefreshTokenExpirySeconds());
+        CookieUtils.addCookie(response, CookieConstants.ACCESS_TOKEN, accessToken, tokenProvider.getAccessTokenExpirySeconds());
+        CookieUtils.addCookie(response, CookieConstants.REFRESH_TOKEN, refreshToken, tokenProvider.getRefreshTokenExpirySeconds());
     }
     // </editor-fold>
 }

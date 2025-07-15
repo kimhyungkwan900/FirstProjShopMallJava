@@ -15,8 +15,7 @@ public class DeliveryFeeRuleDto {
     private Long id;                // 정책 ID
     private Integer minOrderAmount; // 최소 주문 금액
     private Integer deliveryFee;    // 배송비
-    private String description;     // 설명
-    
+
     // ✅ 추가
     private int totalProductPrice;     // 선택된 상품 합계
     private int grandTotal;            // 총합 (상품 합계 + 배송비)
@@ -28,7 +27,6 @@ public class DeliveryFeeRuleDto {
                 .id(rule.getId())
                 .minOrderAmount(rule.getMinOrderAmount())
                 .deliveryFee(rule.getDeliveryFee())
-                .description(rule.getDescription())
                 .totalProductPrice(totalProductPrice)
                 .grandTotal(grandTotal)
                 .build();

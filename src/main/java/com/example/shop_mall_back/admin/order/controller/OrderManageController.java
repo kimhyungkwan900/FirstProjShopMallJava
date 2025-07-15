@@ -28,6 +28,8 @@ public class OrderManageController {
     @GetMapping({"/orders", "/orders/{page}"})
     public ResponseEntity<?> ordersManage(@ModelAttribute OrderSearchDto orderSearchDto, @RequestParam(value="page", defaultValue = "0") int page){
 
+        log.info("받은 검색 DTO -> {}", orderSearchDto);
+
         Pageable pageable = PageRequest.of(page, 8);
         Page<OrderManageDto> orders = orderManageService.getOrderInfoPage(orderSearchDto, pageable);
 

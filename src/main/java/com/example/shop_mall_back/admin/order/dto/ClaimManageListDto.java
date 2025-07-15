@@ -12,4 +12,5 @@ public class ClaimManageListDto {
     private Page<ClaimManageDto> claims;
     private ClaimSearchDto claimSearchDto;
     private Integer maxPage;
+    private Integer totalPage;
 }

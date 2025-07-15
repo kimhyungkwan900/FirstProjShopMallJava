@@ -16,8 +16,6 @@ public class OrderItemDto {
     private Long productId;       // 상품 ID
     private int quantity;         // 수량
     private int price;            // 가격
-    private String selected_option; // 선택 옵션
-
     private String brandName;   //브랜드 이름
     private String imageUrl;    //상품 이미지
     private String productTitle;    //상품 이름

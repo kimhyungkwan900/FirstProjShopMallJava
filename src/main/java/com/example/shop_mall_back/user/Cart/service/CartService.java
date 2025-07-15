@@ -244,7 +244,6 @@ public class CartService {
         int grandTotal = itemTotal + deliveryFee;
 
 
-
         // 5. DTO로 반환
         return DeliveryFeeRuleDto.from(rule, itemTotal, grandTotal);
     }
@@ -337,4 +336,3 @@ public class CartService {
         cartItemRepository.saveAll(brandList);
     }
 }
-

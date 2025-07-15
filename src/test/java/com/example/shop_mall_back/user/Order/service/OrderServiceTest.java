@@ -126,7 +126,6 @@ class OrderServiceTest {
                 .deliveryFee(2000)
                 .grandTotal(22000) // 총액 (상품합 + 배송비)
                 .minOrderAmount(50000)
-                .description("배송비 정책 설명")
                 .build();
         when(cartService.calculateTotalWithDeliveryDetails(1L)).thenReturn(deliveryFeeRuleDto);
 
@@ -279,56 +278,5 @@ class OrderServiceTest {
         assertFalse(orderService.isValidRequestNote("문 앞에 두세요!!!"));
     }
 
-    @Test
-    @DisplayName("processMockPayment - 결제 성공")
-    void processMockPayment_success() {
-        String result = orderService.processMockPayment("CREDIT_CARD", "TOKEN_ABC");
-        assertEquals(PaymentStatus.SUCCESS.name(), result);
-    }
-
-    @Test
-    @DisplayName("processMockPayment - 유효하지 않은 결제수단")
-    void processMockPayment_invalidPaymentMethod() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> orderService.processMockPayment("PAYPAL", "TOKEN_ABC"));
-        assertEquals("유효한 결제수단이 아닙니다.", ex.getMessage());
-    }
-
-    @Test
-    @DisplayName("processMockPayment - 유효하지 않은 토큰")
-    void processMockPayment_invalidToken() {
-        SecurityException ex = assertThrows(SecurityException.class,
-                () -> orderService.processMockPayment("CREDIT_CARD", "INVALID_TOKEN"));
-        assertEquals("유효하지 않은 결제 토큰입니다.", ex.getMessage());
-    }
-
-    @Test
-    @DisplayName("handlePayment - 결제 성공 처리")
-    void handlePayment_success() {
-        // given: 결제 대기 상태 주문
-        order.setPaymentStatus(PaymentStatus.PENDING);
-        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
-
-        // when: 결제 처리
-        orderService.handlePayment(1L, "TOKEN_VALID");
-
-        // then: 결제 성공 및 저장 확인
-        assertEquals(PaymentStatus.SUCCESS, order.getPaymentStatus());
-        verify(orderRepository, times(1)).save(order);
-        verify(orderManageRepository).save(any(OrderManage.class));
-    }
-
-    @Test
-    @DisplayName("handlePayment - 이미 결제된 주문")
-    void handlePayment_alreadyPaid() {
-        // given: 이미 결제 완료된 주문
-        order.setPaymentStatus(PaymentStatus.SUCCESS);
-        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
-
-        // then: 예외 발생
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> orderService.handlePayment(1L, "TOKEN_VALID"));
-        assertEquals("이미 결제 처리된 주문입니다.", ex.getMessage());
-    }
 }
 

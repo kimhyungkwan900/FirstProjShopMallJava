@@ -3,6 +3,7 @@ package com.example.shop_mall_back.admin.order.service;
 import com.example.shop_mall_back.admin.order.domain.ClaimManage;
 import com.example.shop_mall_back.admin.order.dto.ClaimManageDto;
 import com.example.shop_mall_back.admin.order.dto.ClaimSearchDto;
+import com.example.shop_mall_back.admin.order.dto.OrderReturnDto;
 import com.example.shop_mall_back.admin.order.repository.ClaimManageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,27 @@ public class ClaimManageService {
     //검색 조건에 따라 고객 요청 조회
     @Transactional(readOnly = true)
     public Page<ClaimManageDto> getClaimInfoPage(ClaimSearchDto claimSearchDto, Pageable pageable) {
-        return claimManageRepository.getClaimPageByCondition(claimSearchDto, pageable)
-                .map(claimManage -> modelMapper.map(claimManage, ClaimManageDto.class));
-    }
 
-    //고객 요청 상세 조회
-    @Transactional
-    public ClaimManageDto getClaimDetail(Long claimId){
-        return modelMapper.map(claimManageRepository.findById(claimId), ClaimManageDto.class);
+        System.out.println("서비스 객체 안에 들어옴: " + claimSearchDto);
+
+        Page<ClaimManage> claimInfoPage = claimManageRepository.getClaimPageByCondition(claimSearchDto, pageable);
+
+        return claimInfoPage.map(claimManage ->
+                ClaimManageDto.builder()
+                        .claimId(claimManage.getId())
+                        .orderReturn(
+                                OrderReturnDto.builder()
+                                        .id(claimManage.getOrderReturn().getId())
+                                        .orderId(claimManage.getOrderReturn().getOrderId())
+                                        .memberId(claimManage.getOrderReturn().getMemberId())
+                                        .returnType(claimManage.getOrderReturn().getReturnType())
+                                        .reason(claimManage.getOrderReturn().getReason())
+                                        .detail(claimManage.getOrderReturn().getDetail())
+                                        .regDate(claimManage.getOrderReturn().getRegDate())
+                                        .build()
+                        )
+                        .isApproved(null)
+                        .build());
     }
 
     //고객 요청 승인여부 수정

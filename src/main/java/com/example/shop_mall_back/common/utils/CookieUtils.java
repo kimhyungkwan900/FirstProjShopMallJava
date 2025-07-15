@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
@@ -35,7 +36,7 @@ public class CookieUtils {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)     // JavaScript 에서 접근불가 설정
                 .secure(true)       // HTTPS 환경에서만 쿠키 전송 HTTP 로 전송하지 않아 MITM 방지 가능
-                .sameSite("None")   // 다른 도메인에서도 쿠키를 전송할 수 있도록 설정 ( API 로그인 작동이 되지않아 추가 TODO: 보안상 추가 검토 필요 )
+                .sameSite("Lax")    // 일부 안전한 크로스 도메인 요청(GET, top-level navigation)만 허용
                 .path("/")          // 쿠키 유효 경로
                 .maxAge(Duration.ofSeconds(maxAge))
                 .build();
@@ -44,20 +45,21 @@ public class CookieUtils {
 
     }
 
-    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return;
         }
 
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(name)) {
-                cookie.setValue("");
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
-        }
+        ResponseCookie expiredCookie = ResponseCookie.from(cookieName, "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) // 즉시 만료
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
     }
 
     public static String serialize(Object obj) {

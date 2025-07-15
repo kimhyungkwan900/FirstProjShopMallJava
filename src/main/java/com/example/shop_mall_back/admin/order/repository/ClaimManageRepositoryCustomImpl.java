@@ -29,7 +29,7 @@ public class ClaimManageRepositoryCustomImpl implements ClaimManageRepositoryCus
                 case "주문 ID" -> builder.and(claimManage.orderReturn.orderId.eq(Long.valueOf(claimSearchDto.getSearchContent())));
 
                 //요청자 ID로 검색
-                case "요청자 ID" -> {
+                case "고객 ID" -> {
                     builder.and(claimManage.orderReturn.memberId.eq(Long.valueOf(claimSearchDto.getSearchContent())));
                 }
             }
@@ -37,7 +37,7 @@ public class ClaimManageRepositoryCustomImpl implements ClaimManageRepositoryCus
 
         //고객 요청 유형으로 검색
         if(claimSearchDto.getReturnType() != null){
-            builder.and(claimManage.orderReturn.returnType.eq(OrderReturn.ReturnType.valueOf(claimSearchDto.getReturnType())));
+            builder.and(claimManage.orderReturn.returnType.eq(claimSearchDto.getReturnType()));
         }
 
         //요청 일자로 검색
