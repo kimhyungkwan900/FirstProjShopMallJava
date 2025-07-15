@@ -41,4 +41,7 @@ public class RestockAlarm {
     @Column(name = "notified", nullable = false)
     private boolean notified = false;
     // 알림 발송 여부: false = 미발송, true = 발송 완료
+
+    @Column(name = "isRequest")
+    private boolean isRequest = true;
 }
