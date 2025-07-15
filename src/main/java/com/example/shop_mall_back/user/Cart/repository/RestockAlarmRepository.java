@@ -2,6 +2,7 @@ package com.example.shop_mall_back.user.Cart.repository;
 
 import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.user.Cart.domain.RestockAlarm;
+import com.example.shop_mall_back.user.Cart.dto.RestockAlarmDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -17,10 +18,9 @@ public interface RestockAlarmRepository extends JpaRepository<RestockAlarm, Long
      */
     boolean existsByMember_IdAndProduct_Id(Long memberId, Long productId);
 
-    /**
-     * 특정 상품에 대해 아직 알림이 발송되지 않은 알림 목록 조회
-     * - 주로 재입고 시점에 알림 대상자들을 찾을 때 사용
-     */
-    List<RestockAlarm> findByProductIdAndNotifiedFalse(Long productId);
+
+    void deleteByMember_IdAndProduct_Id(Long memberId, Long productId);
+
+    List<RestockAlarm> findByMember_Id(Long memberId);
 }
 

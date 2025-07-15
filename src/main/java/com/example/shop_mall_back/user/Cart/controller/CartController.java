@@ -3,6 +3,7 @@ package com.example.shop_mall_back.user.Cart.controller;
 import com.example.shop_mall_back.common.config.CustomUserPrincipal;
 import com.example.shop_mall_back.user.Cart.dto.CartItemDto;
 import com.example.shop_mall_back.user.Cart.dto.DeliveryFeeRuleDto;
+import com.example.shop_mall_back.user.Cart.dto.RestockAlarmDto;
 import com.example.shop_mall_back.user.Cart.service.CartService;
 import com.example.shop_mall_back.user.Cart.service.RestockAlarmService;
 import lombok.RequiredArgsConstructor;
@@ -140,7 +141,26 @@ public class CartController {
     }
 
     /**
-     * [12] 전체 선택 체크
+     * [12] 재입고 알림 취소
+     */
+    @PostMapping("/items/{itemsId}/restockAlarm/cancel")
+    public ResponseEntity<String> cancelRestockAlarm(@PathVariable Long itemsId) {
+        restockAlarmService.cancelRestockAlarm(getCurrentMemberId(), itemsId);
+        return ResponseEntity.ok("재입고 알림이 신청되었습니다.");
+    }
+
+    /**
+     * [13] 재입고 알림 목록
+     */
+    @GetMapping("/items/restockAlarm/list")
+    public ResponseEntity<List<RestockAlarmDto>> getRestockAlarmList() {
+        List<RestockAlarmDto> result = restockAlarmService.getRestockAlarmList(getCurrentMemberId());
+        return ResponseEntity.ok(result);
+    }
+
+
+    /**
+     * [14] 전체 선택 체크
      */
     @PutMapping("/items/select-all")
     public ResponseEntity<String> toggleSelectAll(
@@ -151,7 +171,7 @@ public class CartController {
     }
 
     /**
-     * [13] 브랜드별 전체 선택
+     * [15] 브랜드별 전체 선택
      */
     @PutMapping("/items/select-brand/{brandName}")
     public ResponseEntity<String> toggleSelectBrand(@PathVariable String brandName, @RequestParam boolean isSelected) {
