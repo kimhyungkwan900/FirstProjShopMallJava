@@ -24,7 +24,7 @@ public class ProductSearchDto {
 
     private String sellStatus;
 
-    private Long categoryID;
+    private Long categoryId;
 
     private String dateType;
 
