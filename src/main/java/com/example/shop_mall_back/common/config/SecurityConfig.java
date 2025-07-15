@@ -3,6 +3,7 @@ package com.example.shop_mall_back.common.config;
 import com.example.shop_mall_back.common.config.jwt.TokenAuthenticationFilter;
 import com.example.shop_mall_back.common.config.jwt.TokenProvider;
 import com.example.shop_mall_back.common.config.oauth2.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.example.shop_mall_back.common.config.oauth2.OAuth2FailureHandler;
 import com.example.shop_mall_back.common.config.oauth2.OAuth2SuccessHandler;
 import com.example.shop_mall_back.common.repository.SessionRepository;
 import com.example.shop_mall_back.common.service.oauthService.GoogleOAuthService;
@@ -10,6 +11,7 @@ import com.example.shop_mall_back.common.service.oauthService.KakaoOAuthService;
 import com.example.shop_mall_back.common.service.oauthService.NaverOAuthService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -71,9 +73,14 @@ public class SecurityConfig {
     }
 
     @Bean
+    public OAuth2FailureHandler oAuth2FailureHandler() {
+        return new OAuth2FailureHandler("http://localhost:5173");
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService,
-                                           TokenAuthenticationFilter tokenAuthenticationFilter, OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
+                                           TokenAuthenticationFilter tokenAuthenticationFilter, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2FailureHandler oAuth2FailureHandler) throws Exception {
         http
                 // CSRF 보호 비활성화 TODO: 개발 후 활성화
                 .csrf(AbstractHttpConfigurer::disable)
@@ -108,6 +115,8 @@ public class SecurityConfig {
                         )
                         // 로그인 성공시 handler
                         .successHandler(oAuth2SuccessHandler)
+                        // 로그인 실패시 handler
+                        .failureHandler(oAuth2FailureHandler)
                         // 사용자 정보 가져오기
                         .userInfoEndpoint(userInfo -> userInfo.userService(oauth2UserService))
                 )
@@ -122,10 +131,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));                          // 정확한 origin
 //        configuration.addAllowedMethod("*");
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));            // 명시적 메서드
-        configuration.addAllowedHeader("*");
-//        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));  // 명시적 헤더
-            configuration.setAllowCredentials(true);                                                    // 쿠키 허용
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));   // 명시적 메서드
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept"));
+        configuration.setAllowCredentials(true);                                                    // 쿠키 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
