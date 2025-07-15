@@ -6,6 +6,7 @@ import com.example.shop_mall_back.admin.order.dto.ClaimSearchDto;
 import com.example.shop_mall_back.admin.order.dto.ClaimUpdateDto;
 import com.example.shop_mall_back.admin.order.dto.OrderReturnDto;
 import com.example.shop_mall_back.admin.order.repository.ClaimManageRepository;
+import com.example.shop_mall_back.user.myOrder.domain.OrderReturn;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -53,34 +54,38 @@ public class ClaimManageService {
 
     //고객 요청 승인여부 수정
     public void updateClaimApproval(ClaimUpdateDto claimUpdateDto){
-        //프론트에서 받아온 ClaimManage의 claimId로 ClaimManage 테이블 탐색
+        //프론트에서 받아온 claimUpdateDto의 claimId로 ClaimManage 테이블 탐색
         ClaimManage claimManage = claimManageRepository.findById(claimUpdateDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
         String approval = claimUpdateDto.getApproval();
-        String returnType = String.valueOf(claimManage.getOrderReturn());
+        OrderReturn.ReturnType current = claimManage.getOrderReturn().getReturnType();
 
-        switch (returnType){
-            case "CANCEL_REQUEST":
-                if(approval.equals("승인"))
-                    claimManage.getOrderReturn().setReturnType(ReturnType.CANCEL_COMPLETE);
-                else
-                    claimManage.getOrderReturn().setReturnType(ReturnType.CANCEL_REJECTED);
+        switch (current){
+            case CANCEL_REQUEST:
+                if ("승인".equals(approval)) {
+                    System.out.println("취소 승인 안에 들어감");
+                    current = OrderReturn.ReturnType.CANCEL_COMPLETE;
+                } else {
+                    current = OrderReturn.ReturnType.CANCEL_REJECTED;
+                }
                 break;
-            case "RETURN_REQUEST":
-                if(approval.equals("승인"))
-                    claimManage.getOrderReturn().setReturnType(ReturnType.RETURN_COMPLETE);
-                else
-                    claimManage.getOrderReturn().setReturnType(ReturnType.RETURN_REJECTED);
+            case RETURN_REQUEST:
+                if ("승인".equals(approval)) {
+                    current = OrderReturn.ReturnType.RETURN_COMPLETE;
+                } else {
+                    current = OrderReturn.ReturnType.RETURN_REJECTED;
+                }
                 break;
-            case "EXCHANGE_REQUEST":
-                if(approval.equals("승인"))
-                    claimManage.getOrderReturn().setReturnType(ReturnType.EXCHANGE_COMPLETE);
-                else
-                    claimManage.getOrderReturn().setReturnType(ReturnType.EXCHANGE_REJECTED);
+            case EXCHANGE_REQUEST:
+                if ("승인".equals(approval)) {
+                    current = OrderReturn.ReturnType.EXCHANGE_COMPLETE;
+                } else {
+                    current = OrderReturn.ReturnType.EXCHANGE_REJECTED;
+                }
                 break;
         }
 
-        claimManageRepository.save(claimManage);
+        claimManage.getOrderReturn().setReturnType(current);
     }
 }
