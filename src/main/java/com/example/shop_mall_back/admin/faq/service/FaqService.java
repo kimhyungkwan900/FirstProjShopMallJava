@@ -80,7 +80,7 @@ public class FaqService {
         faq.setAnswer(faqDto.getAnswer());
     }
 
-    // 삭제 (일괄삭제 가능)
+    // 삭제
     public void deleteFaqs(List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             throw new IllegalArgumentException("삭제할 항목이 없습니다");
