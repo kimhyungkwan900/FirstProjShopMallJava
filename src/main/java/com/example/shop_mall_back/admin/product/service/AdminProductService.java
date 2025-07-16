@@ -102,7 +102,6 @@ public class AdminProductService {
                                         ? CategoryDto.builder()
                                         .id(product.getCategory().getId())
                                         .name(product.getCategory().getName())
-//                                        .category(product.getCategory().getParent())
                                         .build()
                                         : null
                         )
@@ -166,17 +165,7 @@ public class AdminProductService {
         product.changeBrand(brand);
         product.changeDeliveryInfo(deliveryInfo);
 
-        System.out.println(product.getName());
-        System.out.println(product.getPrice());
-        System.out.println(product.getDescription());
-        System.out.println(product.getStock());
-        System.out.println(product.getBrand().getName());
-        System.out.println(product.getDeliveryInfo().getDeliveryCom());
-        System.out.println(product.getSellStatus());
-
         //상품 이미지 아이디 리스트 조회
-//        List<Long> productImgIds = productFormDto.getProductImgIds();
-
         List<ProductImage> productImgs = adminProductImgRepository.findByProductIdOrderByIdAsc(productFormDto.getId());
         List<Long> productImgIds = new ArrayList<>();
         for (ProductImage productImg : productImgs) {
@@ -185,11 +174,6 @@ public class AdminProductService {
 
         }
 
-
-        //이미지 수정
-//        for(int i=0;i<productImgFileList.size();i++){
-//            productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
-//        }
         for(int i=0;i<productImgFileList.size();i++){
             productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
         }
@@ -199,7 +183,6 @@ public class AdminProductService {
 
     //---상품 삭제
     public void deleteProducts(List<Long> productIds){
-//        adminProductRepository.deleteById(productId);
         adminProductRepository.deleteAllById(productIds);
     }
 }

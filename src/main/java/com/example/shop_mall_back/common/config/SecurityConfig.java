@@ -38,6 +38,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+//후에 제거
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
 import java.util.List;
 
 @Configuration
@@ -79,6 +82,7 @@ public class SecurityConfig {
         http
                 // CSRF 보호 비활성화 TODO: 개발 후 활성화
                 .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(csrf ->csrf.csrfTokenRepository(cookieCsrfTokenRepository())) //csrf 설정
                 //
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 예외 처리 설정: API 는 JSON 응답, 그 외는 기본 동작
@@ -154,4 +158,11 @@ public class SecurityConfig {
         };
     }
 
+    private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
+        CookieCsrfTokenRepository repo = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        // 기본 헤더명은 "X-XSRF-TOKEN" 인데, axios에서 "X-CSRF-TOKEN"으로 보냈다면 바꿔줍니다:
+        repo.setHeaderName("X-CSRF-TOKEN");
+        // 기본 쿠키 이름 "XSRF-TOKEN"도 그대로 쓰거나 필요에 따라 변경 가능
+        return repo;
+    }
 }

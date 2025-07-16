@@ -33,20 +33,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/admin")
 public class AdminProductController {
     private final AdminProductService adminproductService;
-    private final AdminProductRepository adminProductRepository;
     private final AdminProductService adminProductService;
 
     //---상품 등록
     @PostMapping("/products/new")
-    public ResponseEntity<?> newProduct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult, Model model, @RequestParam("productImgFile") List<MultipartFile> productImgFileList) {
+    public ResponseEntity<?> newProduct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult,
+                                        @RequestParam("productImgFile") List<MultipartFile> productImgFileList) {
 
         if(bindingResult.hasErrors()){
-//            Map<String, String> errors = bindingResult.getFieldErrors().stream()
-//                    .collect(Collectors.toMap(
-//                            FieldError::getField,
-//                            FieldError::getDefaultMessage
-//                    ));
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 등록 실패");
         }
 
@@ -55,8 +49,7 @@ public class AdminProductController {
         }
 
         try{
-//            return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",
-                adminproductService.saveProduct(productFormDto, productImgFileList);
+            adminproductService.saveProduct(productFormDto, productImgFileList);
             return ResponseEntity.ok().build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 등록 중 에러 발생");
@@ -91,7 +84,8 @@ public class AdminProductController {
 
     //---상품 수정
     @PutMapping("/products/update")
-    public ResponseEntity<?> updateProudct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult, @RequestParam("productImgFile") List<MultipartFile> productImgFileList){
+    public ResponseEntity<?> updateProudct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult,
+                                           @RequestParam("productImgFile") List<MultipartFile> productImgFileList){
 
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 수정 실패");
