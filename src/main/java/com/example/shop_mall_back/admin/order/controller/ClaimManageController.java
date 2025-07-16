@@ -3,6 +3,7 @@ package com.example.shop_mall_back.admin.order.controller;
 import com.example.shop_mall_back.admin.order.dto.ClaimManageDto;
 import com.example.shop_mall_back.admin.order.dto.ClaimManageListDto;
 import com.example.shop_mall_back.admin.order.dto.ClaimSearchDto;
+import com.example.shop_mall_back.admin.order.dto.ClaimUpdateDto;
 import com.example.shop_mall_back.admin.order.service.ClaimManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,10 +46,8 @@ public class ClaimManageController {
 
     //---고객 요청 승인여부 수정
     @PatchMapping("/claims/status")
-    public ResponseEntity<?> approvalClaims(@ModelAttribute List<ClaimManageDto> claimList){
-        for(ClaimManageDto claimManageDto : claimList){
-            claimManageService.updateClaimApproval(claimManageDto);
-        }
+    public ResponseEntity<?> approvalClaims(@RequestBody ClaimUpdateDto claimUpdateDto){
+        claimManageService.updateClaimApproval(claimUpdateDto);
 
         return ResponseEntity.ok().build();
     }

@@ -3,6 +3,7 @@ package com.example.shop_mall_back.admin.order.controller;
 import com.example.shop_mall_back.admin.order.dto.OrderManageDto;
 import com.example.shop_mall_back.admin.order.dto.OrderManageListDto;
 import com.example.shop_mall_back.admin.order.dto.OrderSearchDto;
+import com.example.shop_mall_back.admin.order.dto.OrderUpdateDto;
 import com.example.shop_mall_back.admin.order.service.OrderManageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -45,10 +46,8 @@ public class OrderManageController {
 
     //---고객 주문상태 처리
     @PatchMapping("/orders/status")
-    public ResponseEntity<?> updateOrderStatus(@ModelAttribute List<OrderManageDto> statusList){
-        for(OrderManageDto orderManageDto : statusList){
-            orderManageService.updateOrderStatus(orderManageDto);
-        }
+    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderUpdateDto orderUpdateDto){
+        orderManageService.updateOrderStatus(orderUpdateDto);
 
         return ResponseEntity.ok().build();
     }

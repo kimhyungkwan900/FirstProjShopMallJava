@@ -4,6 +4,7 @@ import com.example.shop_mall_back.admin.order.domain.OrderManage;
 import com.example.shop_mall_back.admin.order.dto.AdminOrderDto;
 import com.example.shop_mall_back.admin.order.dto.OrderManageDto;
 import com.example.shop_mall_back.admin.order.dto.OrderSearchDto;
+import com.example.shop_mall_back.admin.order.dto.OrderUpdateDto;
 import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
 import com.example.shop_mall_back.user.Order.dto.OrderDto;
 import jakarta.persistence.EntityNotFoundException;
@@ -57,12 +58,14 @@ public class OrderManageService {
     }
 
     //고객 주문상태 처리
-    public void updateOrderStatus(OrderManageDto orderManageDto){
+    public void updateOrderStatus(OrderUpdateDto orderUpdateDto){
         //프론트에서 받아온 OrderManage의 orderManageId로 OrderManage 테이블 탐색
-        OrderManage orderManage = orderManageRepository.findById(orderManageDto.getOrderManageId())
-                .orElseThrow(EntityNotFoundException::new);
+        for(Long id:orderUpdateDto.getIds()){
+            OrderManage orderManage = orderManageRepository.findById(id)
+                    .orElseThrow(EntityNotFoundException::new);
 
-        orderManage.setOrderStatus(orderManageDto.getOrderStatus());
+            orderManage.setOrderStatus(orderUpdateDto.getNewStatus());
+        }
     }
 
 }
