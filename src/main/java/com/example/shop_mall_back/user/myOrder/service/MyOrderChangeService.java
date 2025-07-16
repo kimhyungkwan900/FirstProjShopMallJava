@@ -76,6 +76,7 @@ public class MyOrderChangeService {
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
+        dto.setDescription(product.getDescription());
         if (images != null && !images.isEmpty()) {
             dto.setImage(images.get(0));
         } else {
