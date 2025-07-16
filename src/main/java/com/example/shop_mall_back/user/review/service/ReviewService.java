@@ -55,6 +55,7 @@ public class ReviewService {
         dto.setReviewImgDTOList(reviewImgService.getImagesByReviewId(id));
         return dto;
     }
+
     // 상품 별로 리뷰 목록
     public ReviewListDTO findAllByProductId(Long productId, String sort) {
         List<Review> reviews = reviewRepository.findAllByProductId(productId);
@@ -66,14 +67,12 @@ public class ReviewService {
                         int like1 = reviewReactionService.findLikeCountByReviewId(r1.getId());
                         int like2 = reviewReactionService.findLikeCountByReviewId(r2.getId());
                         return Integer.compare(like2, like1); // 내림차순
-                    })
-                    .toList();
+                    }).toList();
         } else {
             // 최신순 정렬 (id 또는 createdAt 기준)
             reviews = reviews.stream()
                     .sorted(Comparator.comparing(Review::getCreatedAt).reversed()) // 또는 Review::getId
-                    .toList();
-        }
+                    .toList();}
         // DTO 변환 및 추가 정보 세팅
         List<ReviewDTO> reviewDTOList = reviews.stream()
                 .map(review -> {
@@ -85,7 +84,6 @@ public class ReviewService {
                     dto.setMemberNickname(memberProfile.getNickname());
                     return dto;
                 }).toList();
-
         // 평균 평점 계산
         double average = reviews.stream()
                 .mapToInt(Review::getReviewScore)
@@ -95,8 +93,7 @@ public class ReviewService {
         return ReviewListDTO.builder()
                 .reviewList(reviewDTOList)
                 .averageScore(Math.round(average * 10) / 10.0)
-                .build();
-    }
+                .build();}
 
     // 회원 별로 리뷰 목록
 //    public List<ReviewDTO> findAllByMemberId(Long memberId) {
@@ -145,14 +142,10 @@ public class ReviewService {
         review.setReviewContent(reviewUpdateDTO.getReviewContent());
         review.setReviewSummation(reviewUpdateDTO.getSummation());
         review.setUpdatedAt(LocalDateTime.now());
-
         reviewRepository.save(review);
 
-        // 모든 기존 이미지 가져오기
         List<ReviewImg> reviewImages = reviewImgRepository.findByReviewId(review.getId());
-
         for (ReviewImg img : reviewImages) {
-            // keepImageIds에 없는 이미지는 삭제
             if (keepImageIds == null || !keepImageIds.contains(img.getId())) {
                 try {
                     reviewFileService.deleteFile(img.getFilePath());
@@ -162,7 +155,6 @@ public class ReviewService {
                 }
             }
         }
-
         // 새 이미지 파일 저장
         if (reviewImgFile != null && !reviewImgFile.isEmpty()) {
             for (MultipartFile file : reviewImgFile) {

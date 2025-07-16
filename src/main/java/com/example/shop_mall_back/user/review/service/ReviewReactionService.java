@@ -23,14 +23,12 @@ public class ReviewReactionService {
 
         ReviewReaction reaction = reviewReactionRepository.findByMemberIdAndReview(memberId, review)
                 .orElse(null);
-
         if(reaction == null) {
             reaction = ReviewReaction.builder()
                     .memberId(memberId)
                     .review(review)
                     .reaction(newReaction).build();
         }else {
-            // 같은 반응이면 삭제, 아니면 업데이트
             if (reaction.getReaction() == newReaction) {
                 reviewReactionRepository.delete(reaction);
                 return null;
