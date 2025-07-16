@@ -1,12 +1,9 @@
 package com.example.shop_mall_back.admin.product.dto;
 
 import com.example.shop_mall_back.common.domain.Product;
-import com.example.shop_mall_back.user.product.domain.Brand;
-import com.example.shop_mall_back.user.product.domain.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +41,13 @@ public class ProductFormDto {
     private List<Long> productImgIds = new ArrayList<>();
 
     public Product createProduct(){
-        Product product = Product.builder()
+
+        return Product.builder()
                 .name(name)
                 .price(price)
                 .description(description)
                 .stock(stock)
                 .sellStatus(sellStatus)
                 .build();
-
-        return product;
     }
 }

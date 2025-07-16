@@ -1,35 +1,26 @@
 package com.example.shop_mall_back.admin.product.controller;
 
 import com.example.shop_mall_back.admin.product.dto.*;
-import com.example.shop_mall_back.admin.product.repository.AdminProductRepository;
 import com.example.shop_mall_back.admin.product.service.AdminProductService;
-import com.example.shop_mall_back.common.domain.Product;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@Log4j2
 @RequestMapping("/api/admin")
 public class AdminProductController {
     private final AdminProductService adminproductService;
@@ -73,15 +64,6 @@ public class AdminProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productListDto);
     }
 
-    //---상품 상세정보 조회
-    @GetMapping("/products/{productId}")
-    public ResponseEntity<ProductDetailDto> productDetail(@PathVariable("productId") Long productId){
-
-        ProductDetailDto productDetailDto = adminProductService.getProductDetail(productId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(productDetailDto);
-    }
-
     //---상품 수정
     @PutMapping("/products/update")
     public ResponseEntity<?> updateProudct(@Valid @ModelAttribute ProductFormDto productFormDto, BindingResult bindingResult,
@@ -100,15 +82,12 @@ public class AdminProductController {
             return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e) {
-            log.error("잘못된 입력값으로 인한 오류", e);
             return ResponseEntity.badRequest().body("입력값 오류");
         }
         catch (IOException e) {
-            log.error("파일 처리 오류", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 처리 중 오류가 발생했습니다.");
         }
         catch (Exception e) {
-            log.error("상품 수정 중 예상치 못한 오류", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 수정 중 서버 오류가 발생하였습니다.");
         }
     }

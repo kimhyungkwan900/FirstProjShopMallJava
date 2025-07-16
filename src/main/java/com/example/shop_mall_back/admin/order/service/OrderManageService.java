@@ -6,10 +6,8 @@ import com.example.shop_mall_back.admin.order.dto.OrderManageDto;
 import com.example.shop_mall_back.admin.order.dto.OrderSearchDto;
 import com.example.shop_mall_back.admin.order.dto.OrderUpdateDto;
 import com.example.shop_mall_back.admin.order.repository.OrderManageRepository;
-import com.example.shop_mall_back.user.Order.dto.OrderDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderManageService {
 
     private final OrderManageRepository orderManageRepository;
-    private final ModelMapper modelMapper;
 
     //검색 조건에 따라 고객 주문 조회
     //admin/orders, admin/orders{page}
@@ -33,7 +30,6 @@ public class OrderManageService {
         System.out.println("주문상태" + orderSearchDto.getOrderStatus());
         System.out.println("시작일" +orderSearchDto.getStartDate());
         System.out.println("종료일" + orderSearchDto.getEndDate());
-//        System.out.println(orderSearchDto.get);
 
         Page<OrderManage> orderInfoPage = orderManageRepository.getOrderPageByCondition(orderSearchDto, pageable);
 

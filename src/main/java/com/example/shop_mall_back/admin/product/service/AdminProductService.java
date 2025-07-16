@@ -13,22 +13,18 @@ import com.example.shop_mall_back.user.product.repository.BrandRepository;
 import com.example.shop_mall_back.user.product.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Log4j2
 public class AdminProductService {
 
     private final AdminProductRepository adminProductRepository;
@@ -38,7 +34,6 @@ public class AdminProductService {
     private final DeliveryInfoRepository deliveryInfoRepository;
 
     private final ProductImgService productImgService;
-    private final ModelMapper modelMapper;
 
     //---상품 등록
     public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImgFileList) throws Exception{
@@ -123,26 +118,6 @@ public class AdminProductService {
         );
     }
 
-    //---상품 상세정보 조회
-    @Transactional(readOnly = true)
-    public ProductDetailDto getProductDetail(Long productId){
-        List<ProductImage> productImgList = adminProductImgRepository.findByProductIdOrderByIdAsc(productId);
-        List<ProductImgDto> productImgDtoList = new ArrayList<>();
-
-        for(ProductImage productImage : productImgList){
-            ProductImgDto productImgDto = ProductImgDto.of(productImage);
-            productImgDtoList.add(productImgDto);
-        }
-
-        Product product = adminProductRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        ProductDetailDto productDetailDto = modelMapper.map(product, ProductDetailDto.class);
-        productDetailDto.setProductImgDtoList(productImgDtoList);
-
-        return productDetailDto;
-    }
-
     //---상품 수정
     public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImgFileList) throws Exception{
         //수정한 카테고리 ID, 브랜드 ID를 이용해 데이터베이스에서 정보 가져오기
@@ -169,9 +144,7 @@ public class AdminProductService {
         List<ProductImage> productImgs = adminProductImgRepository.findByProductIdOrderByIdAsc(productFormDto.getId());
         List<Long> productImgIds = new ArrayList<>();
         for (ProductImage productImg : productImgs) {
-            System.out.println("이미지아이디: " + productImg.getId());
             productImgIds.add(productImg.getId());
-
         }
 
         for(int i=0;i<productImgFileList.size();i++){
