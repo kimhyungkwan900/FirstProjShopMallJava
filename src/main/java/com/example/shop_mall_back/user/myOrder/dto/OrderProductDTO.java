@@ -13,5 +13,6 @@ public class OrderProductDTO {
     private String name;
     private ProductImageDto image;
     private Integer price;
+    private String description;
     private Product.SellStatus sellStatus;
 }

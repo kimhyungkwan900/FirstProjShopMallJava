@@ -119,6 +119,7 @@ public class MyOrderService {
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
         dto.setSellStatus(product.getSellStatus());
+        dto.setDescription(product.getDescription());
         if (images != null && !images.isEmpty()) {
             dto.setImage(images.get(0));
         } else {

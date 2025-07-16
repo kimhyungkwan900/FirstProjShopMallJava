@@ -13,4 +13,6 @@ public class AdminReviewReportDTO {
     private String reason;
     private String detail;
     private LocalDateTime createdAt;
+
+    private String userId;
 }
