@@ -22,7 +22,7 @@ public class Faq {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String category; // 고정값으로 사용 (배송, 환불 등)
+    private String category; // 고정값으로 사용 
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String question;
