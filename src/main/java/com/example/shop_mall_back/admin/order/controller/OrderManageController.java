@@ -12,11 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +24,6 @@ public class OrderManageController {
     //---조회 조건과 페이지 정보를 받아서 주문 데이터 조회
     @GetMapping({"/orders", "/orders/{page}"})
     public ResponseEntity<?> ordersManage(@ModelAttribute OrderSearchDto orderSearchDto, @RequestParam(value="page", defaultValue = "0") int page){
-
-        log.info("받은 검색 DTO -> {}", orderSearchDto);
 
         Pageable pageable = PageRequest.of(page, 8);
         Page<OrderManageDto> orders = orderManageService.getOrderInfoPage(orderSearchDto, pageable);

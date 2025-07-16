@@ -13,22 +13,18 @@ import com.example.shop_mall_back.user.product.repository.BrandRepository;
 import com.example.shop_mall_back.user.product.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Log4j2
 public class AdminProductService {
 
     private final AdminProductRepository adminProductRepository;
@@ -38,7 +34,6 @@ public class AdminProductService {
     private final DeliveryInfoRepository deliveryInfoRepository;
 
     private final ProductImgService productImgService;
-    private final ModelMapper modelMapper;
 
     //---상품 등록
     public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImgFileList) throws Exception{
@@ -102,7 +97,6 @@ public class AdminProductService {
                                         ? CategoryDto.builder()
                                         .id(product.getCategory().getId())
                                         .name(product.getCategory().getName())
-//                                        .category(product.getCategory().getParent())
                                         .build()
                                         : null
                         )
@@ -122,26 +116,6 @@ public class AdminProductService {
                         .modified_by(product.getModifiedBy())
                         .build()
         );
-    }
-
-    //---상품 상세정보 조회
-    @Transactional(readOnly = true)
-    public ProductDetailDto getProductDetail(Long productId){
-        List<ProductImage> productImgList = adminProductImgRepository.findByProductIdOrderByIdAsc(productId);
-        List<ProductImgDto> productImgDtoList = new ArrayList<>();
-
-        for(ProductImage productImage : productImgList){
-            ProductImgDto productImgDto = ProductImgDto.of(productImage);
-            productImgDtoList.add(productImgDto);
-        }
-
-        Product product = adminProductRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        ProductDetailDto productDetailDto = modelMapper.map(product, ProductDetailDto.class);
-        productDetailDto.setProductImgDtoList(productImgDtoList);
-
-        return productDetailDto;
     }
 
     //---상품 수정
@@ -166,30 +140,13 @@ public class AdminProductService {
         product.changeBrand(brand);
         product.changeDeliveryInfo(deliveryInfo);
 
-        System.out.println(product.getName());
-        System.out.println(product.getPrice());
-        System.out.println(product.getDescription());
-        System.out.println(product.getStock());
-        System.out.println(product.getBrand().getName());
-        System.out.println(product.getDeliveryInfo().getDeliveryCom());
-        System.out.println(product.getSellStatus());
-
         //상품 이미지 아이디 리스트 조회
-//        List<Long> productImgIds = productFormDto.getProductImgIds();
-
         List<ProductImage> productImgs = adminProductImgRepository.findByProductIdOrderByIdAsc(productFormDto.getId());
         List<Long> productImgIds = new ArrayList<>();
         for (ProductImage productImg : productImgs) {
-            System.out.println("이미지아이디: " + productImg.getId());
             productImgIds.add(productImg.getId());
-
         }
 
-
-        //이미지 수정
-//        for(int i=0;i<productImgFileList.size();i++){
-//            productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
-//        }
         for(int i=0;i<productImgFileList.size();i++){
             productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
         }
@@ -199,7 +156,6 @@ public class AdminProductService {
 
     //---상품 삭제
     public void deleteProducts(List<Long> productIds){
-//        adminProductRepository.deleteById(productId);
         adminProductRepository.deleteAllById(productIds);
     }
 }
