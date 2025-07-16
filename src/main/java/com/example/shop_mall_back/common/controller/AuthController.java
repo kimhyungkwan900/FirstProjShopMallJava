@@ -83,14 +83,11 @@ public class AuthController {
         try {
             // 사용자 인증
             Member member = memberService.authenticate(loginRequestDTO.getUserId(), loginRequestDTO.getPassword());
-
             // 권한 확인
             Role role = memberService.getRoleByMember(member);
-
             // 토큰 생성
             String accessToken = tokenProvider.generateAccessToken(member.getId(), member.getEmail(), role);
             String refreshToken = tokenProvider.generateRefreshToken();
-
             // 세션 저장
             Session session = Session.builder()
                     .member(member)
@@ -100,7 +97,6 @@ public class AuthController {
                     .expiresAt(LocalDateTime.now().plusSeconds(tokenProvider.getRefreshTokenExpirySeconds()))
                     .build();
             sessionRepository.save(session);
-
             // 로그인 기록 저장
             loginHistoryService.recordLogin(
                     member,
@@ -109,24 +105,19 @@ public class AuthController {
                     LoginResult.SUCCESS,
                     LoginType.NORMAL
             );
-
             CustomUserPrincipal principal = new CustomUserPrincipal(member, memberProfileService.findByMemberIdOrThrow(member.getId()));
             Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null,
                     List.of(new SimpleGrantedAuthority("ROLE_" + role.name())));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
             // 쿠키 저장
             saveTokenCookies(response, accessToken, refreshToken);
-
             return ResponseEntity.ok(Map.of(
                     "userId", member.getId(),
                     "role", role.name()
             ));
         }
         catch (IllegalArgumentException e) { // 실패
-
             Member member = memberService.findByUserId(loginRequestDTO.getUserId()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
-
             loginHistoryService.recordLogin(
                     member,
                     getClientIp(request),

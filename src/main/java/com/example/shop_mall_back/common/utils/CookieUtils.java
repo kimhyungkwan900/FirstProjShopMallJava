@@ -30,7 +30,6 @@ public class CookieUtils {
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
 
-
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)     // JavaScript 에서 접근불가 설정
                 .secure(false)       // HTTPS 환경에서만 쿠키 전송 HTTP 로 전송하지 않아 MITM 방지 가능

@@ -50,6 +50,7 @@ public class Order {
     //결제 수단
     @Column(name = "payment_method", length = 50)
     private String paymentMethod;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
