@@ -80,7 +80,6 @@ public class SecurityConfig {
                                            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService,
                                            TokenAuthenticationFilter tokenAuthenticationFilter, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2FailureHandler oAuth2FailureHandler) throws Exception {
         http
-//                .csrf(AbstractHttpConfigurer::disable)
                 .csrf(csrf ->csrf.csrfTokenRepository(cookieCsrfTokenRepository())
                         .ignoringRequestMatchers("/api/login","/api/members/signup")) //csrf 설정
                 //
@@ -102,7 +101,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 비인증 접근 가능
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/oauth2/**", "/login/**", "/api/auth/**", "/api/members/signup", "/css/**", "/js/**", "/images/**","/api/**").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**", "/api/members/signup", "/css/**", "/js/**", "/images/**").permitAll()
                         // 그외 인증 접근
                         .anyRequest().authenticated()
                 )

@@ -32,7 +32,7 @@ public class CookieUtils {
 
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)     // JavaScript 에서 접근불가 설정
-                .secure(false)       // HTTPS 환경에서만 쿠키 전송 HTTP 로 전송하지 않아 MITM 방지 가능
+                .secure(true)       // HTTPS 환경에서만 쿠키 전송 HTTP 로 전송하지 않아 MITM 방지 가능
                 .sameSite("Lax")    // 일부 안전한 크로스 도메인 요청(GET, top-level navigation)만 허용
                 .path("/")          // 쿠키 유효 경로
                 .maxAge(Duration.ofSeconds(maxAge))
@@ -50,7 +50,7 @@ public class CookieUtils {
 
         ResponseCookie expiredCookie = ResponseCookie.from(cookieName, "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0) // 즉시 만료
                 .sameSite("Lax")
