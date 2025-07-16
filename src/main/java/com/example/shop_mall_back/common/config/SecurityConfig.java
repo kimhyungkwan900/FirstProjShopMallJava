@@ -80,9 +80,9 @@ public class SecurityConfig {
                                            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService,
                                            TokenAuthenticationFilter tokenAuthenticationFilter, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2FailureHandler oAuth2FailureHandler) throws Exception {
         http
-                // CSRF 보호 비활성화 TODO: 개발 후 활성화
-                .csrf(AbstractHttpConfigurer::disable)
-//                .csrf(csrf ->csrf.csrfTokenRepository(cookieCsrfTokenRepository())) //csrf 설정
+//                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf ->csrf.csrfTokenRepository(cookieCsrfTokenRepository())
+                        .ignoringRequestMatchers("/api/login","/api/members/signup")) //csrf 설정
                 //
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 예외 처리 설정: API 는 JSON 응답, 그 외는 기본 동작
@@ -129,9 +129,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));                          // 정확한 origin
-//        configuration.addAllowedMethod("*");
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));   // 명시적 메서드
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept","X-CSRF-TOKEN"));
         configuration.setAllowCredentials(true);                                                    // 쿠키 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
