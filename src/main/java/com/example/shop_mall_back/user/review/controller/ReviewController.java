@@ -48,7 +48,7 @@ public class ReviewController {
     public void insertReview(
             @RequestPart("reviewFormDTO") ReviewFormDTO reviewFormDTO,
             @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFile) {
-
+        System.out.println("reviewFormDTO = " + reviewFormDTO);
         reviewService.insertReview(reviewFormDTO, reviewImgFile);
     }
 
