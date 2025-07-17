@@ -81,7 +81,7 @@ public class SecurityConfig {
                                            TokenAuthenticationFilter tokenAuthenticationFilter, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2FailureHandler oAuth2FailureHandler) throws Exception {
         http
                 .csrf(csrf ->csrf.csrfTokenRepository(cookieCsrfTokenRepository())
-                        .ignoringRequestMatchers("/api/login","/api/members/signup")) //csrf 설정
+                        .ignoringRequestMatchers("/api/login","/api/members/signup","/api/csrf-token")) //csrf 설정
                 //
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 예외 처리 설정: API 는 JSON 응답, 그 외는 기본 동작
@@ -101,7 +101,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 비인증 접근 가능
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/oauth2/**", "/login/**", "/api/members/signup", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**", "/api/members/signup", "/css/**", "/js/**", "/images/**","api/products/**","api/banner/**").permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         // 그외 인증 접근
                         .anyRequest().authenticated()
                 )
