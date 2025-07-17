@@ -48,8 +48,10 @@ public class ReviewService {
     private final ReviewImgRepository reviewImgRepository;
     private final ReviewFileService reviewFileService;
 
-    private final MemberRepository memberRepository;
+    private final ReviewReactionRepository reviewReactionRepository;
 
+    private final MemberRepository memberRepository;
+    private final ReviewReportRepository reviewReportRepository;
 
     // 리뷰 받아오기(수정)
     public ReviewDTO findByReviewId(Long id) {
@@ -134,6 +136,8 @@ public class ReviewService {
     // 리뷰 삭제
     @Transactional
     public void deleteReview(Long reviewId) {
+        reviewReportRepository.deleteByReviewId(reviewId);
+        reviewReactionRepository.deleteByReviewId(reviewId);
         reviewImgRepository.deleteByReviewId(reviewId);
         reviewRepository.deleteById(reviewId);
     }
