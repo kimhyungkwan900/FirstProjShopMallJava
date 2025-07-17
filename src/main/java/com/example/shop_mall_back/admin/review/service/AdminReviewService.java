@@ -45,29 +45,27 @@ public class AdminReviewService {
     private final ProductRepository  productRepository;
     private final MemberRepository memberRepository;
 
-    //리뷰 블라인드 처리
     @Transactional
     public void reviewBlind(AdminReviewBlindDTO reviewBlindDTO){
-        ReviewDTO reviewDTO = reviewService.findByReviewId(reviewBlindDTO.getReviewId());
-        reviewDTO.setReviewStatus(ReviewStatus.blinded);
-        // 리뷰 status 상태 업데이트
-        Review review =  modelMapper.map(reviewDTO, Review.class);
-        reviewRepository.save(review);
-        // 리뷰 블라인드 사유 선택 등록
+        Review review = reviewRepository.findById(reviewBlindDTO.getReviewId())
+                .orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없습니다."));
+
+        review.setReviewStatus(ReviewStatus.blinded);
+
+        // 리뷰 블라인드 사유 등록
         reviewBlindDTO.setBlindAt(LocalDateTime.now());
-        ReviewBlind reviewBlind = modelMapper.map(reviewBlindDTO,ReviewBlind.class);
+        ReviewBlind reviewBlind = modelMapper.map(reviewBlindDTO, ReviewBlind.class);
         adminReviewRepository.save(reviewBlind);
     }
 
-    //리뷰 블라인드 해제 - 블라인드 내역 삭제
     @Transactional
     public void reviewUnblind(Long reviewId){
-        ReviewDTO reviewDTO = reviewService.findByReviewId(reviewId);
-        // 리뷰의 status 상태를 normal로 바꾸고 저장
-        reviewDTO.setReviewStatus(ReviewStatus.normal);
-        Review review =  modelMapper.map(reviewDTO, Review.class);
-        reviewRepository.save(review);
-        // 블라인드 처리한 정보 삭제
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없습니다."));
+
+        review.setReviewStatus(ReviewStatus.normal);
+        // 엔티티 상태 변경만 하면 JPA가 자동으로 반영함
+
         adminReviewRepository.deleteByReviewId(reviewId);
     }
 

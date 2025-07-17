@@ -12,12 +12,14 @@ import com.example.shop_mall_back.user.product.repository.ProductRepository;
 import com.example.shop_mall_back.user.product.service.ProductService;
 import com.example.shop_mall_back.user.review.domain.Review;
 import com.example.shop_mall_back.user.review.domain.ReviewImg;
+import com.example.shop_mall_back.user.review.domain.enums.ReviewStatus;
 import com.example.shop_mall_back.user.review.dto.*;
 import com.example.shop_mall_back.user.review.repository.ReviewImgRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewReactionRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewReportRepository;
 import com.example.shop_mall_back.user.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Members;
@@ -46,6 +48,10 @@ public class ReviewService {
     private final ReviewImgRepository reviewImgRepository;
     private final ReviewFileService reviewFileService;
 
+    private final ReviewReactionRepository reviewReactionRepository;
+
+    private final MemberRepository memberRepository;
+    private final ReviewReportRepository reviewReportRepository;
 
     // 리뷰 받아오기(수정)
     public ReviewDTO findByReviewId(Long id) {
@@ -114,8 +120,10 @@ public class ReviewService {
     public void insertReview(ReviewFormDTO reviewFormDTO, List<MultipartFile> reviewImgFile) {
 
         reviewFormDTO.setCreatedAt(LocalDateTime.now());
-
+        reviewFormDTO.setReviewStatus(ReviewStatus.normal);
         Review review = modelMapper.map(reviewFormDTO, Review.class);
+        review.setMember(memberRepository.findById(reviewFormDTO.getMemberId()).orElseThrow(EntityNotFoundException::new));
+        review.setProduct(productRepository.findById(reviewFormDTO.getProductId()).orElseThrow(EntityNotFoundException::new));
         reviewRepository.save(review);
 
         if(reviewImgFile != null && !reviewImgFile.isEmpty() ) {
@@ -126,8 +134,12 @@ public class ReviewService {
     }
 
     // 리뷰 삭제
-    public void deleteReview(Long id) {
-        reviewRepository.deleteById(id);
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        reviewReportRepository.deleteByReviewId(reviewId);
+        reviewReactionRepository.deleteByReviewId(reviewId);
+        reviewImgRepository.deleteByReviewId(reviewId);
+        reviewRepository.deleteById(reviewId);
     }
 
     // 리뷰 수정

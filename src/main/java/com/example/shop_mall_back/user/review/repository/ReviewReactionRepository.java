@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface ReviewReactionRepository extends JpaRepository<ReviewReaction,Long> {
     Optional<ReviewReaction> findByMemberIdAndReview(Long memberId, Review review);
     int countByReview_IdAndReaction(Long reviewId, Reaction reaction);
+
+    void deleteByReviewId(Long reviewId);
 }
