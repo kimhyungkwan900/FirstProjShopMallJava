@@ -5,6 +5,7 @@ import com.example.shop_mall_back.common.domain.member.Member;
 import com.example.shop_mall_back.common.domain.member.MemberProfile;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberProfileService;
 import com.example.shop_mall_back.common.service.serviceinterface.MemberService;
+import com.example.shop_mall_back.common.utils.CookieConstants;
 import com.example.shop_mall_back.common.utils.CookieUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,7 +43,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // Authorization 헤더 확인
-        String accessToken = CookieUtils.getCookie(request, "access_token")
+        String accessToken = CookieUtils.getCookie(request, CookieConstants.ACCESS_TOKEN)
                 .map(Cookie::getValue)
                 .orElse(null);
         
